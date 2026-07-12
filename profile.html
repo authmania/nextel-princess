@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Profile – Nextel Connect</title>
+<link rel="icon" type="image/png" href="assets/img/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+:root {
+  --teal: #8EE4CF;
+  --teal-dark: #5DD3B8;
+  --teal-deep: #3BC4A3;
+  --teal-light: #B8F0E3;
+  --teal-glow: rgba(142, 228, 203, 0.35);
+  --emerald: #0B3D2E;
+  --emerald-light: #1A5A45;
+  --emerald-deep: #0A2E22;
+  --bg-mint: #E8F5F1;
+  --bg-white: #FFFFFF;
+  --bg-card: #F5FAF8;
+  --text-dark: #0B3D2E;
+  --text-muted: #6B9E8E;
+  --text-light: #8FB8AC;
+  --border-soft: rgba(11, 61, 46, 0.08);
+  --shadow-soft: 0 4px 24px rgba(11, 61, 46, 0.06);
+  --shadow-card: 0 8px 32px rgba(11, 61, 46, 0.08);
+  --shadow-elegant: 0 20px 60px rgba(11, 61, 46, 0.12);
+  --shadow-teal: 0 10px 40px rgba(142, 228, 203, 0.30);
+  --gradient-teal: linear-gradient(135deg, #8EE4CF 0%, #5DD3B8 50%, #3BC4A3 100%);
+  --gradient-emerald: linear-gradient(135deg, #0B3D2E 0%, #1A5A45 100%);
+  --gradient-card: linear-gradient(135deg, #0B3D2E 0%, #1A5A45 55%, #2A7A60 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #E8F5F1 100%);
+  --nav-h: 64px;
+  --bottom-h: 72px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  background: var(--gradient-surface);
+  color: var(--text-dark);
+  min-height: 100vh;
+  padding-bottom: calc(var(--bottom-h) + 20px);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Topbar ──────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 80; height: var(--nav-h);
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-soft);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 1.1rem;
+}
+.topbar-back {
+  width: 40px; height: 40px; border: 1px solid var(--border-soft); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); text-decoration: none; font-size: 1rem; transition: all 0.25s;
+  background: var(--bg-mint);
+}
+.topbar-back:hover { border-color: var(--teal); color: var(--teal-dark); background: rgba(142, 228, 203, 0.1); }
+.topbar-brand { font-weight: 800; font-size: 1.1rem; color: var(--emerald); letter-spacing: -0.02em; }
+.topbar-brand span { color: var(--teal-dark); }
+
+/* ── Page ────────────────────────────────────────── */
+.page { padding: 1.2rem 1rem; max-width: 520px; margin: 0 auto; }
+
+/* ── Alert ───────────────────────────────────────── */
+.alert {
+  border-radius: 14px; padding: 1rem 1.1rem; font-size: 0.85rem; font-weight: 500;
+  margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 0.6rem;
+}
+.alert-success {
+  background: rgba(142, 228, 203, 0.12); border: 1px solid rgba(142, 228, 203, 0.25);
+  color: var(--emerald-light);
+}
+.alert-error {
+  background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+}
+.alert i { margin-top: 0.15rem; font-size: 0.9rem; }
+
+/* Profile Hero */
+.profile-hero {
+  background: var(--gradient-card);
+  border-radius: 24px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  margin-bottom: 1.4rem;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  box-shadow: var(--shadow-elegant);
+}
+.profile-hero::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(142, 228, 203, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.profile-avatar-wrap { position: relative; display: inline-block; margin-bottom: 1rem; z-index: 2; }
+.profile-avatar {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  border: 3px solid var(--teal);
+  object-fit: cover;
+  box-shadow: 0 0 25px rgba(142, 228, 203, 0.35);
+  background: var(--bg-mint);
+}
+.profile-avatar-edit {
+  position: absolute; bottom: 0; right: 0;
+  width: 28px; height: 28px;
+  background: var(--teal);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--emerald); font-size: 0.7rem;
+  cursor: pointer;
+  border: 2px solid #fff;
+  transition: all 0.25s;
+}
+.profile-avatar-edit:hover { background: var(--teal-dark); transform: scale(1.1); }
+.profile-name { font-size: 1.3rem; font-weight: 700; position: relative; z-index: 2; }
+.profile-username { font-size: 0.82rem; color: rgba(255,255,255,0.7); position: relative; z-index: 2; }
+.profile-pkg {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
+  color: #fff; border-radius: 50px; padding: 5px 16px;
+  font-size: 0.75rem; font-weight: 600; margin-top: 0.6rem;
+  position: relative; z-index: 2;
+}
+.profile-since { font-size: 0.72rem; color: rgba(255,255,255,0.6); margin-top: 0.4rem; position: relative; z-index: 2; }
+
+/* Stats Strip */
+.stat-strip {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px; margin-bottom: 1.4rem;
+}
+.stat-box {
+  background: var(--bg-white);
+  border: 1px solid var(--border-soft);
+  border-radius: 18px; padding: 1rem 0.7rem; text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+.stat-box-val { font-size: 1.1rem; font-weight: 700; color: var(--teal-dark); }
+.stat-box-lbl { font-size: 0.68rem; color: var(--text-muted); margin-top: 3px; font-weight: 500; }
+
+/* Tabs */
+.glam-tabs { display: flex; gap: 8px; margin-bottom: 1.4rem; overflow-x: auto; scrollbar-width: none; }
+.glam-tabs::-webkit-scrollbar { display: none; }
+.glam-tab {
+  flex-shrink: 0;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; border: none;
+  background: var(--bg-white);
+  color: var(--text-muted);
+  transition: all 0.25s;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+}
+.glam-tab.active {
+  background: var(--gradient-teal);
+  color: var(--emerald);
+  border-color: transparent;
+  box-shadow: var(--shadow-teal);
+}
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* Section Card */
+.section-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: var(--shadow-soft);
+}
+.section-card-title {
+  font-size: 0.95rem; font-weight: 700;
+  margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: 8px;
+  color: var(--emerald);
+}
+.section-card-title i { color: var(--teal-dark); }
+
+/* Form Elements */
+.form-group { margin-bottom: 1rem; }
+.glam-label {
+  display: block;
+  font-size: 0.78rem; font-weight: 600;
+  color: var(--emerald); margin-bottom: 0.4rem;
+}
+.glam-input-icon-wrap {
+  position: relative;
+}
+.glam-input-icon {
+  position: absolute;
+  left: 1rem; top: 50%;
+  transform: translateY(-50%);
+  color: var(--teal-dark);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+.glam-input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.6rem;
+  background: var(--bg-mint);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  outline: none;
+  transition: all 0.3s ease;
+}
+.glam-input::placeholder { color: var(--text-light); font-weight: 400; }
+.glam-input:focus {
+  border-color: var(--teal);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(142, 228, 203, 0.2);
+}
+.glam-input:disabled {
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.glam-select {
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B9E8E' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px !important;
+  cursor: pointer;
+}
+.glam-select option, .glam-select optgroup {
+  background: #fff; color: var(--emerald);
+}
+
+.btn-save {
+  width: 100%;
+  padding: 14px;
+  background: var(--gradient-teal); color: var(--emerald);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700; font-size: 0.95rem;
+  border: none; border-radius: 16px;
+  cursor: pointer; transition: all 0.3s;
+  box-shadow: var(--shadow-teal);
+  margin-top: 0.5rem;
+}
+.btn-save:hover { transform: translateY(-2px); box-shadow: 0 15px 45px rgba(142, 228, 203, 0.4); }
+
+.verify-ok  { color: var(--teal-deep); font-size: 0.75rem; margin-top: 5px; padding-left: 2px; }
+.verify-err { color: #ef4444; font-size: 0.75rem; margin-top: 5px; padding-left: 2px; }
+
+/* Referral Card */
+.ref-card {
+  background: var(--bg-mint);
+  border: 1px solid rgba(142, 228, 203, 0.2);
+  border-radius: 16px;
+  padding: 1rem;
+  margin-bottom: 1.2rem;
+}
+.ref-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+.ref-link-box {
+  background: var(--bg-white);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.ref-link-text { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ref-copy-btn {
+  background: var(--teal); color: var(--emerald); border: none;
+  border-radius: 10px; padding: 6px 14px; font-size: 0.78rem; font-weight: 700;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.25s;
+}
+.ref-copy-btn:hover { background: var(--teal-dark); }
+
+/* Logout Button */
+.btn-logout {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 14px;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  color: #ef4444; border-radius: 16px;
+  text-decoration: none; font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s;
+}
+.btn-logout:hover { background: rgba(239, 68, 68, 0.1); transform: translateY(-1px); }
+
+/* Bottom Nav */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: var(--bottom-h);
+  background: rgba(255,255,255,0.97);
+  border-top: 1px solid var(--border-soft);
+  backdrop-filter: blur(14px);
+  display: flex; align-items: center; z-index: 80; padding: 0 0.5rem;
+}
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 4px; padding: 8px 0; text-decoration: none;
+  color: var(--text-light); font-size: 0.65rem; font-weight: 500;
+  transition: all 0.25s; border-radius: 12px;
+}
+.nav-btn i { font-size: 1.15rem; transition: all 0.25s; }
+.nav-btn.active { color: var(--teal-dark); }
+.nav-btn.active i { color: var(--teal-dark); transform: scale(1.15); }
+.nav-btn:hover { color: var(--teal); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--teal-light); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <a href="dashboard.html" class="topbar-back"><i class="fas fa-arrow-left"></i></a>
+    <div class="topbar-brand">Nextel<span>Connect</span></div>
+    <div style="width:40px;"></div>
+</div>
+
+<div class="page">
+
+    <!-- Alert Container -->
+    <div id="alertContainer"></div>
+    
+    <!-- Profile Hero -->
+    <div class="profile-hero">
+        <div class="profile-avatar-wrap">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=default&backgroundColor=c9a84c" alt="Avatar" class="profile-avatar" id="avatarImg">
+            <div class="profile-avatar-edit" title="Change photo" onclick="document.getElementById('avatarInput').click()">
+                <i class="fas fa-camera" id="avatarCamIcon"></i>
+            </div>
+            <input type="file" id="avatarInput" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;" onchange="uploadAvatar(this)">
+        </div>
+        <div class="profile-name" id="profileName">User</div>
+        <div class="profile-username" id="profileUsername">@username</div>
+        <div class="profile-pkg" id="profilePackage"><i class="fas fa-star"></i> Nextel · Free</div>
+        <div class="profile-since" id="profileSince">Member since</div>
+    </div>
+
+    <!-- Stats Strip -->
+    <div class="stat-strip">
+        <div class="stat-box">
+            <div class="stat-box-val" id="statDaily">₦0</div>
+            <div class="stat-box-lbl">Daily Earnings</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-box-val" id="statBalance">₦0</div>
+            <div class="stat-box-lbl">Total Balance</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-box-val" id="statBonus">₦0</div>
+            <div class="stat-box-lbl">Invite Bonus</div>
+        </div>
+    </div>
+
+    <!-- Referral Link -->
+    <div class="ref-card">
+        <div class="ref-label"><i class="fas fa-link" style="margin-right:6px;color:var(--teal-dark);"></i>Your Nextel Link</div>
+        <div class="ref-link-box">
+            <span class="ref-link-text" id="refLinkText">https://nextelconnect.live/register.html?ref=</span>
+            <button class="ref-copy-btn" onclick="copyRefLink()">Copy</button>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="glam-tabs">
+        <button class="glam-tab active" onclick="showTab('personal', this)">Personal</button>
+        <button class="glam-tab" onclick="showTab('bank', this)">Bank Details</button>
+        <button class="glam-tab" onclick="showTab('password', this)">Password</button>
+    </div>
+
+    <!-- Personal Tab -->
+    <div class="tab-pane active" id="tab-personal">
+        <div class="section-card">
+            <div class="section-card-title"><i class="fas fa-user-pen"></i> Personal Info</div>
+            <form id="personalForm" onsubmit="updatePersonal(event)">
+                <div class="form-group">
+                    <label class="glam-label">Full Name</label>
+                    <div class="glam-input-icon-wrap">
+                        <i class="fas fa-id-card glam-input-icon"></i>
+                        <input type="text" id="editFullname" class="glam-input" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="glam-label">Phone</label>
+                    <div class="glam-input-icon-wrap">
+                        <i class="fas fa-phone glam-input-icon"></i>
+                        <input type="tel" id="editPhone" class="glam-input" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="glam-label">Email</label>
+                    <div class="glam-input-icon-wrap">
+                        <i class="fas fa-envelope glam-input-icon"></i>
+                        <input type="email" id="editEmail" class="glam-input" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="glam-label">Username</label>
+                    <div class="glam-input-icon-wrap">
+                        <i class="fas fa-at glam-input-icon"></i>
+                        <input type="text" id="editUsername" class="glam-input" disabled>
+                    </div>
+                </div>
+                <button type="submit" class="btn-save">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bank Tab -->
+    <div class="tab-pane" id="tab-bank">
+        <div class="section-card">
+            <div class="section-card-title"><i class="fas fa-building-columns"></i> Bank Details</div>
+            <form id="bankForm" onsubmit="updateBank(event)">
+                <div class="form-group">
+                    <label class="glam-label">Select Bank</label>
+                    <div class="glam-input-icon-wrap">
+                        <i class="fas fa-building-columns glam-input-icon"></i>
+                        <select id="bankSelect" class="glam-input glam-select" required>
+                            <option value="">-- Choose your bank --</option>
+                            <optgroup label="💳 Online Banks">
+                                <option value="OPay">OPay</option>
+                                <option value="Moniepoint">Moniepoint</option>
+                                <option value="Kuda Bank">Kuda Bank</option>
+                                <option value="PalmPay">PalmPay</option>
+                                <option value="ALAT by Wema">ALAT by Wema</option>
+                                <option value="FairMoney">FairMoney</option>
+                                <option value="Paga">Paga</option>
+                            </optgroup>
+                            <optgroup label="🏦 Commercial Banks">
+                                <option value="Access Bank">Access Bank</option>
+                                <option value="Ecobank">Ecobank</option>
+                                <option value="Fidelity Bank">Fidelity Bank</option>
+                                <option value="First Bank">First Bank</option>
+                                <option value="FCMB">FCMB</option>
+                                <option value="GTBank">GTBank</option>
+                                <option value="Stanbic IBTC">Stanbic IBTC</option>
+                                <option value="Sterling Bank">Sterling Bank</option>
+                                <option value="UBA">UBA</option>
+                                <option value="Wema Bank">Wema Bank</option>
+                                <option value="Zenith Bank">Zenith Bank</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="glam-label">Account Number</label>
+                    <div class="glam-input-icon-wrap">
+                        <i class="fas fa-hashtag glam-input-icon"></i>
+                        <input type="tel" id="editAcctNumber" class="glam-input"
+                               placeholder="Enter 10-digit account number"
+                               maxlength="10" inputmode="numeric" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="glam-label">Account Name</label>
+                    <div class="glam-input-icon-wrap">
+                        <i class="fas fa-user glam-input-icon"></i>
+                        <input type="text" id="editAcctName" class="glam-input"
+                               placeholder="Account holder name" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-save">Save Bank Details</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Password Tab -->
+    <div class="tab-pane" id="tab-password">
+        <div class="section-card">
+            <div class="section-card-title"><i class="fas fa-shield-halved"></i> Change Password</div>
+            <form id="passwordForm" onsubmit="updatePassword(event)">
+                <div class="form-group">
+                    <label class="glam-label">Current Password</label>
+                    <div class="glam-input-icon-wrap">
+                        <i class="fas fa-lock glam-input-icon"></i>
+                        <input type="password" id="currentPassword" class="glam-input" placeholder="Current password" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="glam-label">New Password</label>
+                    <div class="glam-input-icon-wrap">
+                        <i class="fas fa-key glam-input-icon"></i>
+                        <input type="password" id="newPassword" class="glam-input" placeholder="At least 6 characters" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="glam-label">Confirm New Password</label>
+                    <div class="glam-input-icon-wrap">
+                        <i class="fas fa-key glam-input-icon"></i>
+                        <input type="password" id="confirmPassword" class="glam-input" placeholder="Repeat new password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-save">Update Password</button>
+            </form>
+        </div>
+
+        <a href="#" class="btn-logout" onclick="logoutUser()">
+            <i class="fas fa-right-from-bracket"></i> Sign Out of Nextel
+        </a>
+    </div>
+
+</div>
+
+<div class="bottom-nav">
+    <a href="dashboard.html" class="nav-btn"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="tasks.html" class="nav-btn"><i class="fas fa-bolt"></i><span>Tasks</span></a>
+    <a href="withdraw.html" class="nav-btn"><i class="fas fa-wallet"></i><span>Withdraw</span></a>
+    <a href="#" class="nav-btn"><i class="fas fa-users"></i><span>Network</span></a>
+    <a href="profile.html" class="nav-btn active"><i class="fas fa-user"></i><span>Profile</span></a>
+</div>
+
+<script>
+// ── Get Current User ──
+function getCurrentUser() {
+    const session = localStorage.getItem('nextel_session');
+    if (!session) return null;
+    try {
+        const sess = JSON.parse(session);
+        const users = JSON.parse(localStorage.getItem('nextel_users')) || [];
+        return users.find(u => u.id === sess.userId) || null;
+    } catch { return null; }
+}
+
+function saveUser(user) {
+    const users = JSON.parse(localStorage.getItem('nextel_users')) || [];
+    const index = users.findIndex(u => u.id === user.id);
+    if (index !== -1) {
+        users[index] = user;
+        localStorage.setItem('nextel_users', JSON.stringify(users));
+    }
+}
+
+// ── Show Alert ──
+function showAlert(message, type = 'success') {
+    const container = document.getElementById('alertContainer');
+    const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
+    container.innerHTML = `
+        <div class="alert alert-${type}">
+            <i class="fas ${icon}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    setTimeout(() => { container.innerHTML = ''; }, 5000);
+}
+
+// ── Tab Switching ──
+function showTab(name, btn) {
+    document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.glam-tab').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+}
+
+// ── Copy referral link ──
+function copyRefLink() {
+    const text = document.getElementById('refLinkText').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        Swal.fire({ icon:'success', title:'Copied!', text:'Link copied to clipboard!', timer:2000, showConfirmButton:false, background:'#fff', color:'#0B3D2E', confirmButtonColor:'#3BC4A3' });
+    });
+}
+
+// ── Load Profile Data ──
+function loadProfile() {
+    const user = getCurrentUser();
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
+    document.getElementById('avatarImg').src = avatarUrl;
+    document.getElementById('profileName').textContent = user.fullname || user.username;
+    document.getElementById('profileUsername').textContent = '@' + user.username;
+    document.getElementById('profilePackage').innerHTML = `<i class="fas fa-star"></i> Nextel · ${user.package || 'Free'}`;
+    
+    const date = user.registered_at ? new Date(user.registered_at) : new Date();
+    document.getElementById('profileSince').textContent = 'Member since ' + date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+
+    // Stats
+    const balance = user.balance || 0;
+    document.getElementById('statDaily').textContent = '₦' + balance.toFixed(2);
+    document.getElementById('statBalance').textContent = '₦' + balance.toFixed(2);
+    document.getElementById('statBonus').textContent = '₦0.00';
+
+    // Personal form
+    document.getElementById('editFullname').value = user.fullname || '';
+    document.getElementById('editPhone').value = user.phone || '';
+    document.getElementById('editEmail').value = user.email || '';
+    document.getElementById('editUsername').value = user.username || '';
+
+    // Bank details
+    document.getElementById('bankSelect').value = user.bank_name || '';
+    document.getElementById('editAcctNumber').value = user.account_number || '';
+    document.getElementById('editAcctName').value = user.account_name || '';
+
+    // Referral link
+    const refCode = user.id ? user.id.slice(-8) : '12345678';
+    document.getElementById('refLinkText').textContent = `https://nextelconnect.live/register.html?ref=${refCode}`;
+}
+
+// ── Update Personal Info ──
+function updatePersonal(event) {
+    event.preventDefault();
+    const user = getCurrentUser();
+    if (!user) return;
+
+    const fullname = document.getElementById('editFullname').value.trim();
+    const phone = document.getElementById('editPhone').value.trim();
+
+    if (!fullname || !phone) {
+        showAlert('Please fill in all fields.', 'error');
+        return;
+    }
+
+    user.fullname = fullname;
+    user.phone = phone;
+    saveUser(user);
+
+    // Update session
+    const session = JSON.parse(localStorage.getItem('nextel_session'));
+    session.fullname = fullname;
+    localStorage.setItem('nextel_session', JSON.stringify(session));
+
+    document.getElementById('profileName').textContent = fullname;
+    showAlert('Profile updated successfully!', 'success');
+}
+
+// ── Update Bank Details ──
+function updateBank(event) {
+    event.preventDefault();
+    const user = getCurrentUser();
+    if (!user) return;
+
+    const bank_name = document.getElementById('bankSelect').value;
+    const account_number = document.getElementById('editAcctNumber').value.trim();
+    const account_name = document.getElementById('editAcctName').value.trim();
+
+    if (!bank_name || !account_number || !account_name) {
+        showAlert('Please fill in all bank details.', 'error');
+        return;
+    }
+
+    if (account_number.length < 10) {
+        showAlert('Please enter a valid 10-digit account number.', 'error');
+        return;
+    }
+
+    user.bank_name = bank_name;
+    user.account_number = account_number;
+    user.account_name = account_name;
+    saveUser(user);
+
+    showAlert('Bank details saved successfully!', 'success');
+}
+
+// ── Update Password ──
+function updatePassword(event) {
+    event.preventDefault();
+    const user = getCurrentUser();
+    if (!user) return;
+
+    const current = document.getElementById('currentPassword').value;
+    const newPass = document.getElementById('newPassword').value;
+    const confirm = document.getElementById('confirmPassword').value;
+
+    if (!current || !newPass || !confirm) {
+        showAlert('Please fill in all password fields.', 'error');
+        return;
+    }
+
+    if (user.password !== current) {
+        showAlert('Current password is incorrect.', 'error');
+        return;
+    }
+
+    if (newPass.length < 6) {
+        showAlert('New password must be at least 6 characters.', 'error');
+        return;
+    }
+
+    if (newPass !== confirm) {
+        showAlert('New passwords do not match.', 'error');
+        return;
+    }
+
+    user.password = newPass;
+    saveUser(user);
+
+    document.getElementById('currentPassword').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+
+    showAlert('Password updated successfully!', 'success');
+}
+
+// ── Upload Avatar ──
+function uploadAvatar(input) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+
+    const reader = new FileReader();
+    reader.onload = e => document.getElementById('avatarImg').src = e.target.result;
+    reader.readAsDataURL(file);
+
+    // For demo, we're just showing the avatar locally
+    // In a real app, you'd upload to a server
+    Swal.fire({
+        icon: 'success',
+        title: 'Avatar Updated!',
+        text: 'Your profile picture has been updated.',
+        timer: 2000,
+        showConfirmButton: false,
+        background: '#fff',
+        color: '#0B3D2E'
+    });
+}
+
+// ── Logout ──
+function logoutUser() {
+    Swal.fire({
+        icon: 'question',
+        title: 'Log Out?',
+        text: 'Are you sure you want to sign out?',
+        showCancelButton: true,
+        confirmButtonColor: '#3BC4A3',
+        cancelButtonColor: '#ef4444',
+        confirmButtonText: 'Yes, Log Out',
+        cancelButtonText: 'Cancel',
+        background: '#fff',
+        color: '#0B3D2E'
+    }).then(result => {
+        if (result.isConfirmed) {
+            localStorage.removeItem('nextel_session');
+            window.location.href = 'login.html';
+        }
+    });
+}
+
+// ── Check Session ──
+function checkSession() {
+    const user = getCurrentUser();
+    if (!user) {
+        window.location.href = 'login.html';
+        return false;
+    }
+    return true;
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function() {
+    if (checkSession()) {
+        loadProfile();
+    }
+});
+</script>
+</body>
+</html  >

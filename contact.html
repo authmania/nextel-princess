@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Contact Us — Nextel Connect</title>
+<link rel="icon" type="image/png" href="assets/img/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+:root {
+    --teal: #8EE4CF;
+    --teal-dark: #5DD3B8;
+    --teal-deep: #3BC4A3;
+    --teal-light: #B8F0E3;
+    --teal-glow: rgba(142, 228, 203, 0.35);
+    --emerald: #0B3D2E;
+    --emerald-light: #1A5A45;
+    --emerald-deep: #0A2E22;
+    --bg-mint: #E8F5F1;
+    --bg-white: #FFFFFF;
+    --bg-card: #F5FAF8;
+    --text-dark: #0B3D2E;
+    --text-muted: #6B9E8E;
+    --text-light: #8FB8AC;
+    --border-soft: rgba(11, 61, 46, 0.08);
+    --shadow-soft: 0 4px 24px rgba(11, 61, 46, 0.06);
+    --shadow-card: 0 8px 32px rgba(11, 61, 46, 0.08);
+    --shadow-elegant: 0 20px 60px rgba(11, 61, 46, 0.12);
+    --shadow-teal: 0 10px 40px rgba(142, 228, 203, 0.30);
+    --gradient-teal: linear-gradient(135deg, #8EE4CF 0%, #5DD3B8 50%, #3BC4A3 100%);
+    --gradient-emerald: linear-gradient(135deg, #0B3D2E 0%, #1A5A45 100%);
+    --gradient-card: linear-gradient(135deg, #0B3D2E 0%, #1A5A45 55%, #2A7A60 100%);
+    --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #E8F5F1 100%);
+    --nav-h: 64px;
+    --bottom-h: 72px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+    background: var(--gradient-surface);
+    color: var(--text-dark);
+    min-height: 100vh;
+    padding-bottom: calc(var(--bottom-h) + 20px);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── DRAWER ───────────────────────────────────────────────── */
+.drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(6px); z-index: 900;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.drawer-overlay.open { opacity: 1; pointer-events: all; }
+.drawer {
+    position: fixed; top: 0; left: -290px; width: 280px; height: 100vh;
+    background: linear-gradient(180deg, #0B3D2E 0%, #0A2E22 100%);
+    border-right: 1px solid rgba(142, 228, 203, 0.15); z-index: 950;
+    transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column; overflow-y: auto;
+}
+.drawer.open { left: 0; }
+.drawer-header {
+    padding: 1.5rem 1.2rem; border-bottom: 1px solid rgba(142, 228, 203, 0.1);
+    display: flex; align-items: center; gap: 12px;
+}
+.drawer-avatar {
+    width: 50px; height: 50px; border-radius: 50%;
+    border: 2.5px solid var(--teal); object-fit: cover;
+    flex-shrink: 0; background: var(--bg-mint);
+}
+.drawer-name { font-weight: 700; font-size: 0.92rem; color: #fff; }
+.drawer-pkg  { font-size: 0.72rem; color: var(--teal); margin-top: 2px; font-weight: 500; }
+.drawer-nav  { flex: 1; padding: 0.8rem 0; }
+.drawer-item {
+    display: flex; align-items: center; gap: 13px; padding: 12px 1.2rem;
+    color: rgba(255,255,255,0.65); text-decoration: none;
+    font-size: 0.88rem; font-weight: 500; transition: all 0.22s;
+    border-left: 3px solid transparent;
+}
+.drawer-item i { width: 20px; color: var(--teal); font-size: 0.95rem; text-align: center; }
+.drawer-item:hover, .drawer-item.active {
+    background: rgba(142, 228, 203, 0.08); color: #fff; border-left-color: var(--teal);
+}
+.drawer-logout {
+    color: #fca5a5 !important; margin-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+.drawer-logout i { color: #f87171 !important; }
+.drawer-logout:hover { background: rgba(239,68,68,0.08) !important; border-left-color: #f87171 !important; color: #fff !important; }
+
+/* ── TOPBAR ───────────────────────────────────────────────── */
+.topbar {
+    position: sticky; top: 0; z-index: 80; height: var(--nav-h);
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-soft);
+    display: flex; align-items: center; justify-content: space-between; padding: 0 1.1rem;
+}
+.burger {
+    width: 40px; height: 40px; border: 1px solid rgba(142, 228, 203, 0.3);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; background: rgba(142, 228, 203, 0.08); transition: all 0.3s;
+}
+.burger:hover { background: rgba(142, 228, 203, 0.15); border-color: var(--teal); }
+.burger i { color: var(--emerald); font-size: 1rem; }
+.topbar-brand { font-weight: 800; font-size: 1.15rem; color: var(--emerald); letter-spacing: -0.02em; }
+.topbar-brand span { color: var(--teal-dark); }
+.topbar-avatar {
+    width: 38px; height: 38px; border-radius: 50%; border: 2.5px solid var(--teal);
+    object-fit: cover; cursor: pointer; transition: transform 0.25s; background: var(--bg-mint);
+}
+.topbar-avatar:hover { transform: scale(1.1); }
+
+/* ── PAGE ─────────────────────────────────────────────────── */
+.page { padding: 1.2rem 1rem; max-width: 520px; margin: 0 auto; }
+
+/* ── CONTACT HERO ─────────────────────────────────────────── */
+.contact-hero {
+    text-align: center;
+    padding: 1.2rem 1rem 1rem;
+    margin-bottom: 1.2rem;
+}
+.agent-bubble-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.4rem;
+}
+.agent-bubble {
+    width: 86px; height: 86px; border-radius: 50%;
+    background: linear-gradient(135deg, #0B3D2E 0%, #3BC4A3 100%);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 0 40px rgba(59, 196, 163, 0.3), 0 0 80px rgba(59, 196, 163, 0.1);
+    animation: agentPulse 3s ease-in-out infinite;
+}
+@keyframes agentPulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(59, 196, 163, 0.3), 0 0 60px rgba(59, 196, 163, 0.1); }
+    50%       { box-shadow: 0 0 50px rgba(59, 196, 163, 0.5), 0 0 90px rgba(59, 196, 163, 0.2); }
+}
+.agent-bubble i {
+    font-size: 2.2rem;
+    color: #fff;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+}
+.agent-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 18px;
+    width: 18px; height: 18px;
+    background: linear-gradient(135deg, #0B3D2E, #3BC4A3);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    border-radius: 2px;
+}
+.status-dot {
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #22c55e;
+    border: 2.5px solid #0B3D2E;
+    animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+}
+.contact-hero h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--emerald);
+    margin-bottom: 0.3rem;
+}
+.contact-hero p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* ── HOURS CARD ───────────────────────────────────────────── */
+.hours-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    padding: 1.3rem 1.4rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-soft);
+}
+.hours-icon-wrap {
+    width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+    background: rgba(142, 228, 203, 0.1); border: 1px solid rgba(142, 228, 203, 0.2);
+    display: flex; align-items: center; justify-content: center;
+}
+.hours-icon-wrap i { font-size: 1.3rem; color: var(--teal-dark); }
+.hours-info { flex: 1; }
+.hours-title {
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;
+}
+.hours-time {
+    font-size: 1.05rem; font-weight: 600; color: var(--emerald);
+}
+.hours-time span { color: var(--teal-dark); }
+.hours-days { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+/* ── CONTACT CHANNEL CARDS ────────────────────────────────── */
+.channel-grid {
+    display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.4rem;
+}
+.channel-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-soft);
+    border-radius: 18px; padding: 1.1rem 1.3rem;
+    display: flex; align-items: center; gap: 14px;
+    text-decoration: none; color: var(--text-dark);
+    transition: all 0.28s;
+    box-shadow: var(--shadow-soft);
+}
+.channel-card:hover {
+    transform: translateX(5px);
+    border-color: var(--teal);
+    box-shadow: var(--shadow-teal);
+}
+.channel-icon {
+    width: 50px; height: 50px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; flex-shrink: 0;
+}
+.channel-icon.gold { background: rgba(142, 228, 203, 0.12); border: 1px solid rgba(142, 228, 203, 0.2); color: var(--teal-dark); }
+.channel-icon.cyan { background: rgba(59, 196, 163, 0.1); border: 1px solid rgba(59, 196, 163, 0.2); color: var(--teal-deep); }
+
+.channel-info { flex: 1; }
+.channel-label { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px; }
+.channel-value { font-size: 0.98rem; font-weight: 700; color: var(--emerald); }
+.channel-sub   { font-size: 0.73rem; color: var(--text-muted); margin-top: 1px; }
+
+.channel-arrow { color: var(--text-light); font-size: 0.85rem; transition: transform 0.25s, color 0.25s; }
+.channel-card:hover .channel-arrow { transform: translateX(4px); color: var(--teal-dark); }
+
+/* ── CALL NOW BUTTON ──────────────────────────────────────── */
+.call-btn-wrap { margin-bottom: 1.2rem; }
+.btn-call-now {
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    width: 100%; padding: 14px 18px;
+    background: var(--gradient-teal);
+    color: var(--emerald); font-weight: 700;
+    font-size: 0.95rem; border: none; border-radius: 16px;
+    text-decoration: none; transition: all 0.3s;
+    box-shadow: var(--shadow-teal);
+}
+.btn-call-now:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(142, 228, 203, 0.4);
+    color: var(--emerald);
+}
+.btn-call-now i { font-size: 0.9rem; }
+
+/* ── SOCIAL ROW ───────────────────────────────────────────── */
+.social-row {
+    display: flex; gap: 10px; margin-bottom: 1.4rem;
+}
+.social-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 0.9rem 0.5rem;
+    background: var(--bg-white); border: 1px solid var(--border-soft);
+    border-radius: 14px; text-decoration: none; color: var(--text-muted);
+    font-size: 0.7rem; font-weight: 500; transition: all 0.28s;
+    box-shadow: var(--shadow-soft);
+}
+.social-btn i { font-size: 1.2rem; }
+.social-btn:hover {
+    background: rgba(142, 228, 203, 0.08);
+    border-color: rgba(142, 228, 203, 0.3);
+    color: var(--teal-dark);
+    transform: translateY(-2px);
+}
+.social-btn .fab.fa-whatsapp { color: #25d366; }
+.social-btn:hover .fab.fa-whatsapp { color: #25d366; }
+.social-btn .fab.fa-telegram { color: #2aabee; }
+.social-btn:hover .fab.fa-telegram { color: #2aabee; }
+.social-btn .fab.fa-instagram { color: #e1306c; }
+.social-btn:hover .fab.fa-instagram { color: #e1306c; }
+
+/* ── BOTTOM NAV ───────────────────────────────────────────── */
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; height: var(--bottom-h);
+    background: rgba(255,255,255,0.97); border-top: 1px solid var(--border-soft);
+    backdrop-filter: blur(14px); display: flex; align-items: center; z-index: 80; padding: 0 0.5rem;
+}
+.nav-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 4px; padding: 8px 0; text-decoration: none; color: var(--text-light);
+    font-size: 0.65rem; font-weight: 500; transition: all 0.25s; border-radius: 12px;
+}
+.nav-btn i { font-size: 1.15rem; transition: all 0.25s; }
+.nav-btn.active { color: var(--teal-dark); }
+.nav-btn.active i { color: var(--teal-dark); transform: scale(1.15); }
+.nav-btn:hover { color: var(--teal-dark); }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--teal-light); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ── DRAWER OVERLAY ──────────────────────────────────────── -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- ── DRAWER ─────────────────────────────────────────────── -->
+<div class="drawer" id="sideDrawer">
+    <div class="drawer-header">
+        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=default&backgroundColor=c9a84c" alt="Avatar" class="drawer-avatar" id="drawerAvatar">
+        <div>
+            <div class="drawer-name" id="drawerName">User</div>
+            <div class="drawer-pkg" id="drawerPkg">✦ Nextel · Free</div>
+        </div>
+    </div>
+    <nav class="drawer-nav">
+        <a href="dashboard.html" class="drawer-item"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="tasks.html"     class="drawer-item"><i class="fas fa-bolt"></i> Tasks</a>
+        <a href="withdraw.html"  class="drawer-item"><i class="fas fa-wallet"></i> Withdraw</a>
+        <a href="#" class="drawer-item"><i class="fas fa-users"></i> Network</a>
+        <a href="profile.html"   class="drawer-item"><i class="fas fa-user"></i> My Profile</a>
+        <a href="contact.html"   class="drawer-item active"><i class="fas fa-headset"></i> Contact Us</a>
+        <a href="#" onclick="logoutUser(); return false;" class="drawer-item drawer-logout"><i class="fas fa-right-from-bracket"></i> Log Out</a>
+    </nav>
+</div>
+
+<!-- ── TOPBAR ──────────────────────────────────────────────── -->
+<div class="topbar">
+    <div class="burger" onclick="openDrawer()"><i class="fas fa-bars"></i></div>
+    <div class="topbar-brand">Nextel<span>Connect</span></div>
+    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=default&backgroundColor=c9a84c" alt="You" class="topbar-avatar" id="topbarAvatar" onclick="openDrawer()">
+</div>
+
+<!-- ── PAGE CONTENT ───────────────────────────────────────── -->
+<div class="page">
+
+    <!-- Hero -->
+    <div class="contact-hero">
+        <div class="agent-bubble-wrap">
+            <div class="agent-bubble">
+                <i class="fas fa-headset"></i>
+                <div class="status-dot"></div>
+            </div>
+        </div>
+        <h2>Hi, let's help you today.</h2>
+        <p>Our support team is ready to assist you.<br>Reach us through any channel below.</p>
+    </div>
+
+    <!-- Hours Card -->
+    <div class="hours-card">
+        <div class="hours-icon-wrap"><i class="fas fa-clock"></i></div>
+        <div class="hours-info">
+            <div class="hours-title">Support Hours</div>
+            <div class="hours-time"><span>9:00 AM</span> &nbsp;–&nbsp; <span>8:00 PM</span></div>
+            <div class="hours-days">Available daily · Mon – Sun</div>
+        </div>
+    </div>
+
+    <!-- Call Now CTA -->
+    <div class="call-btn-wrap">
+        <a href="tel:07015830783" class="btn-call-now">
+            <i class="fas fa-phone-alt"></i>
+            Call 07015830783
+        </a>
+    </div>
+
+    <!-- Channel Cards -->
+    <div class="channel-grid">
+
+        <a href="tel:07015830783" class="channel-card">
+            <div class="channel-icon gold"><i class="fas fa-phone-alt"></i></div>
+            <div class="channel-info">
+                <div class="channel-label">Phone</div>
+                <div class="channel-value">07015830783</div>
+                <div class="channel-sub">Tap to call · 9 AM – 8 PM daily</div>
+            </div>
+            <i class="fas fa-chevron-right channel-arrow"></i>
+        </a>
+
+        <a href="mailto:support@nextelconnect.live" class="channel-card">
+            <div class="channel-icon cyan"><i class="fas fa-envelope"></i></div>
+            <div class="channel-info">
+                <div class="channel-label">Send Us an Email</div>
+                <div class="channel-value">support@nextelconnect.live</div>
+                <div class="channel-sub">Tap to send a message · We reply within 24hrs</div>
+            </div>
+            <i class="fas fa-chevron-right channel-arrow"></i>
+        </a>
+
+        <a href="https://wa.me/2347015830783" target="_blank" class="channel-card">
+            <div class="channel-icon cyan"><i class="fab fa-whatsapp"></i></div>
+            <div class="channel-info">
+                <div class="channel-label">WhatsApp</div>
+                <div class="channel-value">07015830783</div>
+                <div class="channel-sub">Chat with us on WhatsApp</div>
+            </div>
+            <i class="fas fa-chevron-right channel-arrow"></i>
+        </a>
+
+    </div>
+
+    <!-- Social Row -->
+    <div class="social-row">
+        <a href="mailto:support@nextelconnect.live" class="social-btn"><i class="fas fa-envelope"></i> Email Us</a>
+        <a href="https://t.me/nextelsupport" target="_blank" class="social-btn"><i class="fab fa-telegram"></i> Telegram</a>
+    </div>
+
+</div>
+
+<!-- ── BOTTOM NAV ──────────────────────────────────────────── -->
+<nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-btn"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="tasks.html"     class="nav-btn"><i class="fas fa-bolt"></i><span>Tasks</span></a>
+    <a href="withdraw.html"  class="nav-btn"><i class="fas fa-wallet"></i><span>Withdraw</span></a>
+    <a href="#" class="nav-btn"><i class="fas fa-users"></i><span>Network</span></a>
+    <a href="contact.html"   class="nav-btn active"><i class="fas fa-headset"></i><span>Support</span></a>
+</nav>
+
+<script>
+// ── localStorage Keys ──
+const SESSION_KEY = 'nextel_session';
+const USERS_KEY = 'nextel_users';
+
+// ── Get Current User ──
+function getCurrentUser() {
+    const session = localStorage.getItem(SESSION_KEY);
+    if (!session) return null;
+    try {
+        const sess = JSON.parse(session);
+        const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+        return users.find(u => u.id === sess.userId) || null;
+    } catch { return null; }
+}
+
+// ── Update UI ──
+function updateUserUI() {
+    const user = getCurrentUser();
+    if (!user) {
+        // Not logged in - show generic, but don't redirect (contact page should be accessible)
+        document.getElementById('drawerName').textContent = 'Guest';
+        document.getElementById('drawerPkg').textContent = '✦ Not Logged In';
+        const avatarUrl = 'https://api.dicebear.com/7.x/adventurer/svg?seed=guest&backgroundColor=c9a84c';
+        document.getElementById('drawerAvatar').src = avatarUrl;
+        document.getElementById('topbarAvatar').src = avatarUrl;
+        return;
+    }
+
+    // Update drawer and topbar with user info
+    document.getElementById('drawerName').textContent = user.fullname || user.username;
+    document.getElementById('drawerPkg').textContent = `✦ Nextel · ${user.package || 'Free'}`;
+    const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
+    document.getElementById('drawerAvatar').src = avatarUrl;
+    document.getElementById('topbarAvatar').src = avatarUrl;
+}
+
+// ── Drawer ──
+function openDrawer() {
+    document.getElementById('sideDrawer').classList.add('open');
+    document.getElementById('drawerOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+    document.getElementById('sideDrawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+// ── Logout ──
+function logoutUser() {
+    Swal.fire({
+        icon: 'question',
+        title: 'Log Out?',
+        text: 'Are you sure you want to sign out?',
+        showCancelButton: true,
+        confirmButtonColor: '#3BC4A3',
+        cancelButtonColor: '#ef4444',
+        confirmButtonText: 'Yes, Log Out',
+        cancelButtonText: 'Cancel',
+        background: '#fff',
+        color: '#0B3D2E'
+    }).then(result => {
+        if (result.isConfirmed) {
+            localStorage.removeItem(SESSION_KEY);
+            window.location.href = 'login.html';
+        }
+    });
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function() {
+    updateUserUI();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Withdraw – Nextel Connect</title>
+<link rel="icon" type="image/png" href="assets/img/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+:root {
+  --teal: #8EE4CF;
+  --teal-dark: #5DD3B8;
+  --teal-deep: #3BC4A3;
+  --teal-light: #B8F0E3;
+  --teal-glow: rgba(142, 228, 203, 0.35);
+  --emerald: #0B3D2E;
+  --emerald-light: #1A5A45;
+  --emerald-deep: #0A2E22;
+  --bg-mint: #E8F5F1;
+  --bg-white: #FFFFFF;
+  --bg-card: #F5FAF8;
+  --text-dark: #0B3D2E;
+  --text-muted: #6B9E8E;
+  --text-light: #8FB8AC;
+  --border-soft: rgba(11, 61, 46, 0.08);
+  --shadow-soft: 0 4px 24px rgba(11, 61, 46, 0.06);
+  --shadow-card: 0 8px 32px rgba(11, 61, 46, 0.08);
+  --shadow-elegant: 0 20px 60px rgba(11, 61, 46, 0.12);
+  --shadow-teal: 0 10px 40px rgba(142, 228, 203, 0.30);
+  --gradient-teal: linear-gradient(135deg, #8EE4CF 0%, #5DD3B8 50%, #3BC4A3 100%);
+  --gradient-emerald: linear-gradient(135deg, #0B3D2E 0%, #1A5A45 100%);
+  --gradient-card: linear-gradient(135deg, #0B3D2E 0%, #1A5A45 55%, #2A7A60 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #E8F5F1 100%);
+  --nav-h: 64px;
+  --bottom-h: 72px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  background: var(--gradient-surface);
+  color: var(--text-dark);
+  min-height: 100vh;
+  padding-bottom: calc(var(--bottom-h) + 20px);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Topbar ─────────────────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 80; height: var(--nav-h);
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-soft);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 1.1rem;
+}
+.topbar-back {
+  width: 40px; height: 40px; border: 1px solid var(--border-soft); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); text-decoration: none; font-size: 1rem; transition: all 0.25s;
+  background: var(--bg-mint);
+}
+.topbar-back:hover { border-color: var(--teal); color: var(--teal-dark); background: rgba(142, 228, 203, 0.1); }
+.topbar-title { font-weight: 800; font-size: 1.1rem; color: var(--emerald); letter-spacing: -0.02em; }
+.topbar-avatar {
+  width: 38px; height: 38px; border-radius: 50%; border: 2.5px solid var(--teal);
+  object-fit: cover; background: var(--bg-mint);
+}
+
+/* ── Page wrapper ───────────────────────────────────────────── */
+.page { padding: 1.2rem 1rem; max-width: 520px; margin: 0 auto; }
+
+/* ── Balance Hero ───────────────────────────────────────────── */
+.balance-hero {
+  background: var(--gradient-card);
+  border-radius: 24px;
+  padding: 1.8rem 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: var(--shadow-elegant);
+  position: relative; overflow: hidden;
+  color: #fff;
+}
+.balance-hero::before {
+  content: ''; position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%; background: rgba(142, 228, 203, 0.15);
+  pointer-events: none;
+}
+.bh-label { font-size: 0.72rem; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+.bh-amount { font-size: 2.5rem; font-weight: 700; color: #fff; line-height: 1; position: relative; z-index: 2; letter-spacing: -0.02em; }
+.bh-amount sup { font-size: 1.1rem; font-weight: 400; }
+.bh-min {
+  margin-top: 0.8rem; position: relative; z-index: 2;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.15); border-radius: 20px;
+  padding: 6px 14px; font-size: 0.78rem; font-weight: 600; color: #fff;
+}
+
+/* ── Progress Card ──────────────────────────────────────────── */
+.progress-card {
+  background: var(--bg-white); border: 1px solid var(--border-soft);
+  border-radius: 20px; padding: 1.3rem; margin-bottom: 1.2rem;
+  box-shadow: var(--shadow-soft);
+}
+.prog-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.prog-label span { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+.prog-label strong { font-size: 0.9rem; color: var(--emerald); font-weight: 700; }
+.prog-bar { height: 10px; border-radius: 5px; background: var(--bg-mint); overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 5px; background: var(--gradient-teal); transition: width 1.2s ease; }
+.prog-needed { font-size: 0.78rem; color: var(--text-muted); margin-top: 8px; text-align: right; }
+.prog-needed span { color: var(--teal-dark); font-weight: 700; }
+
+/* ── Withdraw Now Button ────────────────────────────────────── */
+.btn-withdraw-now {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 16px;
+  background: var(--gradient-teal); color: var(--emerald);
+  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1rem;
+  border: none; border-radius: 16px; cursor: pointer; transition: all 0.3s;
+  letter-spacing: 0; text-transform: none; margin-bottom: 1.4rem;
+  box-shadow: var(--shadow-teal);
+}
+.btn-withdraw-now:hover { transform: translateY(-2px); box-shadow: 0 15px 45px rgba(142, 228, 203, 0.4); }
+
+/* ── Congrats Screen (Screen B) ─────────────────────────────── */
+.congrats-screen { display: none; }
+.congrats-screen.show { display: block; }
+.congrats-label {
+  text-align: center;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
+  color: var(--teal-dark); padding-top: 0.5rem; margin-bottom: 2px;
+  text-transform: uppercase;
+}
+.congrats-name {
+  text-align: center;
+  font-size: 1.1rem; font-weight: 700; color: var(--text-muted);
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem;
+}
+.amount-box {
+  background: var(--bg-white);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px; padding: 1.4rem 1rem; text-align: center; margin-bottom: 1rem;
+  box-shadow: var(--shadow-soft);
+}
+.ab-label { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; margin-bottom: 4px; text-transform: uppercase; }
+.ab-amount { font-family: 'Poppins', sans-serif; font-size: 2.2rem; font-weight: 700; color: var(--emerald); line-height: 1.1; }
+
+.pass-notice {
+  background: rgba(142, 228, 203, 0.08);
+  border: 1px solid rgba(142, 228, 203, 0.2);
+  border-radius: 14px; padding: 14px; text-align: center;
+  font-size: 0.82rem; font-weight: 600;
+  color: var(--emerald); letter-spacing: 0.5px; margin-bottom: 1rem;
+}
+
+.pass-input-wrap {
+  background: var(--bg-mint);
+  border: 1.5px solid rgba(142, 228, 203, 0.3);
+  border-radius: 16px; padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 1rem; transition: all 0.3s;
+}
+.pass-input-wrap:focus-within { border-color: var(--teal); box-shadow: 0 0 0 4px rgba(142, 228, 203, 0.2); }
+.pass-input {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: var(--emerald); font-size: 0.95rem; font-family: 'Poppins', sans-serif;
+  letter-spacing: 1px; font-weight: 600;
+}
+.pass-input::placeholder { color: var(--text-light); }
+
+.btn-get-pass {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 14px;
+  background: transparent;
+  border: 1.5px solid var(--teal);
+  color: var(--teal-dark); font-family: 'Poppins', sans-serif;
+  font-weight: 700; font-size: 0.9rem; border-radius: 14px;
+  cursor: pointer; transition: all 0.3s;
+  margin-bottom: 1rem;
+}
+.btn-get-pass:hover { background: rgba(142, 228, 203, 0.1); border-color: var(--teal-dark); }
+
+.video-box {
+  background: var(--bg-card); border-radius: 18px; border: 1px solid var(--border-soft);
+  aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.2rem; cursor: pointer; overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-submit-pass {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 15px;
+  background: var(--gradient-teal); color: var(--emerald);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700; font-size: 1rem; border: none; border-radius: 16px;
+  cursor: pointer; transition: all 0.3s;
+  box-shadow: var(--shadow-teal); margin-bottom: 1.4rem;
+}
+.btn-submit-pass:hover { transform: translateY(-2px); box-shadow: 0 15px 45px rgba(142, 228, 203, 0.4); }
+.btn-submit-pass:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ── Lock Banner ────────────────────────────────────────────── */
+.lock-banner {
+  background: rgba(251, 146, 60, 0.06);
+  border: 1px solid rgba(251, 146, 60, 0.15);
+  border-radius: 18px; padding: 1.2rem; margin-bottom: 1.2rem;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.lock-banner i { color: #fb923c; margin-top: 2px; flex-shrink: 0; font-size: 1.1rem; }
+.lb-title { font-size: 0.88rem; font-weight: 700; color: #fb923c; margin-bottom: 4px; }
+.lb-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ── Bank Modal ─────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+  display: none; align-items: flex-end; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.bank-modal {
+  background: var(--bg-white);
+  border: 1px solid var(--border-soft);
+  border-radius: 24px 24px 0 0;
+  padding: 1.8rem 1.4rem 2.5rem;
+  width: 100%; max-width: 520px; position: relative;
+  animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--bg-mint); color: var(--emerald);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 0.85rem; font-weight: 700; border: none;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: var(--teal-light); color: var(--emerald); }
+.m-title { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.m-subtitle { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--emerald); margin-bottom: 1.2rem; line-height: 1.3; }
+.bank-box {
+  background: var(--bg-mint);
+  border: 1px solid rgba(142, 228, 203, 0.2);
+  border-radius: 16px; padding: 1.2rem; margin-bottom: 1.1rem;
+}
+.bd-label { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 2px; text-transform: uppercase; }
+.bd-value { font-size: 1rem; font-weight: 700; color: var(--emerald); margin-bottom: 0.8rem; }
+.bd-value:last-child { margin-bottom: 0; }
+.acct-row { display: flex; align-items: center; justify-content: space-between; }
+.btn-copy-acct { background: transparent; border: none; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: var(--teal-dark); padding: 2px 8px; transition: color 0.2s; }
+.btn-copy-acct:hover { color: var(--teal-deep); }
+.bank-instructions { font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.1rem; }
+.modal-footer-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-align: center; margin-bottom: 8px; }
+.btn-paid {
+  width: 100%; padding: 16px;
+  background: var(--gradient-teal); color: var(--emerald);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700; font-size: 1.05rem; border: none; border-radius: 16px;
+  cursor: pointer; transition: all 0.3s;
+  display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none;
+  box-shadow: var(--shadow-teal);
+}
+.btn-paid:hover { transform: translateY(-2px); box-shadow: 0 15px 45px rgba(142, 228, 203, 0.4); }
+
+/* ── Withdrawal History Button ──────────────────────────────── */
+.btn-wd-history {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 14px;
+  background: var(--bg-white);
+  border: 1px solid var(--border-soft);
+  color: var(--emerald); font-family: 'Poppins', sans-serif;
+  font-weight: 600; font-size: 0.95rem; border-radius: 16px;
+  cursor: pointer; transition: all 0.3s;
+  margin-bottom: 1.2rem;
+  box-shadow: var(--shadow-soft);
+}
+.btn-wd-history:hover { background: var(--bg-mint); transform: translateY(-1px); box-shadow: var(--shadow-teal); }
+
+/* ── Section Title ──────────────────────────────────────────── */
+.section-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem; font-weight: 700; color: var(--emerald);
+  margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title::before {
+  content: ''; display: inline-block;
+  width: 3px; height: 16px;
+  background: var(--gradient-teal); border-radius: 2px;
+}
+
+/* ── Withdrawal History Card ────────────────────────────────── */
+.wd-history-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px; overflow: hidden; margin-bottom: 1.4rem;
+  box-shadow: var(--shadow-soft);
+}
+.wh-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 1px solid var(--border-soft);
+}
+.wh-row:last-child { border-bottom: none; }
+.wh-left { display: flex; align-items: center; gap: 12px; }
+.wh-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+.wh-name { font-size: 0.85rem; font-weight: 600; color: var(--emerald); }
+.wh-date { font-size: 0.72rem; color: var(--text-muted); margin-top: 1px; }
+.wh-amount { font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; }
+.status-pill { font-size: 0.68rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 3px; }
+.s-pending  { background: rgba(142, 228, 203, 0.15); color: var(--teal-dark); }
+.s-approved { background: rgba(59, 196, 163, 0.15); color: var(--emerald-light); }
+.s-rejected { background: rgba(239, 68, 68, 0.08); color: #ef4444; }
+
+/* ── Payment Pending Panel ──────────────────────────────────── */
+.pending-panel {
+  background: var(--bg-white);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px; padding: 1.6rem 1.2rem; text-align: center; margin-bottom: 1.4rem;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ── WhatsApp Groups ────────────────────────────────────────── */
+.groups-wrap {
+  background: var(--bg-white);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px; overflow: hidden; margin-bottom: 1.4rem;
+  box-shadow: var(--shadow-soft);
+}
+.groups-toggle {
+  width: 100%; background: none; border: none; color: var(--emerald);
+  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem;
+  padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+}
+.group-item {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-mint);
+  border: 1px solid rgba(142, 228, 203, 0.2);
+  border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; text-decoration: none;
+  transition: all 0.25s;
+}
+.group-item:hover { border-color: var(--teal); background: rgba(142, 228, 203, 0.1); }
+.group-item-title { font-size: 0.88rem; font-weight: 500; color: var(--emerald); }
+.group-item-sub { font-size: 0.74rem; color: var(--text-muted); margin-top: 3px; }
+
+/* ── Bottom Nav ─────────────────────────────────────────────── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: var(--bottom-h);
+  background: rgba(255,255,255,0.97);
+  border-top: 1px solid var(--border-soft);
+  backdrop-filter: blur(14px);
+  display: flex; align-items: center; justify-content: space-around;
+  z-index: 80; padding: 0 0.5rem;
+}
+.bn-item {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  cursor: pointer; text-decoration: none;
+  padding: 8px 14px; border-radius: 14px; transition: all 0.25s; flex: 1; justify-content: center;
+}
+.bn-item i { font-size: 1.2rem; color: var(--text-light); transition: all 0.25s; }
+.bn-item span { font-size: 0.68rem; color: var(--text-light); font-weight: 500; transition: all 0.25s; }
+.bn-item.active i, .bn-item:hover i { color: var(--teal-dark); }
+.bn-item.active span, .bn-item:hover span { color: var(--teal-dark); }
+.bn-item.active { background: rgba(142, 228, 203, 0.08); }
+
+/* ── Payment Pending Popup ──────────────────────────────────── */
+#paymentPendingOverlay {
+  display: none; position: fixed; inset: 0; z-index: 600;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center;
+}
+.pp-modal {
+  background: var(--bg-white); border: 1px solid var(--border-soft);
+  border-radius: 24px; padding: 2rem 1.6rem; width: 90%; max-width: 420px;
+  text-align: center; animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: var(--shadow-elegant);
+}
+.pp-icon {
+  width: 70px; height: 70px; border-radius: 50%;
+  border: 3px solid var(--teal); display: flex;
+  align-items: center; justify-content: center; margin: 0 auto 1.2rem;
+  font-size: 1.8rem; color: var(--teal-dark);
+}
+.pp-title { font-size: 1.5rem; font-weight: 700; color: var(--emerald); margin-bottom: 0.8rem; }
+.pp-text { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.6rem; line-height: 1.6; }
+.pp-telegram { color: var(--teal-dark); font-weight: 700; }
+.pp-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 14px;
+  background: var(--gradient-teal); color: var(--emerald);
+  font-weight: 700; font-size: 1rem; border-radius: 14px;
+  text-decoration: none; transition: all 0.3s;
+  box-shadow: var(--shadow-teal);
+}
+.pp-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 45px rgba(142, 228, 203, 0.4); }
+
+/* Warning box */
+.warn-box {
+  background: rgba(251, 146, 60, 0.06);
+  border: 1.5px solid rgba(251, 146, 60, 0.15);
+  border-radius: 12px; padding: 12px 14px; margin-bottom: 1rem;
+  font-size: 0.8rem; font-weight: 600; color: #f59e0b; line-height: 1.6;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--teal-light); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ════════ BANK MODAL ════════ -->
+<div class="modal-overlay" id="bankModal">
+  <div class="bank-modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <div class="m-title">PURCHASE NEXTEL KEY &amp; WITHDRAW</div>
+    <div class="m-subtitle">Transfer NGN 17,500 to Kuda bank</div>
+
+    <div class="bank-box">
+      <div class="bd-label">Account Number</div>
+      <div class="acct-row" style="margin-bottom:0.8rem;">
+        <div class="bd-value" id="acctNum" style="margin-bottom:0;">3004023477</div>
+        <button class="btn-copy-acct" onclick="copyAcct()"><i class="fas fa-copy me-1"></i>Copy</button>
+      </div>
+      <div class="bd-label">Account Name</div>
+      <div class="bd-value">NEXTEL</div>
+      <div class="bd-label">Amount</div>
+      <div class="bd-value" style="margin-bottom:0;">
+        NGN 17,500<br>
+        <span style="font-size:0.85rem;font-weight:700;color:var(--teal-dark);">NEXTEL KEY</span>
+      </div>
+    </div>
+
+    <div class="bank-instructions">
+      After payment click <strong style="color:var(--teal-dark);">I've Paid Already</strong>.<br>
+      Send your payment receipt screenshot to the Nextel Agent.<br>
+      NEXTEL KEY can only be obtained from our Nextel Agent.
+    </div>
+
+    <div class="warn-box">
+      ⚠️ Please use any other Bank to make payments <u>except OPAY BANK</u> for easy confirmation.
+    </div>
+
+    <div class="modal-footer-label">After payment, tap below to get your pass</div>
+    <button onclick="closeModal(); showPaymentPending();" class="btn-paid" style="width:100%;border:none;cursor:pointer;">
+      <i class="fab fa-telegram" style="font-size:1.2rem;"></i> I've Paid
+    </button>
+  </div>
+</div>
+
+<!-- ════════ PAYMENT PENDING POPUP ════════ -->
+<div id="paymentPendingOverlay" onclick="if(event.target===this)this.style.display='none'">
+  <div class="pp-modal">
+    <div class="pp-icon">i</div>
+    <div class="pp-title">Payment Pending</div>
+    <div class="pp-text">Your payment is being verified.</div>
+    <div class="pp-text">Tap the button below to send your payment proof to our team on <span class="pp-telegram">Telegram</span>.</div>
+    <a href="https://t.me/Coachsafeera" target="_blank" class="pp-btn">
+      Send Proof on Telegram
+    </a>
+  </div>
+</div>
+
+<!-- ════════ PAGE ════════ -->
+<header class="topbar">
+  <a href="dashboard.html" class="topbar-back"><i class="fas fa-arrow-left"></i></a>
+  <div class="topbar-title">Withdraw Funds</div>
+  <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=default&backgroundColor=c9a84c" class="topbar-avatar" id="topbarAvatar" alt="">
+</header>
+
+<main class="page">
+
+  <!-- ══ SCREEN A — balance + progress ══ -->
+  <div id="screenA">
+
+    <div class="balance-hero">
+      <div class="bh-label">Your Balance</div>
+      <div class="bh-amount" id="balanceDisplay"><sup>₦</sup>0.00</div>
+      <div class="bh-min"><i class="fas fa-circle-info"></i> MINIMUM: ₦25,000</div>
+    </div>
+
+    <div id="lockBanner" class="lock-banner">
+      <i class="fas fa-lock"></i>
+      <div>
+        <div class="lb-title">Withdrawal Locked</div>
+        <div class="lb-desc">Keep completing Nextel Tasks to reach ₦40,000 and unlock your withdrawal.</div>
+      </div>
+    </div>
+    
+    <div class="progress-card">
+      <div class="prog-label">
+        <span>Progress to withdrawal</span>
+        <strong id="progressPercent">0%</strong>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="progressFill" style="width:0%;"></div></div>
+      <div class="prog-needed" id="progressNeeded">Need <span>₦40,000.00</span> more to unlock</div>
+    </div>
+
+    <button class="btn-withdraw-now" id="withdrawBtn" onclick="handleWithdrawNow()">
+      <i class="fas fa-bolt"></i> WITHDRAW NOW
+    </button>
+
+  </div>
+
+  <!-- ══ SCREEN B — congratulations + nextel key ══ -->
+  <div id="screenB" class="congrats-screen">
+
+    <div class="congrats-label">🎉 CONGRATULATIONS 🎉</div>
+    <div class="congrats-name" id="congratsName">USER</div>
+
+    <div class="amount-box">
+      <div class="ab-label">WITHDRAW</div>
+      <div class="ab-amount" id="withdrawAmount">₦0.00</div>
+    </div>
+
+    <div class="pass-notice">KINDLY PURCHASE A NEXTEL KEY TO WITHDRAW</div>
+
+    <div class="pass-input-wrap">
+      <i class="fas fa-key" style="color:var(--teal-dark);font-size:0.9rem;flex-shrink:0;"></i>
+      <input type="text" id="streamPassInput" class="pass-input"
+             placeholder="Paste nextel key here" autocomplete="off" spellcheck="false">
+    </div>
+
+    <button class="btn-get-pass" onclick="openModal()">
+      <i class="fas fa-ticket"></i> CLICK TO GET NEXTEL KEY
+    </button>
+
+    <div style="text-align:center;margin-bottom:0.8rem;font-size:0.88rem;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;">
+      WATCH HOW TO WITHDRAW &nbsp;👇👇👇
+    </div>
+
+    <!-- Withdrawal tutorial video -->
+    <div class="video-box">
+      <video width="100%" height="100%" controls playsinline style="border-radius:18px;object-fit:cover;">
+        <source src="small-video.mp4" type="video/mp4">
+        Your browser does not support video playback.
+      </video>
+    </div>
+
+    <button class="btn-submit-pass" id="submitPassBtn" onclick="submitPass()">
+      <i class="fas fa-paper-plane"></i> SUBMIT &amp; WITHDRAW
+    </button>
+
+  </div>
+
+  <!-- ══ WITHDRAWAL HISTORY BUTTON ══ -->
+  <button class="btn-wd-history" onclick="toggleWdHistory()">
+    <i class="fas fa-clock-rotate-left"></i> WITHDRAWAL HISTORY
+  </button>
+
+  <!-- ══ PAYMENT PENDING PANEL ══ -->
+  <div id="wdHistoryPanel" style="display:none;margin-bottom:1.4rem;">
+    <div class="pending-panel">
+      <i class="fas fa-inbox" style="font-size:2rem;color:var(--text-light);display:block;margin-bottom:10px;"></i>
+      <div style="color:var(--text-muted);font-size:0.85rem;" id="historyMessage">No withdrawal history yet.</div>
+    </div>
+  </div>
+
+  <!-- ══ RECENT WITHDRAWALS ══ -->
+  <div class="section-title">
+    <i class="fas fa-clock-rotate-left" style="color:var(--teal-dark);margin-left:4px;"></i>
+    Recent Withdrawals – <span id="todayDate">Today</span>
+  </div>
+
+  <div class="wd-history-card" id="historyCard">
+    <div style="padding:2rem;text-align:center;color:var(--text-muted);font-size:0.85rem;" id="historyEmpty">
+      <i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:8px;color:var(--text-light);"></i>
+      No withdrawals yet
+    </div>
+  </div>
+
+  <!-- ══ RECENT GROUPS ══ -->
+  <div class="section-title">
+    <i class="fas fa-users" style="color:var(--teal-dark);margin-left:4px;"></i>
+    Recent Updated Groups
+  </div>
+  <div class="groups-wrap">
+    <button class="groups-toggle" onclick="toggleGroups()">
+      <span><i class="fab fa-whatsapp" style="color:#25d366;margin-right:8px;"></i> View Nextel Groups</span>
+      <i class="fas fa-chevron-down" id="groupChevron" style="color:var(--teal-dark);transition:transform 0.3s;"></i>
+    </button>
+    <div id="groupsPanel" style="display:none;padding:0 12px 14px;">
+
+      <a href="https://chat.whatsapp.com/your-group-link" target="_blank" class="group-item">
+        <div>
+          <div class="group-item-title">Safeera Nextel Team Group</div>
+          <div class="group-item-sub">Join Nextel active Groups on WhatsApp to stay updated</div>
+        </div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:40px;height:40px;flex-shrink:0;margin-left:10px;" alt="WhatsApp">
+      </a>
+
+      <a href="https://chat.whatsapp.com/your-group-link" target="_blank" class="group-item">
+        <div>
+          <div class="group-item-title">Coach Favour Nextel Group</div>
+          <div class="group-item-sub">Join Nextel active Groups on WhatsApp to stay updated</div>
+        </div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:40px;height:40px;flex-shrink:0;margin-left:10px;" alt="WhatsApp">
+      </a>
+
+      <a href="https://chat.whatsapp.com/your-group-link" target="_blank" class="group-item">
+        <div>
+          <div class="group-item-title">Debby Nextel Group</div>
+          <div class="group-item-sub">Join Nextel active Groups on WhatsApp to stay updated</div>
+        </div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:40px;height:40px;flex-shrink:0;margin-left:10px;" alt="WhatsApp">
+      </a>
+
+      <a href="https://chat.whatsapp.com/your-group-link" target="_blank" class="group-item" style="margin-bottom:0;">
+        <div>
+          <div class="group-item-title">Create your Nextel Group</div>
+          <div class="group-item-sub">Adding your WhatsApp groups earns you $1</div>
+        </div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:40px;height:40px;flex-shrink:0;margin-left:10px;" alt="WhatsApp">
+      </a>
+
+    </div>
+  </div>
+
+</main>
+
+<nav class="bottom-nav">
+  <a href="dashboard.html" class="bn-item"><i class="fas fa-house"></i><span>Home</span></a>
+  <a href="tasks.html" class="bn-item"><i class="fas fa-list-check"></i><span>Daily Tasks</span></a>
+  <a href="withdraw.html" class="bn-item active"><i class="fas fa-money-bill-wave"></i><span>Withdraw</span></a>
+  <a href="#" class="bn-item"><i class="fas fa-users"></i><span>Network</span></a>
+  <a href="profile.html" class="bn-item"><i class="fas fa-user"></i><span>Profile</span></a>
+</nav>
+
+<script>
+const MINIMUM_WITHDRAWAL = 25000;
+const NEXTEL_KEY_PRICE = 17500;
+
+// ── Get Current User ──
+function getCurrentUser() {
+    const session = localStorage.getItem('nextel_session');
+    if (!session) return null;
+    try {
+        const sess = JSON.parse(session);
+        const users = JSON.parse(localStorage.getItem('nextel_users')) || [];
+        return users.find(u => u.id === sess.userId) || null;
+    } catch { return null; }
+}
+
+function saveUser(user) {
+    const users = JSON.parse(localStorage.getItem('nextel_users')) || [];
+    const index = users.findIndex(u => u.id === user.id);
+    if (index !== -1) {
+        users[index] = user;
+        localStorage.setItem('nextel_users', JSON.stringify(users));
+    }
+}
+
+function getBalance() {
+    const user = getCurrentUser();
+    return user ? user.balance || 0 : 0;
+}
+
+function getWithdrawalHistory() {
+    const user = getCurrentUser();
+    return user ? user.withdrawal_history || [] : [];
+}
+
+function saveWithdrawalHistory(history) {
+    const user = getCurrentUser();
+    if (!user) return;
+    user.withdrawal_history = history;
+    saveUser(user);
+}
+
+function addWithdrawal(amount, status = 'pending') {
+    const history = getWithdrawalHistory();
+    history.unshift({
+        id: Date.now().toString(),
+        amount: amount,
+        status: status,
+        date: new Date().toISOString(),
+        method: 'Bank Transfer'
+    });
+    saveWithdrawalHistory(history);
+}
+
+function hasNextelKey() {
+    const user = getCurrentUser();
+    return user ? user.has_nextel_key || false : false;
+}
+
+function setNextelKey(hasKey) {
+    const user = getCurrentUser();
+    if (!user) return;
+    user.has_nextel_key = hasKey;
+    saveUser(user);
+}
+
+// ── Update UI ──
+function updateWithdrawPage() {
+    const user = getCurrentUser();
+    if (!user) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Not Logged In',
+            text: 'Please log in to access withdrawals.',
+            confirmButtonColor: '#3BC4A3',
+            confirmButtonText: 'Go to Login'
+        }).then(() => {
+            window.location.href = 'login.html';
+        });
+        return;
+    }
+
+    const balance = user.balance || 0;
+    const canWithdraw = balance >= MINIMUM_WITHDRAWAL;
+    const hasKey = user.has_nextel_key || false;
+
+    // Update avatar
+    const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
+    document.getElementById('topbarAvatar').src = avatarUrl;
+
+    // Update balance
+    document.getElementById('balanceDisplay').innerHTML = `<sup>₦</sup>${balance.toFixed(2)}`;
+
+    // Update progress
+    const pct = Math.min((balance / MINIMUM_WITHDRAWAL) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPercent').textContent = Math.round(pct) + '%';
+    
+    const remaining = Math.max(MINIMUM_WITHDRAWAL - balance, 0);
+    document.getElementById('progressNeeded').innerHTML = 
+        remaining > 0 ? `Need <span>₦${remaining.toFixed(2)}</span> more to unlock` : 
+        `<span style="color:#3BC4A3;">✅ You're ready to withdraw!</span>`;
+
+    // Show/hide lock banner
+    const lockBanner = document.getElementById('lockBanner');
+    if (canWithdraw) {
+        lockBanner.style.display = 'none';
+    } else {
+        lockBanner.style.display = 'flex';
+    }
+
+    // Update congrats screen
+    document.getElementById('congratsName').textContent = (user.fullname || user.username).toUpperCase();
+    document.getElementById('withdrawAmount').textContent = '₦' + balance.toFixed(2);
+
+    // If user has key and can withdraw, auto-show screen B
+    if (hasKey && canWithdraw) {
+        document.getElementById('screenA').style.display = 'none';
+        document.getElementById('screenB').classList.add('show');
+    }
+
+    // Update date
+    const today = new Date();
+    document.getElementById('todayDate').textContent = today.toLocaleDateString('en-US', { 
+        day: 'numeric', month: 'short', year: 'numeric' 
+    });
+
+    // Update withdrawal history
+    renderHistory();
+}
+
+// ── Render Withdrawal History ──
+function renderHistory() {
+    const history = getWithdrawalHistory();
+    const container = document.getElementById('historyCard');
+    
+    if (history.length === 0) {
+        container.innerHTML = `
+            <div style="padding:2rem;text-align:center;color:var(--text-muted);font-size:0.85rem;">
+                <i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:8px;color:var(--text-light);"></i>
+                No withdrawals yet
+            </div>
+        `;
+        return;
+    }
+
+    let html = '';
+    history.forEach(wd => {
+        const statusClass = wd.status === 'pending' ? 's-pending' : 
+                           wd.status === 'approved' ? 's-approved' : 's-rejected';
+        const statusLabel = wd.status.charAt(0).toUpperCase() + wd.status.slice(1);
+        const date = new Date(wd.date);
+        const dateStr = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+        
+        html += `
+            <div class="wh-row">
+                <div class="wh-left">
+                    <div class="wh-icon" style="background:rgba(142,228,203,0.12);color:var(--teal-dark);">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div>
+                        <div class="wh-name">Withdrawal</div>
+                        <div class="wh-date">${dateStr}</div>
+                        <span class="status-pill ${statusClass}">${statusLabel}</span>
+                    </div>
+                </div>
+                <div class="wh-amount" style="color:var(--emerald);">₦${wd.amount.toFixed(2)}</div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// ── Toggle Functions ──
+function toggleGroups() {
+    const panel = document.getElementById('groupsPanel');
+    const chevron = document.getElementById('groupChevron');
+    const open = panel.style.display === 'none';
+    panel.style.display = open ? 'block' : 'none';
+    chevron.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+function toggleWdHistory() {
+    const panel = document.getElementById('wdHistoryPanel');
+    const isOpen = panel.style.display === 'block';
+    panel.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) {
+        renderHistory();
+        document.getElementById('historyMessage').textContent = 
+            getWithdrawalHistory().length === 0 ? 'No withdrawal history yet.' : 
+            `${getWithdrawalHistory().length} withdrawal(s) found.`;
+    }
+}
+
+// ── Handle Withdraw Now ──
+function handleWithdrawNow() {
+    const balance = getBalance();
+    
+    if (balance < MINIMUM_WITHDRAWAL) {
+        Swal.fire({
+            icon: 'warning',
+            title: "You're close!",
+            text: `Complete the remaining Nextel Tasks to reach ₦${MINIMUM_WITHDRAWAL.toLocaleString()} and unlock your withdrawal.`,
+            background: '#fff', 
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3', 
+            confirmButtonText: 'Keep Earning'
+        });
+        return;
+    }
+
+    // Check if user has Nextel Key
+    const user = getCurrentUser();
+    if (user && user.has_nextel_key) {
+        // Already has key, proceed to withdrawal
+        document.getElementById('screenA').style.display = 'none';
+        document.getElementById('screenB').classList.add('show');
+        return;
+    }
+
+    // No key, show screen B with key input
+    document.getElementById('screenA').style.display = 'none';
+    document.getElementById('screenB').classList.add('show');
+}
+
+// ── Modal Functions ──
+function openModal() { 
+    document.getElementById('bankModal').classList.add('open'); 
+}
+function closeModal() { 
+    document.getElementById('bankModal').classList.remove('open'); 
+}
+
+function showPaymentPending() {
+    document.getElementById('paymentPendingOverlay').style.display = 'flex';
+}
+
+document.getElementById('bankModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+function copyAcct() {
+    const n = document.getElementById('acctNum').textContent.trim();
+    navigator.clipboard ? navigator.clipboard.writeText(n) : (() => {
+        const t = document.createElement('textarea');
+        t.value = n; document.body.appendChild(t); t.select();
+        document.execCommand('copy'); document.body.removeChild(t);
+    })();
+    Swal.fire({ toast:true, position:'top-end', showConfirmButton:false, timer:1800,
+        icon:'success', title:'Account number copied!',
+        background:'#fff', color:'#0B3D2E', iconColor:'#3BC4A3' });
+}
+
+// ── Submit Withdrawal ──
+function submitPass() {
+    const code = document.getElementById('streamPassInput').value.trim();
+    if (!code) {
+        Swal.fire({ toast:true, position:'top-end', showConfirmButton:false, timer:2200,
+            icon:'warning', title:'Paste your nextel key code first',
+            background:'#fff', color:'#0B3D2E', iconColor:'#fb923c' });
+        return;
+    }
+
+    const btn = document.getElementById('submitPassBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+    setTimeout(() => {
+        const user = getCurrentUser();
+        if (!user) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> SUBMIT & WITHDRAW';
+            Swal.fire({ icon:'error', title:'Session expired', text:'Please log in again.',
+                background:'#fff', color:'#0B3D2E', confirmButtonColor:'#3BC4A3' });
+            return;
+        }
+
+        if (code.length < 6) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> SUBMIT & WITHDRAW';
+            Swal.fire({ toast:true, position:'top-end', showConfirmButton:false, timer:3200,
+                icon:'error', title:'Invalid Nextel Key. Please check and try again.',
+                background:'#fff', color:'#0B3D2E', iconColor:'#ef4444' });
+            return;
+        }
+
+        setNextelKey(true);
+
+        const balance = user.balance || 0;
+        addWithdrawal(balance, 'pending');
+
+        user.balance = 0;
+        saveUser(user);
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> SUBMIT & WITHDRAW';
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Withdrawal Submitted! 🎉',
+            html: `Your withdrawal of <strong style="color:#0B3D2E;">₦${balance.toFixed(2)}</strong> has been submitted.<br><br>You will receive your payment within 24-48 hours.`,
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3',
+            confirmButtonText: 'Check History'
+        }).then(() => {
+            document.getElementById('screenB').classList.remove('show');
+            document.getElementById('screenA').style.display = 'block';
+            document.getElementById('streamPassInput').value = '';
+            updateWithdrawPage();
+            document.getElementById('wdHistoryPanel').style.display = 'block';
+            renderHistory();
+        });
+
+    }, 1500);
+}
+
+// ── Check if already logged in ──
+function checkSession() {
+    const user = getCurrentUser();
+    if (!user) {
+        window.location.href = 'login.html';
+        return false;
+    }
+    return true;
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function() {
+    if (checkSession()) {
+        updateWithdrawPage();
+    }
+});
+</script>
+</body>
+</html>

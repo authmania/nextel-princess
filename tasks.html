@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nextel Tasks — Daily Earnings</title>
+<link rel="icon" type="image/png" href="assets/img/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+:root {
+    --teal: #8EE4CF;
+    --teal-dark: #5DD3B8;
+    --teal-deep: #3BC4A3;
+    --teal-light: #B8F0E3;
+    --teal-glow: rgba(142, 228, 203, 0.35);
+    --emerald: #0B3D2E;
+    --emerald-light: #1A5A45;
+    --bg-mint: #E8F5F1;
+    --bg-white: #FFFFFF;
+    --bg-card: #F5FAF8;
+    --text-dark: #0B3D2E;
+    --text-muted: #6B9E8E;
+    --text-light: #8FB8AC;
+    --border-soft: rgba(11, 61, 46, 0.08);
+    --shadow-soft: 0 4px 24px rgba(11, 61, 46, 0.06);
+    --shadow-card: 0 8px 32px rgba(11, 61, 46, 0.08);
+    --shadow-elegant: 0 20px 60px rgba(11, 61, 46, 0.12);
+    --shadow-teal: 0 10px 40px rgba(142, 228, 203, 0.30);
+    --gradient-teal: linear-gradient(135deg, #8EE4CF 0%, #5DD3B8 50%, #3BC4A3 100%);
+    --gradient-emerald: linear-gradient(135deg, #0B3D2E 0%, #1A5A45 100%);
+    --gradient-card: linear-gradient(135deg, #0B3D2E 0%, #1A5A45 55%, #2A7A60 100%);
+    --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #E8F5F1 100%);
+    --nav-h: 64px;
+    --bottom-h: 72px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+    background: var(--gradient-surface);
+    color: var(--text-dark);
+    min-height: 100vh;
+    padding-bottom: calc(var(--bottom-h) + 20px);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.topbar {
+    position: sticky; top: 0; z-index: 80; height: var(--nav-h);
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-soft);
+    display: flex; align-items: center; justify-content: space-between; padding: 0 1.1rem;
+}
+.topbar-back {
+    width: 40px; height: 40px; border: 1px solid var(--border-soft); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted); text-decoration: none; font-size: 1rem; transition: all 0.25s;
+    background: var(--bg-mint);
+}
+.topbar-back:hover { border-color: var(--teal); color: var(--teal-dark); background: rgba(142, 228, 203, 0.1); }
+.topbar-brand { font-weight: 800; font-size: 1.1rem; color: var(--emerald); letter-spacing: -0.02em; }
+.topbar-brand span { color: var(--teal-dark); }
+
+.page { padding: 1.2rem 1rem; max-width: 520px; margin: 0 auto; width: 100%; }
+
+.daily-card {
+    background: var(--gradient-card);
+    border-radius: 24px; padding: 1.5rem 1.3rem; margin-bottom: 0.8rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    box-shadow: var(--shadow-elegant); overflow: hidden; position: relative;
+}
+.daily-card::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: rgba(142, 228, 203, 0.15); pointer-events: none;
+}
+.daily-val { font-size: 1.8rem; font-weight: 800; color: #fff; line-height: 1; margin-top: 5px; letter-spacing: -0.02em; }
+.daily-lbl { font-size: 0.68rem; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+.daily-sub { font-size: 0.72rem; color: rgba(255,255,255,0.65); margin-top: 5px; font-weight: 500; }
+
+.tasks-badge {
+    background: rgba(255,255,255,0.18); backdrop-filter: blur(6px);
+    border-radius: 18px; padding: 0.9rem 1rem;
+    text-align: center; flex-shrink: 0; min-width: 90px;
+    border: 1px solid rgba(255,255,255,0.2);
+    position: relative; z-index: 2;
+}
+.tasks-badge-num { font-size: 1.9rem; font-weight: 800; color: #fff; line-height: 1; }
+.tasks-badge-lbl { font-size: 0.65rem; color: rgba(255,255,255,0.7); font-weight: 600; margin-top: 3px; line-height: 1.3; }
+
+.cap-banner {
+    background: linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(251, 146, 60, 0.04) 100%);
+    border: 1.5px solid rgba(251, 146, 60, 0.2);
+    border-radius: 18px; padding: 1.1rem 1.2rem; margin-bottom: 1.2rem;
+    display: flex; gap: 12px; align-items: flex-start;
+    box-shadow: var(--shadow-soft);
+}
+.cap-banner i { color: #fb923c; margin-top: 2px; flex-shrink: 0; font-size: 1.2rem; }
+.cap-title { font-size: 0.88rem; font-weight: 700; color: #fb923c; margin-bottom: 4px; }
+.cap-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+.cap-progress { margin-top: 8px; }
+.cap-progress-bar { height: 8px; border-radius: 4px; background: rgba(251, 146, 60, 0.1); overflow: hidden; }
+.cap-progress-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #fb923c, #fbbf24); transition: width 1s ease; }
+.cap-progress-text { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; text-align: right; }
+.cap-progress-text strong { color: #fb923c; }
+
+.reset-strip {
+    background: rgba(142, 228, 203, 0.08); border: 1px solid rgba(142, 228, 203, 0.15);
+    border-radius: 14px; padding: 0.75rem 1.1rem; margin-bottom: 1.4rem;
+    display: flex; align-items: center; gap: 10px; font-size: 0.78rem;
+    color: var(--text-muted);
+}
+.reset-strip i { color: var(--teal-dark); font-size: 0.9rem; flex-shrink: 0; }
+.reset-strip strong { color: var(--emerald); font-weight: 700; }
+
+.section-title {
+    font-size: 1rem; font-weight: 700;
+    margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;
+    color: var(--emerald);
+}
+.section-title::before {
+    content: ''; display: inline-block; width: 3px; height: 18px;
+    background: var(--gradient-teal); border-radius: 2px;
+}
+
+.category-progress {
+    display: flex; gap: 8px; margin-bottom: 1.2rem;
+}
+.cat-pill {
+    flex: 1; background: var(--bg-card); border: 1px solid var(--border-soft);
+    border-radius: 12px; padding: 0.6rem 0.4rem; text-align: center;
+    font-size: 0.72rem; font-weight: 600; color: var(--text-muted);
+    transition: all 0.25s;
+}
+.cat-pill.done { background: rgba(142, 228, 203, 0.12); border-color: var(--teal); color: var(--emerald); }
+.cat-pill i { font-size: 0.8rem; margin-bottom: 3px; display: block; }
+.cat-pill .cat-count { font-size: 0.9rem; font-weight: 800; color: var(--emerald); }
+
+.disclosure-note {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: rgba(142, 228, 203, 0.06); border: 1px solid rgba(142, 228, 203, 0.15);
+    border-radius: 14px; padding: 0.9rem 1.1rem; margin-bottom: 1.2rem;
+    font-size: 0.78rem; color: var(--text-muted); line-height: 1.5;
+}
+.disclosure-note i { color: var(--teal-dark); font-size: 0.95rem; margin-top: 1px; flex-shrink: 0; }
+
+.call-contact-row {
+    background: var(--bg-card); border: 1px solid var(--border-soft);
+    border-radius: 18px; padding: 1rem 1.1rem; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 14px; transition: all 0.25s;
+    box-shadow: var(--shadow-soft);
+}
+.call-contact-row.claimed { border-color: var(--teal); background: rgba(142, 228, 203, 0.06); }
+.call-avatar {
+    width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--gradient-emerald); color: #fff; font-weight: 800; font-size: 1.1rem;
+}
+.call-avatar.msg { background: linear-gradient(135deg, #3BC4A3 0%, #5DD3B8 100%); }
+.call-avatar.save { background: linear-gradient(135deg, #2A7A60 0%, #3BC4A3 100%); }
+.call-contact-info { flex: 1; min-width: 0; }
+.call-contact-name { font-weight: 700; font-size: 0.94rem; color: var(--emerald); }
+.call-contact-meta { font-size: 0.74rem; color: var(--text-muted); margin-top: 2px; }
+.call-contact-status { font-size: 0.72rem; color: var(--teal-dark); display: flex; align-items: center; gap: 5px; margin-top: 4px; }
+.call-contact-status .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-dark); display: inline-block; }
+.call-btn {
+    flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 2px;
+    background: var(--gradient-emerald); border: none; border-radius: 12px; padding: 10px 16px;
+    color: #fff; font-weight: 700; font-size: 0.76rem; cursor: pointer; transition: all 0.25s;
+}
+.call-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-elegant); }
+.call-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+.call-btn.claimed-btn { background: rgba(142, 228, 203, 0.15); color: var(--teal-dark); border: 1px solid var(--teal); }
+.call-btn .strike { text-decoration: line-through; opacity: 0.6; font-size: 0.68rem; }
+
+.call-screen-overlay {
+    position: fixed; inset: 0; z-index: 9500;
+    background: var(--gradient-emerald);
+    display: flex; flex-direction: column; align-items: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.call-screen-overlay.open { opacity: 1; pointer-events: all; }
+.call-screen-top {
+    width: 100%; padding: 1.4rem 1.1rem 0; display: flex; align-items: center; justify-content: space-between;
+}
+.call-screen-back {
+    width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.12);
+    border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.call-network-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.12); border-radius: 50px; padding: 8px 16px;
+    color: #fff; font-weight: 700; font-size: 0.8rem;
+}
+.call-screen-avatar {
+    width: 130px; height: 130px; border-radius: 50%; background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 4.5rem; font-size: 3rem; font-weight: 800; color: var(--emerald);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25); flex-shrink: 0;
+}
+.call-screen-name { color: #fff; font-weight: 800; font-size: 1.5rem; margin-top: 1.5rem; }
+.call-screen-status { color: rgba(255,255,255,0.75); font-size: 0.95rem; margin-top: 0.4rem; }
+.call-screen-timer { color: #fff; font-weight: 800; font-size: 2.2rem; margin-top: 1.3rem; letter-spacing: 0.03em; }
+.call-screen-message {
+    margin-top: 1.5rem; max-width: 340px; text-align: center; padding: 0 1.5rem;
+    color: rgba(255,255,255,0.9); font-size: 0.88rem; line-height: 1.6;
+    opacity: 0; transition: opacity 0.4s;
+}
+.call-screen-message.show { opacity: 1; }
+.call-screen-message .msg-label {
+    display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--teal); font-weight: 700; margin-bottom: 6px;
+}
+.call-screen-controls { display: flex; gap: 1.2rem; margin-top: auto; margin-bottom: 3rem; }
+.call-ctrl-btn {
+    padding: 0.9rem 2rem; border-radius: 50px; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+}
+.call-ctrl-mute { background: rgba(255,255,255,0.14); color: #fff; }
+.call-ctrl-end { background: #ef4444; color: #fff; box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4); }
+.call-claim-wrap {
+    margin-top: auto; margin-bottom: 3rem; display: none; flex-direction: column; align-items: center; gap: 0.8rem;
+}
+.call-claim-wrap.show { display: flex; }
+.call-claim-btn {
+    background: var(--gradient-teal); color: var(--emerald); border: none; border-radius: 50px;
+    padding: 1rem 2.6rem; font-weight: 800; font-size: 1rem; cursor: pointer;
+    box-shadow: var(--shadow-teal); display: flex; align-items: center; gap: 8px;
+}
+.call-claim-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.call-claim-hint { color: rgba(255,255,255,0.7); font-size: 0.78rem; }
+
+.bal-toast {
+    position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
+    background: var(--emerald); color: #fff; padding: 0.7rem 1.3rem; border-radius: 50px;
+    font-size: 0.85rem; font-weight: 700; box-shadow: var(--shadow-elegant); z-index: 9700;
+    opacity: 0; pointer-events: none; transition: all 0.35s;
+}
+.bal-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; height: var(--bottom-h);
+    background: rgba(255,255,255,0.97); border-top: 1px solid var(--border-soft);
+    backdrop-filter: blur(14px); display: flex; align-items: center; z-index: 80; padding: 0 0.5rem;
+}
+.nav-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 4px; padding: 8px 0; text-decoration: none; color: var(--text-light);
+    font-size: 0.65rem; font-weight: 500; transition: all 0.25s; border-radius: 12px;
+}
+.nav-btn i { font-size: 1.15rem; transition: all 0.25s; }
+.nav-btn.active { color: var(--teal-dark); }
+.nav-btn.active i { color: var(--teal-dark); transform: scale(1.15); }
+.nav-btn:hover { color: var(--teal-dark); }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--teal-light); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div class="bal-toast" id="balToast"></div>
+
+<div class="topbar">
+    <a href="dashboard.html" class="topbar-back"><i class="fas fa-arrow-left"></i></a>
+    <div class="topbar-brand">Nextel<span>Tasks</span></div>
+    <div style="width:40px;"></div>
+</div>
+
+<div class="page">
+
+    <div class="daily-card">
+        <div style="position:relative;z-index:2;">
+            <div class="daily-lbl">Earned Today</div>
+            <div class="daily-val" id="dailyBal">₦0.00</div>
+            <div class="daily-sub">Goes to your Daily Balance</div>
+        </div>
+        <div class="tasks-badge">
+            <div class="tasks-badge-num" id="doneCount">0</div>
+            <div class="tasks-badge-lbl">of 10 tasks<br>done</div>
+        </div>
+    </div>
+
+    <div class="cap-banner">
+        <i class="fas fa-chart-line"></i>
+        <div style="flex:1;">
+            <div class="cap-title">Daily Earnings Cap</div>
+            <div class="cap-desc">You can earn up to ₦85,000 in daily earnings. Once you hit the limit, you must withdraw to continue earning.</div>
+            <div class="cap-progress">
+                <div class="cap-progress-bar">
+                    <div class="cap-progress-fill" id="capFill" style="width:0%;"></div>
+                </div>
+                <div class="cap-progress-text" id="capText">₦0 / ₦85,000 · <strong>₦85,000 remaining</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="reset-strip">
+        <i class="fas fa-rotate-right"></i>
+        <span>Tasks reset daily at <strong>midnight</strong>. Complete all 10 to earn ₦27,500!</span>
+    </div>
+
+    <div class="category-progress">
+        <div class="cat-pill" id="catCalls"><i class="fas fa-phone"></i><div class="cat-count">0/4</div><div>Calls</div></div>
+        <div class="cat-pill" id="catMessages"><i class="fas fa-comment-dots"></i><div class="cat-count">0/4</div><div>Messages</div></div>
+        <div class="cat-pill" id="catContacts"><i class="fas fa-address-book"></i><div class="cat-count">0/2</div><div>Contacts</div></div>
+    </div>
+
+    <!-- CALL TASKS -->
+    <div class="section-title"><i class="fas fa-phone" style="color:var(--teal-dark);"></i> Sponsor Calls (4)</div>
+    <div class="disclosure-note">
+        <i class="fas fa-shield-halved"></i>
+        <span>Every call is a short, disclosed sponsor message played through the Nextel network. Earn ₦2,750 per completed call.</span>
+    </div>
+    
+    <div class="call-contact-row" id="row_80">
+        <div class="call-avatar">H</div>
+        <div class="call-contact-info">
+            <div class="call-contact-name">Helen</div>
+            <div class="call-contact-meta">Sponsored by a Nextel Network partner</div>
+            <div class="call-contact-status"><span class="dot"></span> Idle</div>
+        </div>
+        <button class="call-btn" id="btn_80" onclick="startCall(80, 'Helen', 'H', 'Nextel Network')">
+            <span>Start Call</span>
+            <span class="strike">₦45/min</span>
+        </button>
+    </div>
+    
+    <div class="call-contact-row" id="row_81">
+        <div class="call-avatar">G</div>
+        <div class="call-contact-info">
+            <div class="call-contact-name">Grace</div>
+            <div class="call-contact-meta">Sponsored by a Nextel Network partner</div>
+            <div class="call-contact-status"><span class="dot"></span> Idle</div>
+        </div>
+        <button class="call-btn" id="btn_81" onclick="startCall(81, 'Grace', 'G', 'Nextel Network')">
+            <span>Start Call</span>
+            <span class="strike">₦45/min</span>
+        </button>
+    </div>
+    
+    <div class="call-contact-row" id="row_82">
+        <div class="call-avatar">M</div>
+        <div class="call-contact-info">
+            <div class="call-contact-name">Marcus</div>
+            <div class="call-contact-meta">Sponsored by a Nextel Network partner</div>
+            <div class="call-contact-status"><span class="dot"></span> Idle</div>
+        </div>
+        <button class="call-btn" id="btn_82" onclick="startCall(82, 'Marcus', 'M', 'Nextel Network')">
+            <span>Start Call</span>
+            <span class="strike">₦45/min</span>
+        </button>
+    </div>
+    
+    <div class="call-contact-row" id="row_83">
+        <div class="call-avatar">S</div>
+        <div class="call-contact-info">
+            <div class="call-contact-name">Sandra</div>
+            <div class="call-contact-meta">Sponsored by a Nextel Network partner</div>
+            <div class="call-contact-status"><span class="dot"></span> Idle</div>
+        </div>
+        <button class="call-btn" id="btn_83" onclick="startCall(83, 'Sandra', 'S', 'Nextel Network')">
+            <span>Start Call</span>
+            <span class="strike">₦45/min</span>
+        </button>
+    </div>
+    
+    <!-- MESSAGE TASKS -->
+    <div class="section-title" style="margin-top:1.6rem;"><i class="fas fa-comment-dots" style="color:var(--teal-dark);"></i> Message Tasks (4)</div>
+    <div class="disclosure-note">
+        <i class="fas fa-shield-halved"></i>
+        <span>Send a quick "Hi" to support agents and get a reply. Earn ₦2,750 per completed chat.</span>
+    </div>
+    
+    <div class="call-contact-row" id="row_84">
+        <div class="call-avatar msg"><i class="fas fa-comment-dots"></i></div>
+        <div class="call-contact-info">
+            <div class="call-contact-name">Say Hi to Support Agent 1</div>
+            <div class="call-contact-meta">Send a quick message and get a reply</div>
+            <div class="call-contact-status"><span class="dot"></span> Idle</div>
+        </div>
+        <button class="call-btn" id="btn_84" onclick="startMessageTask(84, 'Support Agent 1')">
+            <span>Start</span>
+            <span class="strike">₦45</span>
+        </button>
+    </div>
+    
+    <div class="call-contact-row" id="row_85">
+        <div class="call-avatar msg"><i class="fas fa-comment-dots"></i></div>
+        <div class="call-contact-info">
+            <div class="call-contact-name">Say Hi to Support Agent 2</div>
+            <div class="call-contact-meta">Send a quick message and get a reply</div>
+            <div class="call-contact-status"><span class="dot"></span> Idle</div>
+        </div>
+        <button class="call-btn" id="btn_85" onclick="startMessageTask(85, 'Support Agent 2')">
+            <span>Start</span>
+            <span class="strike">₦45</span>
+        </button>
+    </div>
+    
+    <div class="call-contact-row" id="row_86">
+        <div class="call-avatar msg"><i class="fas fa-comment-dots"></i></div>
+        <div class="call-contact-info">
+            <div class="call-contact-name">Say Hi to Support Agent 3</div>
+            <div class="call-contact-meta">Send a quick message and get a reply</div>
+            <div class="call-contact-status"><span class="dot"></span> Idle</div>
+        </div>
+        <button class="call-btn" id="btn_86" onclick="startMessageTask(86, 'Support Agent 3')">
+            <span>Start</span>
+            <span class="strike">₦45</span>
+        </button>
+    </div>
+    
+    <div class="call-contact-row" id="row_87">
+        <div class="call-avatar msg"><i class="fas fa-comment-dots"></i></div>
+        <div class="call-contact-info">
+            <div class="call-contact-name">Say Hi to Support Agent 4</div>
+            <div class="call-contact-meta">Send a quick message and get a reply</div>
+            <div class="call-contact-status"><span class="dot"></span> Idle</div>
+        </div>
+        <button class="call-btn" id="btn_87" onclick="startMessageTask(87, 'Support Agent 4')">
+            <span>Start</span>
+            <span class="strike">₦45</span>
+        </button>
+    </div>
+    
+    <!-- SAVE CONTACT TASKS -->
+    <div class="section-title" style="margin-top:1.6rem;"><i class="fas fa-address-book" style="color:var(--teal-dark);"></i> Save Contacts (2)</div>
+    <div class="disclosure-note">
+        <i class="fas fa-shield-halved"></i>
+        <span>Pick a number and save it to your contacts. Earn ₦2,750 per saved number.</span>
+    </div>
+    
+    <div class="call-contact-row" id="row_88">
+        <div class="call-avatar save"><i class="fas fa-hashtag"></i></div>
+        <div class="call-contact-info">
+            <div class="call-contact-name">Save a Number — Save Contact 1</div>
+            <div class="call-contact-meta">Pick a number and save it</div>
+            <div class="call-contact-status"><span class="dot"></span> Idle</div>
+        </div>
+        <button class="call-btn" id="btn_88" onclick="startNumberTask(88, 'Save Contact 1')">
+            <span>Start</span>
+            <span class="strike">₦45</span>
+        </button>
+    </div>
+    
+    <div class="call-contact-row" id="row_89">
+        <div class="call-avatar save"><i class="fas fa-hashtag"></i></div>
+        <div class="call-contact-info">
+            <div class="call-contact-name">Save a Number — Save Contact 2</div>
+            <div class="call-contact-meta">Pick a number and save it</div>
+            <div class="call-contact-status"><span class="dot"></span> Idle</div>
+        </div>
+        <button class="call-btn" id="btn_89" onclick="startNumberTask(89, 'Save Contact 2')">
+            <span>Start</span>
+            <span class="strike">₦45</span>
+        </button>
+    </div>
+    
+</div>
+
+<div class="bottom-nav">
+    <a href="dashboard.html" class="nav-btn"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="tasks.html" class="nav-btn active"><i class="fas fa-bolt"></i><span>Earn</span></a>
+    <a href="withdraw.html" class="nav-btn"><i class="fas fa-wallet"></i><span>Withdraw</span></a>
+    <a href="#" class="nav-btn"><i class="fas fa-users"></i><span>Network</span></a>
+    <a href="profile.html" class="nav-btn"><i class="fas fa-user"></i><span>Profile</span></a>
+</div>
+
+<!-- CALL SCREEN OVERLAY -->
+<div class="call-screen-overlay" id="callScreen">
+    <div class="call-screen-top">
+        <button class="call-screen-back" onclick="cancelCall()"><i class="fas fa-chevron-left"></i></button>
+        <div class="call-network-pill"><i class="fas fa-chart-line"></i> <span id="callNetworkLbl">Nextel Network</span></div>
+    </div>
+    <div class="call-screen-avatar" id="callAvatar">H</div>
+    <div class="call-screen-name" id="callName">Helen</div>
+    <div class="call-screen-status" id="callStatus">Calling…</div>
+    <div class="call-screen-timer" id="callTimer">00:00</div>
+    <div class="call-screen-message" id="callMessage">
+        <span class="msg-label">Sponsor Message</span>
+        <span id="callMessageText"></span>
+    </div>
+    <div class="call-screen-controls" id="callControls">
+        <button class="call-ctrl-btn call-ctrl-mute" id="muteBtn" onclick="toggleMute()">Mute</button>
+        <button class="call-ctrl-btn call-ctrl-end" onclick="endCall()">End</button>
+    </div>
+    <div class="call-claim-wrap" id="claimWrap">
+        <button class="call-claim-btn" id="claimBtn" onclick="claimCall()">
+            <i class="fas fa-gift"></i> Claim ₦2,750
+        </button>
+        <div class="call-claim-hint">Call completed — tap to claim your reward</div>
+    </div>
+</div>
+
+<!-- MESSAGE SCREEN OVERLAY -->
+<div class="call-screen-overlay" id="msgScreen">
+    <div class="call-screen-top">
+        <button class="call-screen-back" onclick="cancelMessageTask()"><i class="fas fa-chevron-left"></i></button>
+        <div class="call-network-pill"><i class="fas fa-comment-dots"></i> <span id="msgNetworkLbl">Next Step Support</span></div>
+    </div>
+    <div class="call-screen-avatar"><i class="fas fa-headset" style="font-size:3rem;color:var(--emerald);"></i></div>
+    <div class="call-screen-name" id="msgAgentName">Support Agent</div>
+    <div class="call-screen-status" id="msgStatus">Say hi to start the chat</div>
+    <div id="msgChatLog" style="width:100%;max-width:340px;padding:0 1.3rem;margin-top:1.6rem;display:flex;flex-direction:column;gap:10px;"></div>
+    <div id="msgSendWrap" style="margin-top:auto;margin-bottom:3rem;">
+        <button class="call-claim-btn" id="sendHiBtn" onclick="sendHiMessage()">
+            <i class="fas fa-paper-plane"></i> Send: Hi
+        </button>
+    </div>
+    <div class="call-claim-wrap" id="msgClaimWrap">
+        <button class="call-claim-btn" id="msgClaimBtn" onclick="claimMessage()">
+            <i class="fas fa-gift"></i> Claim ₦2,750
+        </button>
+        <div class="call-claim-hint">Chat completed — tap to claim your reward</div>
+    </div>
+</div>
+
+<!-- SAVE NUMBER SCREEN OVERLAY -->
+<div class="call-screen-overlay" id="numScreen">
+    <div class="call-screen-top">
+        <button class="call-screen-back" onclick="cancelNumberTask()"><i class="fas fa-chevron-left"></i></button>
+        <div class="call-network-pill"><i class="fas fa-hashtag"></i> <span>Save a Number</span></div>
+    </div>
+    <div class="call-screen-avatar"><i class="fas fa-address-book" style="font-size:3rem;color:var(--emerald);"></i></div>
+    <div class="call-screen-name" id="numTaskName">Pick a Number</div>
+    <div class="call-screen-status" id="numStatus">Tap a number below to select it</div>
+    <div id="numGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:280px;width:100%;padding:0 1.3rem;margin-top:1.8rem;"></div>
+    <div id="numSaveWrap" style="margin-top:auto;margin-bottom:3rem;">
+        <button class="call-claim-btn" id="saveNumBtn" onclick="saveNumber()" disabled style="opacity:0.5;">
+            <i class="fas fa-save"></i> Save Number
+        </button>
+    </div>
+    <div class="call-claim-wrap" id="numClaimWrap">
+        <button class="call-claim-btn" id="numClaimBtn" onclick="claimNumber()">
+            <i class="fas fa-gift"></i> Claim ₦2,750
+        </button>
+        <div class="call-claim-hint">Save successful — tap to claim your reward</div>
+    </div>
+</div>
+
+<script>
+const TASK_REWARD = 2750;
+const DAILY_EARNINGS_CAP = 85000;
+const TOTAL_TASKS = 10;
+
+// ── Session & User Helpers ──
+function getCurrentUser() {
+    const session = localStorage.getItem('nextel_session');
+    if (!session) return null;
+    try {
+        const sess = JSON.parse(session);
+        const users = JSON.parse(localStorage.getItem('nextel_users')) || [];
+        return users.find(u => u.id === sess.userId) || null;
+    } catch { return null; }
+}
+
+function saveUser(user) {
+    const users = JSON.parse(localStorage.getItem('nextel_users')) || [];
+    const index = users.findIndex(u => u.id === user.id);
+    if (index !== -1) {
+        users[index] = user;
+        localStorage.setItem('nextel_users', JSON.stringify(users));
+    }
+}
+
+function getBalance() {
+    const user = getCurrentUser();
+    return user ? user.balance || 0 : 0;
+}
+
+function setBalance(amount) {
+    const user = getCurrentUser();
+    if (!user) return;
+    user.balance = amount;
+    saveUser(user);
+}
+
+function getCompletedTasks() {
+    const user = getCurrentUser();
+    return user ? user.completed_tasks || [] : [];
+}
+
+function setCompletedTasks(tasks) {
+    const user = getCurrentUser();
+    if (!user) return;
+    user.completed_tasks = tasks;
+    saveUser(user);
+}
+
+function isTaskCompleted(taskId) {
+    return getCompletedTasks().includes(taskId);
+}
+
+function markTaskCompleted(taskId) {
+    const tasks = getCompletedTasks();
+    if (!tasks.includes(taskId)) {
+        tasks.push(taskId);
+        setCompletedTasks(tasks);
+    }
+}
+
+function getLastResetDate() {
+    const user = getCurrentUser();
+    return user ? user.last_reset || '' : '';
+}
+
+function setLastResetDate() {
+    const user = getCurrentUser();
+    if (!user) return;
+    user.last_reset = new Date().toDateString();
+    saveUser(user);
+}
+
+function checkAndResetDaily() {
+    const user = getCurrentUser();
+    if (!user) return false;
+    
+    const today = new Date().toDateString();
+    const lastReset = user.last_reset || '';
+    
+    if (lastReset !== today) {
+        user.completed_tasks = [];
+        user.last_reset = today;
+        saveUser(user);
+        return true;
+    }
+    return false;
+}
+
+// ── UI Update Functions ──
+function updateUI() {
+    const balance = getBalance();
+    const completed = getCompletedTasks();
+    const doneCount = completed.length;
+    
+    document.getElementById('dailyBal').textContent = '₦' + balance.toFixed(2);
+    document.getElementById('doneCount').textContent = doneCount;
+    
+    const pct = Math.min((balance / DAILY_EARNINGS_CAP) * 100, 100);
+    document.getElementById('capFill').style.width = pct + '%';
+    const remaining = Math.max(DAILY_EARNINGS_CAP - balance, 0);
+    document.getElementById('capText').innerHTML = 
+        '₦' + balance.toFixed(2) + ' / ₦' + DAILY_EARNINGS_CAP.toLocaleString() + 
+        ' · <strong>₦' + remaining.toFixed(2) + ' remaining</strong>';
+    
+    const callTasks = [80, 81, 82, 83];
+    const msgTasks = [84, 85, 86, 87];
+    const contactTasks = [88, 89];
+    
+    const callsDone = callTasks.filter(id => completed.includes(id)).length;
+    const msgsDone = msgTasks.filter(id => completed.includes(id)).length;
+    const contactsDone = contactTasks.filter(id => completed.includes(id)).length;
+    
+    document.querySelector('#catCalls .cat-count').textContent = callsDone + '/4';
+    document.querySelector('#catMessages .cat-count').textContent = msgsDone + '/4';
+    document.querySelector('#catContacts .cat-count').textContent = contactsDone + '/2';
+    
+    completed.forEach(taskId => {
+        const btn = document.getElementById('btn_' + taskId);
+        const row = document.getElementById('row_' + taskId);
+        if (btn && !btn.classList.contains('claimed-btn')) {
+            btn.innerHTML = '<i class="fas fa-check"></i> Done';
+            btn.classList.add('claimed-btn');
+            btn.disabled = true;
+        }
+        if (row) {
+            row.classList.add('claimed');
+            const statusEl = row.querySelector('.call-contact-status');
+            if (statusEl) statusEl.innerHTML = '<span class="dot"></span> Completed';
+        }
+    });
+}
+
+function showToast(msg) {
+    const t = document.getElementById('balToast');
+    t.textContent = msg; 
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function showCapReachedPopup() {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Daily Earnings Cap Reached!',
+        html: `<div style="font-size:0.92rem;color:#6B9E8E;line-height:1.75;text-align:center;">
+                 You have reached the <strong style="color:#fb923c;">₦85,000</strong> daily earnings limit.<br><br>
+                 You must <strong style="color:#3BC4A3;">withdraw your earnings</strong> to reset your cap and continue earning.
+               </div>`,
+        background: '#fff', color: '#0B3D2E',
+        confirmButtonColor: '#3BC4A3', confirmButtonText: 'Go to Withdraw',
+        showCancelButton: true, cancelButtonText: 'Close', cancelButtonColor: '#E8F5F1',
+    }).then(result => {
+        if (result.isConfirmed) window.location.href = 'withdraw.html';
+    });
+}
+
+// ── Reset all task states ──
+function resetTaskStates() {
+    // Call states
+    activeCallTaskId = null;
+    callEnded = false;
+    callSeconds = 0;
+    isClaiming = false;
+    hasClaimedThisCall = false;
+    if (callTimerInterval) { clearInterval(callTimerInterval); callTimerInterval = null; }
+    if (claimTimeout) { clearTimeout(claimTimeout); claimTimeout = null; }
+    
+    // Message states
+    activeMsgTaskId = null;
+    msgClaimed = false;
+    
+    // Number states
+    activeNumTaskId = null;
+    numClaimed = false;
+    selectedNumber = null;
+}
+
+// ── VOICE (Text-to-Speech) ─────────────────────────────────────
+function speakMessage(text, onStart, onDone) {
+    // Try speech synthesis first
+    if (window.speechSynthesis) {
+        try {
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const utter = new SpeechSynthesisUtterance(text);
+            
+            // Try to get a good voice
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v => 
+                /en-(US|GB|NG)/i.test(v.lang) && 
+                /Female|Google|Natural|Samantha|Victoria/i.test(v.name)
+            ) || voices.find(v => /en/i.test(v.lang)) || null;
+            
+            if (preferredVoice) utter.voice = preferredVoice;
+            
+            utter.rate = 0.9;
+            utter.pitch = 1.0;
+            utter.volume = 1;
+            
+            let started = false;
+            
+            utter.onstart = () => {
+                started = true;
+                if (onStart) onStart();
+            };
+            
+            utter.onend = () => {
+                if (onDone) onDone();
+            };
+            
+            utter.onerror = (e) => {
+                console.log('Speech error:', e);
+                // If speech fails, use the fallback
+                if (!started) {
+                    if (onStart) onStart();
+                    setTimeout(() => {
+                        if (onDone) onDone();
+                    }, 4000);
+                }
+            };
+            
+            window.speechSynthesis.speak(utter);
+            
+            // Safety fallback if onstart never fires
+            setTimeout(() => {
+                if (!started) {
+                    started = true;
+                    if (onStart) onStart();
+                }
+            }, 1500);
+            
+            return;
+        } catch (e) {
+            console.log('Speech exception:', e);
+        }
+    }
+    
+    // ── FALLBACK: Simulate the call without speech ──
+    if (onStart) onStart();
+    setTimeout(() => {
+        if (onDone) onDone();
+    }, 4000);
+}
+
+// Preload voices when the page loads
+function preloadVoices() {
+    if (window.speechSynthesis) {
+        // This triggers voice loading
+        window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+        };
+    }
+}
+
+// ── CALL TASKS ─────────────────────────────────────────────────
+let activeCallTaskId = null;
+let callTimerInterval = null;
+let callSeconds = 0;
+let callEnded = false;
+let claimTimeout = null;
+let isClaiming = false;
+let hasClaimedThisCall = false;
+
+const SPONSOR_MESSAGES = [
+    "Thanks for taking this call! This is a quick word from a Nextel Network partner — explore more earning opportunities inside the Nextel app today.",
+    "Hi there — this short message is brought to you by a Nextel Network sponsor. Check the Rewards tab in your dashboard for today's bonuses.",
+    "This call is sponsored by a Nextel Network partner. Keep completing daily calls to grow your Nextel earnings.",
+    "Welcome to Nextel! This sponsor message helps keep the platform free. Complete all 10 tasks today to earn ₦27,500!",
+];
+
+function startCall(taskId, name, initial, network) {
+    const btn = document.getElementById('btn_' + taskId);
+    if (btn.disabled) return;
+    if (isTaskCompleted(taskId)) return;
+    
+    const balance = getBalance();
+    if (balance >= DAILY_EARNINGS_CAP) { showCapReachedPopup(); return; }
+
+    // Reset all call-related state
+    resetTaskStates();
+    
+    activeCallTaskId = taskId;
+    callEnded = false; 
+    callSeconds = 0; 
+    isClaiming = false; 
+    hasClaimedThisCall = false;
+    if (claimTimeout) { clearTimeout(claimTimeout); claimTimeout = null; }
+    if (callTimerInterval) { clearInterval(callTimerInterval); callTimerInterval = null; }
+
+    const claimBtn = document.getElementById('claimBtn');
+    claimBtn.disabled = false;
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+
+    document.getElementById('callAvatar').textContent = initial;
+    document.getElementById('callName').textContent = name;
+    document.getElementById('callNetworkLbl').textContent = network;
+    document.getElementById('callStatus').textContent = 'Calling…';
+    document.getElementById('callTimer').textContent = '00:00';
+    document.getElementById('callMessage').classList.remove('show');
+    document.getElementById('callMessageText').textContent = '';
+    document.getElementById('callControls').style.display = 'flex';
+    document.getElementById('claimWrap').classList.remove('show');
+    document.getElementById('muteBtn').textContent = 'Mute';
+    document.getElementById('callScreen').classList.add('open');
+
+    callTimerInterval = setInterval(() => {
+        callSeconds++;
+        const m = String(Math.floor(callSeconds / 60)).padStart(2, '0');
+        const s = String(callSeconds % 60).padStart(2, '0');
+        document.getElementById('callTimer').textContent = `${m}:${s}`;
+    }, 1000);
+
+    setTimeout(() => {
+        if (callEnded) return;
+        document.getElementById('callStatus').textContent = 'Connected';
+        const msg = SPONSOR_MESSAGES[taskId % SPONSOR_MESSAGES.length];
+        document.getElementById('callMessageText').textContent = msg;
+        document.getElementById('callMessage').classList.add('show');
+        
+        // Speak the message
+        speakMessage(
+            msg,
+            // onStart - speech started
+            () => {
+                if (callEnded) return;
+                document.getElementById('callStatus').textContent = 'Talking…';
+            },
+            // onDone - speech finished
+            () => {
+                if (callEnded) return;
+                document.getElementById('callStatus').textContent = 'Wrapping up…';
+                claimTimeout = setTimeout(() => { 
+                    if (!callEnded) finishCall(); 
+                }, 1000);
+            }
+        );
+    }, 1500);
+}
+
+function toggleMute() {
+    const btn = document.getElementById('muteBtn');
+    btn.textContent = btn.textContent === 'Mute' ? 'Unmute' : 'Mute';
+}
+
+function finishCall() {
+    if (callEnded) return;
+    document.getElementById('callStatus').textContent = 'Call completed';
+    document.getElementById('callControls').style.display = 'none';
+    document.getElementById('claimWrap').classList.add('show');
+}
+
+function endCall() {
+    callEnded = true;
+    if (callTimerInterval) { clearInterval(callTimerInterval); callTimerInterval = null; }
+    if (claimTimeout) { clearTimeout(claimTimeout); claimTimeout = null; }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    document.getElementById('callScreen').classList.remove('open');
+    // Reset claim button
+    const claimBtn = document.getElementById('claimBtn');
+    claimBtn.disabled = false;
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+    document.getElementById('claimWrap').classList.remove('show');
+    document.getElementById('callControls').style.display = 'flex';
+    activeCallTaskId = null; 
+    isClaiming = false;
+}
+
+function cancelCall() { endCall(); }
+
+function claimCall() {
+    if (!activeCallTaskId || isClaiming || hasClaimedThisCall) return;
+    if (isTaskCompleted(activeCallTaskId)) {
+        Swal.fire({ icon:'info', title:'Already Claimed', text:'This task has already been completed.',
+            background:'#fff', color:'#0B3D2E', confirmButtonColor:'#3BC4A3' });
+        document.getElementById('callScreen').classList.remove('open');
+        activeCallTaskId = null;
+        return;
+    }
+    
+    const balance = getBalance();
+    if (balance >= DAILY_EARNINGS_CAP) { 
+        showCapReachedPopup(); 
+        document.getElementById('callScreen').classList.remove('open');
+        activeCallTaskId = null;
+        return; 
+    }
+    
+    isClaiming = true;
+    const taskId = activeCallTaskId;
+    const claimBtn = document.getElementById('claimBtn');
+    claimBtn.disabled = true;
+    claimBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Claiming…';
+
+    setTimeout(() => {
+        if (isTaskCompleted(taskId)) {
+            claimBtn.disabled = false;
+            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+            isClaiming = false;
+            document.getElementById('callScreen').classList.remove('open');
+            activeCallTaskId = null;
+            Swal.fire({ icon:'info', title:'Already Claimed', text:'This task has already been completed.',
+                background:'#fff', color:'#0B3D2E', confirmButtonColor:'#3BC4A3' });
+            return;
+        }
+        
+        const currentBalance = getBalance();
+        if (currentBalance >= DAILY_EARNINGS_CAP) {
+            document.getElementById('callScreen').classList.remove('open');
+            isClaiming = false;
+            activeCallTaskId = null;
+            showCapReachedPopup();
+            return;
+        }
+        
+        const newBalance = currentBalance + TASK_REWARD;
+        setBalance(newBalance);
+        markTaskCompleted(taskId);
+        hasClaimedThisCall = true;
+        
+        updateUI();
+        showToast('+₦2,750 Earned!');
+        
+        document.getElementById('callScreen').classList.remove('open');
+        // Reset claim button for next use
+        claimBtn.disabled = false;
+        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+        document.getElementById('claimWrap').classList.remove('show');
+        document.getElementById('callControls').style.display = 'flex';
+        activeCallTaskId = null;
+        isClaiming = false;
+        
+        Swal.fire({
+            icon: 'success', 
+            title: '₦2,750 Earned!',
+            html: `<div style="color:#6B9E8E;font-size:.88rem;line-height:1.6;">Sponsor call completed successfully!<br><span style="color:#3BC4A3;">Keep going — more tasks await!</span></div>`,
+            background: '#fff', 
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3', 
+            confirmButtonText: 'Keep Going!', 
+            timer: 3500
+        });
+    }, 800);
+}
+
+// ── MESSAGE TASKS ──────────────────────────────────────────────
+let activeMsgTaskId = null;
+let msgClaimed = false;
+
+function startMessageTask(taskId, agentName) {
+    const btn = document.getElementById('btn_' + taskId);
+    if (btn && btn.disabled) return;
+    if (isTaskCompleted(taskId)) return;
+    
+    const balance = getBalance();
+    if (balance >= DAILY_EARNINGS_CAP) { showCapReachedPopup(); return; }
+
+    resetTaskStates();
+    activeMsgTaskId = taskId;
+    msgClaimed = false;
+
+    document.getElementById('msgAgentName').textContent = agentName;
+    document.getElementById('msgChatLog').innerHTML = '';
+    document.getElementById('msgStatus').textContent = 'Say hi to start the chat';
+    document.getElementById('msgSendWrap').style.display = 'block';
+    document.getElementById('msgClaimWrap').classList.remove('show');
+    const sendBtn = document.getElementById('sendHiBtn');
+    sendBtn.disabled = false;
+    sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send: Hi';
+    document.getElementById('msgScreen').classList.add('open');
+}
+
+function addChatBubble(text, fromUser) {
+    const log = document.getElementById('msgChatLog');
+    const bubble = document.createElement('div');
+    bubble.textContent = text;
+    bubble.style.cssText = `max-width: 78%; padding: 10px 14px; border-radius: 16px; font-size: 0.86rem; line-height: 1.4;
+        ${fromUser ? 'align-self:flex-end; background:var(--gradient-teal); color:var(--emerald); border-bottom-right-radius:4px;'
+                    : 'align-self:flex-start; background:rgba(255,255,255,0.14); color:#fff; border-bottom-left-radius:4px;'}`;
+    log.appendChild(bubble);
+}
+
+const SUPPORT_REPLIES = [
+    "Welcome to Next Step platform! 🎉 How can we help you today?",
+    "Hello! Thanks for reaching out to Nextel Support. We're here to help!",
+    "Hi there! Welcome to the Nextel family. Let us know if you need anything.",
+    "Greetings! Nextel Support at your service. How may we assist you?",
+];
+
+function sendHiMessage() {
+    const sendBtn = document.getElementById('sendHiBtn');
+    if (sendBtn.disabled) return;
+    sendBtn.disabled = true;
+    sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
+    addChatBubble('Hi', true);
+    document.getElementById('msgStatus').textContent = 'Waiting for a reply…';
+    setTimeout(() => {
+        const reply = SUPPORT_REPLIES[(activeMsgTaskId || 0) % SUPPORT_REPLIES.length];
+        addChatBubble(reply, false);
+        document.getElementById('msgStatus').textContent = 'Chat completed';
+        document.getElementById('msgSendWrap').style.display = 'none';
+        document.getElementById('msgClaimWrap').classList.add('show');
+    }, 1400);
+}
+
+function cancelMessageTask() {
+    document.getElementById('msgScreen').classList.remove('open');
+    // Reset claim button
+    const claimBtn = document.getElementById('msgClaimBtn');
+    claimBtn.disabled = false;
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+    document.getElementById('msgClaimWrap').classList.remove('show');
+    activeMsgTaskId = null;
+    msgClaimed = false;
+}
+
+function claimMessage() {
+    if (msgClaimed || !activeMsgTaskId) return;
+    if (isTaskCompleted(activeMsgTaskId)) {
+        Swal.fire({ icon:'info', title:'Already Claimed', text:'This task has already been completed.',
+            background:'#fff', color:'#0B3D2E', confirmButtonColor:'#3BC4A3' });
+        document.getElementById('msgScreen').classList.remove('open');
+        activeMsgTaskId = null;
+        return;
+    }
+    
+    const balance = getBalance();
+    if (balance >= DAILY_EARNINGS_CAP) { 
+        showCapReachedPopup(); 
+        document.getElementById('msgScreen').classList.remove('open');
+        activeMsgTaskId = null;
+        return; 
+    }
+    
+    msgClaimed = true;
+    const taskId = activeMsgTaskId;
+    const claimBtn = document.getElementById('msgClaimBtn');
+    claimBtn.disabled = true;
+    claimBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Claiming…';
+
+    setTimeout(() => {
+        if (isTaskCompleted(taskId)) {
+            claimBtn.disabled = false;
+            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+            msgClaimed = false;
+            document.getElementById('msgScreen').classList.remove('open');
+            activeMsgTaskId = null;
+            Swal.fire({ icon:'info', title:'Already Claimed', text:'This task has already been completed.',
+                background:'#fff', color:'#0B3D2E', confirmButtonColor:'#3BC4A3' });
+            return;
+        }
+        
+        const currentBalance = getBalance();
+        if (currentBalance >= DAILY_EARNINGS_CAP) {
+            document.getElementById('msgScreen').classList.remove('open');
+            msgClaimed = false;
+            activeMsgTaskId = null;
+            showCapReachedPopup();
+            return;
+        }
+        
+        const newBalance = currentBalance + TASK_REWARD;
+        setBalance(newBalance);
+        markTaskCompleted(taskId);
+        updateUI();
+        showToast('+₦2,750 Earned!');
+        
+        document.getElementById('msgScreen').classList.remove('open');
+        claimBtn.disabled = false;
+        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+        document.getElementById('msgClaimWrap').classList.remove('show');
+        activeMsgTaskId = null;
+        msgClaimed = false;
+        
+        Swal.fire({
+            icon: 'success', 
+            title: '₦2,750 Earned!',
+            html: `<div style="color:#6B9E8E;font-size:.88rem;line-height:1.6;">Message task completed successfully!</div>`,
+            background: '#fff', 
+            color: '#0B3D2E', 
+            confirmButtonColor: '#3BC4A3',
+            confirmButtonText: 'Keep Going!', 
+            timer: 3500
+        });
+    }, 800);
+}
+
+// ── SAVE NUMBER TASKS ──────────────────────────────────────────
+let activeNumTaskId = null;
+let numClaimed = false;
+let selectedNumber = null;
+
+function randomFakeNumber() {
+    let n = '0';
+    for (let i = 0; i < 9; i++) n += Math.floor(Math.random() * 10);
+    return n;
+}
+
+function startNumberTask(taskId, taskName) {
+    const btn = document.getElementById('btn_' + taskId);
+    if (btn && btn.disabled) return;
+    if (isTaskCompleted(taskId)) return;
+    
+    const balance = getBalance();
+    if (balance >= DAILY_EARNINGS_CAP) { showCapReachedPopup(); return; }
+
+    resetTaskStates();
+    activeNumTaskId = taskId;
+    numClaimed = false; 
+    selectedNumber = null;
+
+    document.getElementById('numTaskName').textContent = taskName;
+    document.getElementById('numStatus').textContent = 'Tap a number below to select it';
+    document.getElementById('numSaveWrap').style.display = 'block';
+    document.getElementById('numClaimWrap').classList.remove('show');
+
+    const saveBtn = document.getElementById('saveNumBtn');
+    saveBtn.disabled = true; 
+    saveBtn.style.opacity = '0.5';
+    saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Number';
+
+    const grid = document.getElementById('numGrid');
+    grid.innerHTML = '';
+    for (let i = 0; i < 6; i++) {
+        const num = randomFakeNumber();
+        const tile = document.createElement('button');
+        tile.textContent = num; 
+        tile.dataset.num = num;
+        tile.style.cssText = `padding: 14px 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.1); color: #fff; font-weight: 700; font-size: 0.8rem;
+            cursor: pointer; letter-spacing: 0.3px;`;
+        tile.onclick = () => selectNumber(tile, num);
+        grid.appendChild(tile);
+    }
+    document.getElementById('numScreen').classList.add('open');
+}
+
+function selectNumber(tile, num) {
+    document.querySelectorAll('#numGrid button').forEach(b => {
+        b.style.background = 'rgba(255,255,255,0.1)';
+        b.style.borderColor = 'rgba(255,255,255,0.25)';
+        b.style.color = '#fff';
+    });
+    tile.style.background = 'var(--gradient-teal)';
+    tile.style.borderColor = 'var(--teal)';
+    tile.style.color = 'var(--emerald)';
+    selectedNumber = num;
+    document.getElementById('numStatus').textContent = 'Selected ' + num + ' — now save it';
+    const saveBtn = document.getElementById('saveNumBtn');
+    saveBtn.disabled = false; 
+    saveBtn.style.opacity = '1';
+}
+
+function saveNumber() {
+    if (!selectedNumber) return;
+    const saveBtn = document.getElementById('saveNumBtn');
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
+    setTimeout(() => {
+        document.getElementById('numStatus').textContent = 'Save successful!';
+        document.getElementById('numSaveWrap').style.display = 'none';
+        document.getElementById('numClaimWrap').classList.add('show');
+    }, 900);
+}
+
+function cancelNumberTask() {
+    document.getElementById('numScreen').classList.remove('open');
+    const claimBtn = document.getElementById('numClaimBtn');
+    claimBtn.disabled = false;
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+    document.getElementById('numClaimWrap').classList.remove('show');
+    activeNumTaskId = null;
+    numClaimed = false;
+}
+
+function claimNumber() {
+    if (numClaimed || !activeNumTaskId) return;
+    if (isTaskCompleted(activeNumTaskId)) {
+        Swal.fire({ icon:'info', title:'Already Claimed', text:'This task has already been completed.',
+            background:'#fff', color:'#0B3D2E', confirmButtonColor:'#3BC4A3' });
+        document.getElementById('numScreen').classList.remove('open');
+        activeNumTaskId = null;
+        return;
+    }
+    
+    const balance = getBalance();
+    if (balance >= DAILY_EARNINGS_CAP) { 
+        showCapReachedPopup(); 
+        document.getElementById('numScreen').classList.remove('open');
+        activeNumTaskId = null;
+        return; 
+    }
+    
+    numClaimed = true;
+    const taskId = activeNumTaskId;
+    const claimBtn = document.getElementById('numClaimBtn');
+    claimBtn.disabled = true;
+    claimBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Claiming…';
+
+    setTimeout(() => {
+        if (isTaskCompleted(taskId)) {
+            claimBtn.disabled = false;
+            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+            numClaimed = false;
+            document.getElementById('numScreen').classList.remove('open');
+            activeNumTaskId = null;
+            Swal.fire({ icon:'info', title:'Already Claimed', text:'This task has already been completed.',
+                background:'#fff', color:'#0B3D2E', confirmButtonColor:'#3BC4A3' });
+            return;
+        }
+        
+        const currentBalance = getBalance();
+        if (currentBalance >= DAILY_EARNINGS_CAP) {
+            document.getElementById('numScreen').classList.remove('open');
+            numClaimed = false;
+            activeNumTaskId = null;
+            showCapReachedPopup();
+            return;
+        }
+        
+        const newBalance = currentBalance + TASK_REWARD;
+        setBalance(newBalance);
+        markTaskCompleted(taskId);
+        updateUI();
+        showToast('+₦2,750 Earned!');
+        
+        document.getElementById('numScreen').classList.remove('open');
+        claimBtn.disabled = false;
+        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+        document.getElementById('numClaimWrap').classList.remove('show');
+        activeNumTaskId = null;
+        numClaimed = false;
+        
+        Swal.fire({
+            icon: 'success', 
+            title: '₦2,750 Earned!',
+            html: `<div style="color:#6B9E8E;font-size:.88rem;line-height:1.6;">Number saved successfully!</div>`,
+            background: '#fff', 
+            color: '#0B3D2E', 
+            confirmButtonColor: '#3BC4A3',
+            confirmButtonText: 'Keep Going!', 
+            timer: 3500
+        });
+    }, 800);
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function() {
+    // Preload voices for speech synthesis
+    preloadVoices();
+    
+    const user = getCurrentUser();
+    if (!user) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Not Logged In',
+            text: 'Please log in to access tasks.',
+            confirmButtonColor: '#3BC4A3',
+            confirmButtonText: 'Go to Login'
+        }).then(() => {
+            window.location.href = 'login.html';
+        });
+        return;
+    }
+    
+    checkAndResetDaily();
+    updateUI();
+});
+</script>
+</body>
+</html>

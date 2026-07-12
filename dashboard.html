@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dashboard — Nextel Connect</title>
+<link rel="icon" type="image/png" href="assets/img/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+/* ============ All your existing styles ============ */
+:root {
+    --teal: #8EE4CF;
+    --teal-dark: #5DD3B8;
+    --teal-deep: #3BC4A3;
+    --teal-light: #B8F0E3;
+    --teal-glow: rgba(142, 228, 203, 0.35);
+    --emerald: #0B3D2E;
+    --emerald-light: #1A5A45;
+    --emerald-deep: #0A2E22;
+    --bg-mint: #E8F5F1;
+    --bg-white: #FFFFFF;
+    --bg-card: #F5FAF8;
+    --text-dark: #0B3D2E;
+    --text-muted: #6B9E8E;
+    --text-light: #8FB8AC;
+    --border-soft: rgba(11, 61, 46, 0.08);
+    --shadow-soft: 0 4px 24px rgba(11, 61, 46, 0.06);
+    --shadow-card: 0 8px 32px rgba(11, 61, 46, 0.08);
+    --shadow-elegant: 0 20px 60px rgba(11, 61, 46, 0.12);
+    --shadow-teal: 0 10px 40px rgba(142, 228, 203, 0.30);
+    --gradient-teal: linear-gradient(135deg, #8EE4CF 0%, #5DD3B8 50%, #3BC4A3 100%);
+    --gradient-emerald: linear-gradient(135deg, #0B3D2E 0%, #1A5A45 100%);
+    --gradient-card: linear-gradient(135deg, #0B3D2E 0%, #1A5A45 55%, #2A7A60 100%);
+    --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #E8F5F1 100%);
+    --nav-h: 64px;
+    --bottom-h: 72px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+    background: var(--gradient-surface);
+    color: var(--text-dark);
+    min-height: 100vh;
+    padding-bottom: calc(var(--bottom-h) + 20px);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── DRAWER ── */
+.drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(6px); z-index: 900;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.drawer-overlay.open { opacity: 1; pointer-events: all; }
+.drawer {
+    position: fixed; top: 0; left: -290px; width: 280px; height: 100vh;
+    background: linear-gradient(180deg, #0B3D2E 0%, #0A2E22 100%);
+    border-right: 1px solid rgba(142, 228, 203, 0.15); z-index: 950;
+    transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column; overflow-y: auto;
+}
+.drawer.open { left: 0; }
+.drawer-header {
+    padding: 1.5rem 1.2rem; border-bottom: 1px solid rgba(142, 228, 203, 0.1);
+    display: flex; align-items: center; gap: 12px;
+}
+.drawer-avatar {
+    width: 50px; height: 50px; border-radius: 50%;
+    border: 2.5px solid var(--teal); object-fit: cover;
+    flex-shrink: 0; background: var(--bg-mint);
+}
+.drawer-name { font-weight: 700; font-size: 0.92rem; color: #fff; }
+.drawer-pkg  { font-size: 0.72rem; color: var(--teal); margin-top: 2px; font-weight: 500; }
+.drawer-nav  { flex: 1; padding: 0.8rem 0; }
+.drawer-item {
+    display: flex; align-items: center; gap: 13px; padding: 12px 1.2rem;
+    color: rgba(255,255,255,0.65); text-decoration: none;
+    font-size: 0.88rem; font-weight: 500; transition: all 0.22s;
+    border-left: 3px solid transparent;
+}
+.drawer-item i { width: 20px; color: var(--teal); font-size: 0.95rem; text-align: center; }
+.drawer-item:hover, .drawer-item.active {
+    background: rgba(142, 228, 203, 0.08); color: #fff; border-left-color: var(--teal);
+}
+.drawer-logout {
+    color: #fca5a5 !important; margin-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+.drawer-logout i { color: #f87171 !important; }
+.drawer-logout:hover { background: rgba(239,68,68,0.08) !important; border-left-color: #f87171 !important; color: #fff !important; }
+
+/* ── TOPBAR ── */
+.topbar {
+    position: sticky; top: 0; z-index: 80; height: var(--nav-h);
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-soft);
+    display: flex; align-items: center; justify-content: space-between; padding: 0 1.1rem;
+}
+.burger {
+    width: 40px; height: 40px; border: 1px solid rgba(142, 228, 203, 0.3);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; background: rgba(142, 228, 203, 0.08); transition: all 0.3s;
+}
+.burger:hover { background: rgba(142, 228, 203, 0.15); border-color: var(--teal); }
+.burger i { color: var(--emerald); font-size: 1rem; }
+.topbar-brand { font-weight: 800; font-size: 1.15rem; color: var(--emerald); letter-spacing: -0.02em; }
+.topbar-brand span { color: var(--teal-dark); }
+.topbar-avatar {
+    width: 38px; height: 38px; border-radius: 50%; border: 2.5px solid var(--teal);
+    object-fit: cover; cursor: pointer; transition: transform 0.25s; background: var(--bg-mint);
+}
+.topbar-avatar:hover { transform: scale(1.1); }
+
+/* ── PAGE ── */
+.page { padding: 1.2rem 1rem; max-width: 520px; margin: 0 auto; }
+.greeting-sub { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+.greeting h1  { font-size: 1.25rem; font-weight: 700; margin-top: 2px; color: var(--emerald); }
+
+/* ── BALANCE CARD ── */
+.balance-main {
+    background: var(--gradient-card);
+    border-radius: 24px; padding: 1.8rem 1.5rem 1.4rem;
+    position: relative; overflow: hidden;
+    box-shadow: var(--shadow-elegant); margin-bottom: 0;
+}
+.balance-main::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: rgba(142, 228, 203, 0.15); pointer-events: none;
+}
+.balance-main::after {
+    content: ''; position: absolute; bottom: -50px; left: 20px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: rgba(142, 228, 203, 0.08); pointer-events: none;
+}
+.balance-label { font-size: 0.72rem; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+.balance-amount {
+    font-size: 1.85rem; font-weight: 700;
+    color: #fff; line-height: 1; margin: 0.35rem 0;
+    letter-spacing: -0.02em;
+}
+.balance-eye {
+    background: rgba(255,255,255,0.15); border: none; color: #fff;
+    cursor: pointer; padding: 0; margin-left: 8px;
+    width: 34px; height: 34px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: background 0.2s;
+}
+.balance-eye:hover { background: rgba(255,255,255,0.25); }
+.balance-sub-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.2rem;
+}
+.balance-sub {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 0.9rem 1rem;
+}
+.balance-sub-lbl { font-size: 0.68rem; color: rgba(255,255,255,0.65); margin-bottom: 3px; font-weight: 500; }
+.balance-sub-val { font-size: 0.95rem; font-weight: 700; color: #fff; }
+
+/* ── THREE PILL BUTTONS ── */
+.card-pill-row {
+    display: flex; align-items: center; gap: 7px;
+    margin-top: 1.1rem; flex-wrap: nowrap; position: relative; z-index: 2;
+    overflow-x: auto; scrollbar-width: none;
+}
+.card-pill-row::-webkit-scrollbar { display: none; }
+.pill-plan {
+    background: rgba(255,255,255,0.18); color: #fff;
+    border-radius: 22px; padding: 7px 14px;
+    font-size: 0.72rem; font-weight: 600;
+    white-space: nowrap; flex-shrink: 0; border: none; cursor: default;
+    backdrop-filter: blur(4px);
+}
+.pill-wd {
+    background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9);
+    border-radius: 22px; padding: 7px 11px;
+    font-size: 0.70rem; font-weight: 500;
+    white-space: nowrap; flex-shrink: 0; border: none; cursor: pointer;
+    transition: background 0.2s; backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.pill-wd:hover  { background: rgba(255,255,255,0.2); }
+.pill-wd.active { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.3); }
+
+/* ── WITHDRAWAL DROPDOWN ── */
+.wd-dropdown-wrap {
+    overflow: hidden; max-height: 0; opacity: 0; margin-top: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+}
+.wd-dropdown-wrap.open { max-height: 520px; opacity: 1; margin-top: 8px; }
+.wd-info-card {
+    background: var(--bg-white); border: 1px solid var(--border-soft);
+    border-radius: 20px; padding: 1.2rem;
+    box-shadow: var(--shadow-card);
+}
+.wd-info-title {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: 0.88rem;
+    color: var(--emerald); margin-bottom: 10px;
+}
+.wd-info-title i { color: var(--teal-dark); }
+.wd-info-text { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 10px; }
+.wd-limit-val { color: var(--teal-dark); font-weight: 700; }
+.wd-pass-word { color: var(--emerald-light); font-weight: 700; }
+.wd-note-box {
+    background: rgba(142, 228, 203, 0.08); border: 1px solid rgba(142, 228, 203, 0.15);
+    border-radius: 12px; padding: 10px 12px; font-size: 0.78rem;
+    color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;
+}
+.wd-note-box strong { color: var(--teal-dark); }
+.btn-stream-pass {
+    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+    background: var(--gradient-teal); color: var(--emerald);
+    font-weight: 700; font-size: 0.88rem;
+    border: none; border-radius: 14px; padding: 12px; text-decoration: none; transition: all 0.3s;
+}
+.btn-stream-pass:hover { transform: translateY(-2px); box-shadow: var(--shadow-teal); color: var(--emerald); }
+
+/* ── MEMBERS CAROUSEL ── */
+.members-section { margin-bottom: 1.2rem; overflow: hidden; }
+.members-label {
+    font-size: 0.72rem; font-weight: 600;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
+}
+.members-carousel-wrap {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+.members-track {
+    display: flex; gap: 14px; width: max-content;
+    animation: scroll-track 26s linear infinite;
+}
+.members-track:hover { animation-play-state: paused; }
+@keyframes scroll-track {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+.member-avatar-wrap {
+    display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0;
+}
+.member-avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 2.5px solid rgba(142, 228, 203, 0.4); background: var(--bg-mint);
+    transition: border-color 0.3s, transform 0.3s; overflow: hidden;
+}
+.member-avatar:hover { border-color: var(--teal); transform: scale(1.08); }
+.member-name {
+    font-size: 0.65rem; color: var(--emerald); font-weight: 600;
+    text-align: center; max-width: 60px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.member-credit {
+    font-size: 0.62rem; color: var(--teal-dark); font-weight: 700;
+    text-align: center; white-space: nowrap;
+}
+
+/* ── ACTION BUTTONS ── */
+.action-row { display: flex; gap: 10px; margin-bottom: 1.4rem; }
+.action-btn {
+    flex: 1; background: var(--bg-white); border: 1px solid var(--border-soft);
+    border-radius: 18px; padding: 1rem 0.5rem; text-align: center; text-decoration: none;
+    color: var(--emerald); transition: all 0.3s;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    box-shadow: var(--shadow-soft);
+}
+.action-btn:hover {
+    background: rgba(142, 228, 203, 0.08); border-color: rgba(142, 228, 203, 0.3);
+    color: var(--emerald-light); transform: translateY(-2px);
+    box-shadow: var(--shadow-teal);
+}
+.action-btn i { font-size: 1.2rem; color: var(--teal-dark); }
+.action-btn span { font-size: 0.72rem; font-weight: 500; }
+
+/* ── REFERRAL CARD ── */
+.referral-card {
+    background: var(--bg-white); border: 1px solid var(--border-soft);
+    border-radius: 20px; padding: 1.3rem; margin-bottom: 1.4rem;
+    box-shadow: var(--shadow-soft);
+}
+.ref-link-box {
+    background: var(--bg-mint); border: 1px solid rgba(142, 228, 203, 0.2);
+    border-radius: 14px; padding: 10px 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 0.8rem;
+}
+.ref-link-text { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ref-copy-btn {
+    background: var(--teal); color: var(--emerald); border: none;
+    border-radius: 10px; padding: 6px 14px; font-size: 0.78rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.25s;
+}
+.ref-copy-btn:hover { background: var(--teal-dark); }
+
+/* ── STAR SHARE ── */
+.star-card {
+    background: var(--bg-white); border: 1px solid var(--border-soft);
+    border-radius: 20px; padding: 1.3rem; margin-bottom: 1.4rem;
+    box-shadow: var(--shadow-soft);
+}
+.stars-row { display: flex; gap: 8px; margin: 0.8rem 0; }
+.star-item {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1.5px solid rgba(142, 228, 203, 0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; background: rgba(142, 228, 203, 0.05); color: rgba(11, 61, 46, 0.15); transition: all 0.3s;
+}
+.star-item.earned { background: rgba(142, 228, 203, 0.15); color: var(--teal-dark); border-color: var(--teal); }
+.btn-share {
+    width: 100%; padding: 11px;
+    background: var(--gradient-teal); color: var(--emerald);
+    font-weight: 700; font-size: 0.9rem;
+    border: none; border-radius: 14px; cursor: pointer; transition: all 0.3s;
+}
+.btn-share:hover { transform: translateY(-2px); box-shadow: var(--shadow-teal); }
+.btn-share:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; height: var(--bottom-h);
+    background: rgba(255,255,255,0.97); border-top: 1px solid var(--border-soft);
+    backdrop-filter: blur(14px); display: flex; align-items: center; z-index: 80; padding: 0 0.5rem;
+}
+.nav-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 4px; padding: 8px 0; text-decoration: none; color: var(--text-light);
+    font-size: 0.65rem; font-weight: 500; transition: all 0.25s; border-radius: 12px;
+}
+.nav-btn i { font-size: 1.15rem; transition: all 0.25s; }
+.nav-btn.active { color: var(--teal-dark); }
+.nav-btn.active i { color: var(--teal-dark); transform: scale(1.15); }
+.nav-btn:hover { color: var(--teal-dark); }
+
+/* ── ══ PAYMENT PROOF POPUP ════════════════════════════ ── */
+.pcp-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.65); backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem;
+}
+@keyframes pcpFadeIn  { from{opacity:0;} to{opacity:1;} }
+@keyframes pcpSlideUp {
+    from{transform:translateY(50px) scale(.95);opacity:0;}
+    to{transform:translateY(0) scale(1);opacity:1;}
+}
+@keyframes pcpOrbit {
+    0%   { transform: scale(1) translateY(0px); }
+    25%  { transform: scale(1.07) translateY(-5px); }
+    50%  { transform: scale(1) translateY(0px); }
+    75%  { transform: scale(0.95) translateY(3px); }
+    100% { transform: scale(1) translateY(0px); }
+}
+@keyframes pcpRing {
+    0%   { box-shadow: 0 0 0 0 rgba(142, 228, 203, 0.55), 0 0 0 4px rgba(142, 228, 203, 0.18); }
+    70%  { box-shadow: 0 0 0 10px rgba(142, 228, 203, 0), 0 0 0 4px rgba(142, 228, 203, 0.18); }
+    100% { box-shadow: 0 0 0 0 rgba(142, 228, 203, 0), 0 0 0 4px rgba(142, 228, 203, 0.18); }
+}
+.pcp-modal {
+    background: var(--gradient-teal);
+    border-radius: 28px; width: 100%; max-width: 370px; overflow: hidden;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.2);
+    animation: pcpSlideUp 0.45s cubic-bezier(0.34,1.2,0.64,1);
+    display: flex; flex-direction: column;
+}
+.pcp-close-btn {
+    position: absolute; top: 14px; right: 14px;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,0.12); border: 1.5px solid rgba(0,0,0,0.2);
+    color: rgba(0,0,0,0.6); font-size: 0.85rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.2s;
+}
+.pcp-close-btn:hover { background: rgba(0,0,0,0.25); color: #000; }
+.pcp-header {
+    padding: 1.5rem 1.4rem 0.8rem; text-align: center;
+    position: relative; flex-shrink: 0;
+}
+.pcp-header-top {
+    font-size: 0.72rem; color: rgba(0,0,0,0.5); letter-spacing: 1.2px;
+    text-transform: uppercase; margin-bottom: 0.6rem; font-weight: 700;
+}
+.pcp-headline {
+    font-size: 1rem; font-weight: 400;
+    color: #1a0e00; line-height: 1.55;
+}
+.pcp-count-badge {
+    display: inline-block;
+    background: rgba(0,0,0,0.1); border-radius: 8px;
+    padding: 2px 10px; font-size: 1rem; font-weight: 400;
+    color: #0d0800; margin: 0 3px;
+}
+.pcp-avatar-row {
+    display: flex; justify-content: center; gap: 12px;
+    padding: 1rem 1rem 0.5rem; flex-wrap: nowrap; overflow: hidden;
+}
+.pcp-av-wrap {
+    display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0;
+}
+.pcp-av-wrap:nth-child(1) .pcp-av-img { animation: pcpOrbit 3.2s ease-in-out infinite; animation-delay: 0s; }
+.pcp-av-wrap:nth-child(2) .pcp-av-img { animation: pcpOrbit 3.2s ease-in-out infinite; animation-delay: 0.4s; }
+.pcp-av-wrap:nth-child(3) .pcp-av-img { animation: pcpOrbit 3.2s ease-in-out infinite; animation-delay: 0.8s; }
+.pcp-av-wrap:nth-child(4) .pcp-av-img { animation: pcpOrbit 3.2s ease-in-out infinite; animation-delay: 1.2s; }
+.pcp-av-wrap:nth-child(5) .pcp-av-img { animation: pcpOrbit 3.2s ease-in-out infinite; animation-delay: 1.6s; }
+.pcp-av-img {
+    width: 58px; height: 58px; border-radius: 50%; object-fit: cover;
+    background: #fff;
+    border: 3px solid rgba(255,255,255,0.85);
+    box-shadow: 0 0 0 4px rgba(142, 228, 203, 0.18);
+    animation: pcpRing 2.4s ease-out infinite;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.pcp-av-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.pcp-av-img svg { width: 28px; height: 28px; fill: rgba(11, 61, 46, 0.3); }
+.pcp-av-name  { font-size: 0.65rem; font-weight: 700; color: #1a0e00; }
+.pcp-av-amount{ font-size: 0.62rem; font-weight: 800; color: #3a1e00; }
+.pcp-support {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 0.6rem 1rem 0.3rem;
+}
+.pcp-support-icon { width: 72px; height: 72px; }
+.pcp-footer {
+    padding: 0.3rem 1.3rem 1.4rem; flex-shrink: 0;
+    display: flex; flex-direction: column; gap: 10px;
+}
+.pcp-contact-label {
+    text-align: center; font-size: 0.92rem; font-weight: 700; color: #1a0e00; margin-bottom: 2px;
+}
+.pcp-contact-btn {
+    width: 100%; padding: 14px;
+    background: #1a0e00; border: none;
+    color: var(--teal); border-radius: 30px;
+    font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px;
+}
+.pcp-contact-btn:hover { background: #000; color: var(--teal-light); }
+.pcp-cancel-btn {
+    width: 100%; padding: 12px;
+    background: transparent; border: 2px solid rgba(0,0,0,0.2);
+    color: #1a0e00; border-radius: 30px;
+    font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+}
+.pcp-cancel-btn:hover { background: rgba(0,0,0,0.08); }
+.pcp-refresh-note { display: none; }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--teal-light); border-radius: 4px; }
+
+.d-flex { display: flex; }
+.align-items-center { align-items: center; }
+.gap-2 { gap: 0.5rem; }
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.mt-3 { margin-top: 1rem; }
+.ms-auto { margin-left: auto; }
+.w-100 { width: 100%; }
+.justify-content-center { justify-content: center; }
+</style>
+</head>
+<body>
+
+<!-- ══ PAYMENT PROOF POPUP ══════════════════════════════════ -->
+<div class="pcp-overlay" id="pcpOverlay">
+  <div class="pcp-modal">
+    <div class="pcp-header">
+      <button class="pcp-close-btn" onclick="dismissPCP()">✕</button>
+      <div class="pcp-header-top">Free Plan Credited Users</div>
+      <div class="pcp-headline">
+        Over <span class="pcp-count-badge" id="pcpCount">43,222</span> Nextel users are earning,<br>
+        your turn is next!
+      </div>
+    </div>
+    <div class="pcp-avatar-row">
+      <div class="pcp-av-wrap">
+        <div class="pcp-av-img">
+          <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Salma&backgroundColor=ffffff" alt="Salma">
+        </div>
+        <div class="pcp-av-name">Salma</div>
+        <div class="pcp-av-amount">₦83,200</div>
+      </div>
+      <div class="pcp-av-wrap">
+        <div class="pcp-av-img">
+          <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Otunba&backgroundColor=ffffff" alt="Otunba">
+        </div>
+        <div class="pcp-av-name">Otunba</div>
+        <div class="pcp-av-amount">₦83,200</div>
+      </div>
+      <div class="pcp-av-wrap">
+        <div class="pcp-av-img">
+          <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Usman12&backgroundColor=ffffff" alt="Usman12">
+        </div>
+        <div class="pcp-av-name">Usman12</div>
+        <div class="pcp-av-amount">₦83,200</div>
+      </div>
+      <div class="pcp-av-wrap">
+        <div class="pcp-av-img">
+          <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Abel&backgroundColor=ffffff" alt="Abel">
+        </div>
+        <div class="pcp-av-name">Abel</div>
+        <div class="pcp-av-amount">₦83,200</div>
+      </div>
+      <div class="pcp-av-wrap">
+        <div class="pcp-av-img">
+          <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=HENRY&backgroundColor=ffffff" alt="HENRY">
+        </div>
+        <div class="pcp-av-name">HENRY</div>
+        <div class="pcp-av-amount">₦83,200</div>
+      </div>
+    </div>
+    <div class="pcp-support">
+      <svg class="pcp-support-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="32" r="14" fill="#1a0e00"/>
+        <path d="M26 32 Q26 18 40 18 Q54 18 54 32" stroke="#1a0e00" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <rect x="22" y="29" width="6" height="10" rx="3" fill="#1a0e00"/>
+        <rect x="52" y="29" width="6" height="10" rx="3" fill="#1a0e00"/>
+        <path d="M54 36 Q60 38 58 44" stroke="#1a0e00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="57" cy="45" r="2.5" fill="#1a0e00"/>
+        <path d="M20 62 Q20 50 40 50 Q60 50 60 62" fill="#1a0e00"/>
+        <rect x="48" y="10" width="24" height="16" rx="5" fill="#1a0e00"/>
+        <path d="M52 26 L49 30 L56 26" fill="#1a0e00"/>
+        <circle cx="55" cy="18" r="2" fill="#8EE4CF"/>
+        <circle cx="61" cy="18" r="2" fill="#8EE4CF"/>
+        <circle cx="67" cy="18" r="2" fill="#8EE4CF"/>
+      </svg>
+      <div class="pcp-contact-label">Hi, lets help you today</div>
+    </div>
+    <div class="pcp-footer">
+      <button class="pcp-contact-btn" onclick="window.location.href='contact.html'">Click to Contact us</button>
+      <button class="pcp-cancel-btn" onclick="dismissPCP()">Cancel</button>
+      <div class="pcp-refresh-note"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Drawer Overlay -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- Side Drawer -->
+<div class="drawer" id="sideDrawer">
+    <div class="drawer-header">
+        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=default&backgroundColor=c9a84c" alt="Avatar" class="drawer-avatar" id="drawerAvatar">
+        <div>
+            <div class="drawer-name" id="drawerName">User</div>
+            <div class="drawer-pkg" id="drawerPkg">✦ Nextel · Free</div>
+        </div>
+    </div>
+    <nav class="drawer-nav">
+        <a href="dashboard.html" class="drawer-item active"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="tasks.html"     class="drawer-item"><i class="fas fa-bolt"></i> Tasks</a>
+        <a href="withdraw.html"  class="drawer-item"><i class="fas fa-wallet"></i> Withdraw</a>
+        <a href="profile.html"   class="drawer-item"><i class="fas fa-user"></i> My Profile</a>
+        <a href="contact.html"   class="drawer-item"><i class="fas fa-headset"></i> Contact Us</a>
+        <a href="#" onclick="logoutUser(); return false;" class="drawer-item drawer-logout"><i class="fas fa-right-from-bracket"></i> Log Out</a>
+    </nav>
+</div>
+
+<!-- Topbar -->
+<div class="topbar">
+    <div class="burger" onclick="openDrawer()"><i class="fas fa-bars"></i></div>
+    <div class="topbar-brand">Nextel<span>Connect</span></div>
+    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=default&backgroundColor=c9a84c" alt="You" class="topbar-avatar" id="topbarAvatar" onclick="openDrawer()">
+</div>
+
+<!-- Page Content -->
+<div class="page">
+
+    <!-- Greeting -->
+    <div class="greeting mb-4">
+        <div class="greeting-sub" id="todayDate">Sunday, 12 Jul 2026</div>
+        <h1 id="greetingMessage">Hey, User 👋</h1>
+    </div>
+
+    <!-- BALANCE CARD -->
+    <div class="balance-main">
+        <div class="balance-label">Total Balance</div>
+        <div class="d-flex align-items-center">
+            <div class="balance-amount" id="balanceDisplay">₦0.00</div>
+            <button class="balance-eye" id="toggleBal" title="Toggle visibility">
+                <i class="fas fa-eye" id="balEyeIcon"></i>
+            </button>
+        </div>
+        <div class="balance-sub-row">
+            <div class="balance-sub">
+                <div class="balance-sub-lbl">Daily Earnings</div>
+                <div class="balance-sub-val" id="dailyEarnings">₦0.00</div>
+            </div>
+            <div class="balance-sub">
+                <div class="balance-sub-lbl">Referral Bonus</div>
+                <div class="balance-sub-val" id="referralBonus">₦0.00</div>
+            </div>
+        </div>
+        <div class="card-pill-row">
+            <button class="pill-plan" id="userPackage">Free Plan</button>
+            <button class="pill-wd" id="wdPillBtn" onclick="toggleWD()">My Withdrawal Limit</button>
+        </div>
+    </div>
+
+    <!-- Withdrawal dropdown -->
+    <div class="wd-dropdown-wrap" id="wdDropdown">
+        <div class="wd-info-card">
+            <div class="wd-info-title">
+                <i class="fas fa-lock"></i>
+                Free Plan Withdrawal Limit
+            </div>
+            <p class="wd-info-text">
+                <i class="fas fa-lock" style="color:var(--teal-dark);font-size:0.8rem;margin-right:4px;"></i>
+                <strong>Free Plan</strong> withdrawal limit is
+                <strong class="wd-limit-val">₦ 83,200.</strong><br>
+                To withdraw, kindly purchase a <strong class="wd-pass-word">Nextel Key.</strong>
+            </p>
+            <div class="wd-note-box">
+                ✅ Once your <strong>Nextel key</strong> is successfully purchased,
+                your account will be automatically upgraded to the <strong>Premium Plan.</strong>
+            </div>
+            <a href="withdraw.html" class="btn-stream-pass">
+                <i class="fas fa-bolt"></i> Get Nextel Key
+            </a>
+        </div>
+    </div>
+
+    <!-- Previous Credited Users Carousel -->
+    <div class="members-section mt-3">
+        <div class="members-label">Previous Credited Users</div>
+        <div class="members-carousel-wrap">
+            <div class="members-track">
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Salma&backgroundColor=c9a84c" alt="Salma" class="member-avatar" loading="lazy">
+                    <div class="member-name">Salma</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Otunba&backgroundColor=c9a84c" alt="Otunba" class="member-avatar" loading="lazy">
+                    <div class="member-name">Otunba</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Usman&backgroundColor=c9a84c" alt="Usman12" class="member-avatar" loading="lazy">
+                    <div class="member-name">Usman12</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Abel&backgroundColor=c9a84c" alt="Abel" class="member-avatar" loading="lazy">
+                    <div class="member-name">Abel</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Henry&backgroundColor=c9a84c" alt="HENRY" class="member-avatar" loading="lazy">
+                    <div class="member-name">HENRY</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=David&backgroundColor=c9a84c" alt="David" class="member-avatar" loading="lazy">
+                    <div class="member-name">David</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <!-- Duplicate for seamless loop -->
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Salma&backgroundColor=c9a84c" alt="Salma" class="member-avatar" loading="lazy">
+                    <div class="member-name">Salma</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Otunba&backgroundColor=c9a84c" alt="Otunba" class="member-avatar" loading="lazy">
+                    <div class="member-name">Otunba</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Usman&backgroundColor=c9a84c" alt="Usman12" class="member-avatar" loading="lazy">
+                    <div class="member-name">Usman12</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Abel&backgroundColor=c9a84c" alt="Abel" class="member-avatar" loading="lazy">
+                    <div class="member-name">Abel</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Henry&backgroundColor=c9a84c" alt="HENRY" class="member-avatar" loading="lazy">
+                    <div class="member-name">HENRY</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+                <div class="member-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=David&backgroundColor=c9a84c" alt="David" class="member-avatar" loading="lazy">
+                    <div class="member-name">David</div>
+                    <div class="member-credit">₦83,200</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="action-row">
+        <a href="tasks.html"   class="action-btn"><i class="fas fa-bolt"></i><span>Earn</span></a>
+        <a href="withdraw.html" class="action-btn"><i class="fas fa-wallet"></i><span>Withdraw</span></a>
+        <a href="#" class="action-btn"><i class="fas fa-user-plus"></i><span>Invite</span></a>
+        <a href="profile.html" class="action-btn"><i class="fas fa-gear"></i><span>Profile</span></a>
+    </div>
+
+    <!-- Referral Card -->
+    <div class="referral-card mb-4">
+        <div class="d-flex align-items-center gap-2 mb-1">
+            <i class="fas fa-link" style="color:var(--teal-dark);"></i>
+            <span style="font-weight:700;font-size:0.9rem;">Your Nextel Link</span>
+            <span class="ms-auto" style="font-size:0.75rem;color:var(--text-muted);" id="refCount">
+                0 Members
+            </span>
+        </div>
+        <div style="font-size:0.78rem;color:var(--text-muted);">Share your link — earn for every member you bring in</div>
+        <div class="ref-link-box">
+            <span class="ref-link-text" id="refLinkText">https://nextelconnect.live/register.html?ref=YOUR_CODE</span>
+            <button class="ref-copy-btn" onclick="copyRefLink()">Copy</button>
+        </div>
+    </div>
+
+    <!-- Star Share -->
+    <div class="star-card">
+        <div class="d-flex align-items-center gap-2 mb-1">
+            <i class="fas fa-star" style="color:var(--teal-dark);"></i>
+            <span style="font-weight:700;font-size:0.9rem;">Daily Share Bonus</span>
+        </div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.5rem;">
+            Collect 3 stars = ₦1,000 bonus on your daily earnings
+        </div>
+        <div class="stars-row" id="starsRow">
+            <div class="star-item" data-index="0">☆</div>
+            <div class="star-item" data-index="1">☆</div>
+            <div class="star-item" data-index="2">☆</div>
+            <div style="margin-left:4px;font-size:0.8rem;color:var(--text-muted);align-self:center;" id="starCount">
+                0/3 stars
+            </div>
+        </div>
+        <button class="btn-share" id="shareBtn" onclick="doShare()">
+            <i class="fas fa-share-nodes" style="margin-right:6px;"></i> Share & Claim Star
+        </button>
+    </div>
+
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+    <a href="dashboard.html" class="nav-btn active"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="tasks.html"     class="nav-btn"><i class="fas fa-bolt"></i><span>Tasks</span></a>
+    <a href="withdraw.html"  class="nav-btn"><i class="fas fa-wallet"></i><span>Withdraw</span></a>
+    <a href="#"              class="nav-btn"><i class="fas fa-users"></i><span>Network</span></a>
+    <a href="profile.html"   class="nav-btn"><i class="fas fa-user"></i><span>Profile</span></a>
+</div>
+
+<script>
+// ── localStorage Keys ──
+const SESSION_KEY = 'nextel_session';
+const USERS_KEY = 'nextel_users';
+
+// ── Get Current User ──
+function getCurrentUser() {
+    const session = localStorage.getItem(SESSION_KEY);
+    if (!session) return null;
+    try {
+        const sess = JSON.parse(session);
+        const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+        return users.find(u => u.id === sess.userId) || null;
+    } catch { return null; }
+}
+
+function getBalance() {
+    const user = getCurrentUser();
+    return user ? user.balance || 0 : 0;
+}
+
+function getCompletedTasks() {
+    const user = getCurrentUser();
+    return user ? user.completed_tasks || [] : [];
+}
+
+function getUserStars() {
+    const user = getCurrentUser();
+    return user ? user.stars || 0 : 0;
+}
+
+function getRefLink() {
+    const user = getCurrentUser();
+    if (!user) return '';
+    // Generate a simple ref code from user ID
+    const refCode = user.id ? user.id.slice(-8) : '12345678';
+    return `https://nextelconnect.live/register.html?ref=${refCode}`;
+}
+
+// ── Update UI ──
+function updateDashboard() {
+    const user = getCurrentUser();
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Drawer
+    document.getElementById('drawerName').textContent = user.fullname || user.username;
+    document.getElementById('drawerPkg').textContent = `✦ Nextel · ${user.package || 'Free'}`;
+    const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
+    document.getElementById('drawerAvatar').src = avatarUrl;
+    document.getElementById('topbarAvatar').src = avatarUrl;
+
+    // Greeting
+    const today = new Date();
+    const options = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
+    document.getElementById('todayDate').textContent = today.toLocaleDateString('en-US', options);
+    document.getElementById('greetingMessage').textContent = `Hey, ${user.fullname || user.username} 👋`;
+
+    // Balance
+    const balance = user.balance || 0;
+    document.getElementById('balanceDisplay').textContent = '₦' + balance.toFixed(2);
+    document.getElementById('dailyEarnings').textContent = '₦' + balance.toFixed(2);
+    document.getElementById('referralBonus').textContent = '₦0.00';
+
+    // Package
+    document.getElementById('userPackage').textContent = (user.package || 'Free') + ' Plan';
+
+    // Stars
+    const stars = user.stars || 0;
+    const starItems = document.querySelectorAll('.star-item');
+    starItems.forEach((el, i) => {
+        if (i < stars) {
+            el.classList.add('earned');
+            el.textContent = '★';
+        } else {
+            el.classList.remove('earned');
+            el.textContent = '☆';
+        }
+    });
+    document.getElementById('starCount').textContent = `${stars}/3 stars`;
+    document.getElementById('shareBtn').disabled = stars >= 3;
+
+    // Referral link
+    document.getElementById('refLinkText').textContent = getRefLink();
+    document.getElementById('refCount').textContent = '0 Members';
+}
+
+// ── Drawer ──
+function openDrawer() {
+    document.getElementById('sideDrawer').classList.add('open');
+    document.getElementById('drawerOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+    document.getElementById('sideDrawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+// ── Balance toggle ──
+let balVisible = true;
+document.getElementById('toggleBal').addEventListener('click', function() {
+    const user = getCurrentUser();
+    const balance = user ? user.balance || 0 : 0;
+    balVisible = !balVisible;
+    document.getElementById('balanceDisplay').textContent = balVisible ? '₦' + balance.toFixed(2) : '₦ ••••••';
+    document.getElementById('balEyeIcon').className = balVisible ? 'fas fa-eye' : 'fas fa-eye-slash';
+});
+
+// ── Withdrawal dropdown toggle ──
+function toggleWD() {
+    const wrap = document.getElementById('wdDropdown');
+    const btn = document.getElementById('wdPillBtn');
+    const isOpen = wrap.classList.toggle('open');
+    btn.classList.toggle('active', isOpen);
+}
+
+// ── Copy referral link ──
+function copyRefLink() {
+    const text = document.getElementById('refLinkText').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        Swal.fire({ 
+            icon: 'success', 
+            title: 'Copied!', 
+            text: 'Referral link copied!', 
+            timer: 2000, 
+            showConfirmButton: false,
+            background: '#fff',
+            color: '#0B3D2E'
+        });
+    });
+}
+
+// ── Share & Claim Star ──
+function doShare() {
+    const user = getCurrentUser();
+    if (!user) return;
+    
+    const stars = user.stars || 0;
+    if (stars >= 3) {
+        Swal.fire({
+            icon: 'info',
+            title: 'All Stars Earned!',
+            text: 'You\'ve already collected all 3 stars today. Come back tomorrow!',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
+        return;
+    }
+
+    const link = getRefLink();
+    const text = encodeURIComponent('Click the link to join my team on Nextel Connect, Registration is Free\n\n' + link);
+    window.open('https://wa.me/?text=' + text, '_blank');
+
+    // Update stars
+    const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+    const userIndex = users.findIndex(u => u.id === user.id);
+    if (userIndex !== -1) {
+        users[userIndex].stars = (users[userIndex].stars || 0) + 1;
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        
+        const session = JSON.parse(localStorage.getItem(SESSION_KEY));
+        localStorage.setItem(SESSION_KEY, JSON.stringify({
+            ...session,
+            userId: users[userIndex].id,
+            username: users[userIndex].username,
+            fullname: users[userIndex].fullname,
+            email: users[userIndex].email
+        }));
+    }
+
+    updateDashboard();
+    
+    Swal.fire({
+        icon: 'success',
+        title: '🌟 Star Earned!',
+        html: `<div style="color:#6B9E8E;font-size:.95rem;">You earned a star!<br>Collect 3 stars for a <strong style="color:#0B3D2E;">₦1,000 bonus</strong>.</div>`,
+        background: '#fff',
+        color: '#0B3D2E',
+        confirmButtonColor: '#3BC4A3',
+        timer: 3000,
+        timerProgressBar: true
+    });
+}
+
+// ── Logout ──
+function logoutUser() {
+    Swal.fire({
+        icon: 'question',
+        title: 'Log Out?',
+        text: 'Are you sure you want to log out?',
+        showCancelButton: true,
+        confirmButtonColor: '#3BC4A3',
+        cancelButtonColor: '#ef4444',
+        confirmButtonText: 'Yes, Log Out',
+        cancelButtonText: 'Cancel',
+        background: '#fff',
+        color: '#0B3D2E'
+    }).then(result => {
+        if (result.isConfirmed) {
+            localStorage.removeItem(SESSION_KEY);
+            window.location.href = 'login.html';
+        }
+    });
+}
+
+// ── ══ PAYMENT PROOF POPUP ═══════════════════════════════════ ──
+(function() {
+    const STORAGE_KEY = 'pcp_nextel_v1';
+    const RESHOW_MS   = 30 * 1000; // 30 seconds
+
+    function shouldShow() {
+        try {
+            const ts = localStorage.getItem(STORAGE_KEY);
+            if (!ts) return true;
+            return (Date.now() - parseInt(ts, 10)) >= RESHOW_MS;
+        } catch(e) { return true; }
+    }
+
+    function showPopup() {
+        const el = document.getElementById('pcpOverlay');
+        if (!el) return;
+        el.style.display = 'flex';
+        el.style.animation = 'pcpFadeIn 0.3s ease';
+    }
+
+    window.dismissPCP = function() {
+        const el = document.getElementById('pcpOverlay');
+        if (el) el.style.display = 'none';
+        try { localStorage.setItem(STORAGE_KEY, Date.now().toString()); } catch(e) {}
+    };
+
+    // Show popup after 900ms if it hasn't been shown recently
+    if (shouldShow()) {
+        setTimeout(showPopup, 900);
+    }
+
+    // Check every 5 seconds if the popup should reappear
+    setInterval(function() {
+        const el = document.getElementById('pcpOverlay');
+        if (el && el.style.display === 'none' && shouldShow()) {
+            showPopup();
+        }
+    }, 5000);
+})();
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function() {
+    updateDashboard();
+});
+</script>
+</body>
+</html>
