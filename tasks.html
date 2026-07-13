@@ -290,19 +290,19 @@ body {
         <i class="fas fa-chart-line"></i>
         <div style="flex:1;">
             <div class="cap-title">Daily Earnings Cap</div>
-            <div class="cap-desc">You can earn up to ₦55,000 in daily earnings. Once you hit the limit, you must withdraw to continue earning. Withdrawal limit is ₦55,000.</div>
+            <div class="cap-desc">You can earn up to ₦87,000 in daily earnings. Once you hit the limit, you must withdraw to continue earning.</div>
             <div class="cap-progress">
                 <div class="cap-progress-bar">
                     <div class="cap-progress-fill" id="capFill" style="width:0%;"></div>
                 </div>
-                <div class="cap-progress-text" id="capText">₦0 / ₦55,000 · <strong>₦55,000 remaining</strong></div>
+                <div class="cap-progress-text" id="capText">₦0 / ₦87,000 · <strong>₦87,000 remaining</strong></div>
             </div>
         </div>
     </div>
 
     <div class="reset-strip">
         <i class="fas fa-rotate-right"></i>
-        <span>Tasks reset daily at <strong>midnight</strong>. Complete all 10 to earn ₦55,000!</span>
+        <span>Tasks reset daily at <strong>midnight</strong>. Complete all 10 to earn ₦27,000!</span>
     </div>
 
     <div class="category-progress">
@@ -315,7 +315,7 @@ body {
     <div class="section-title"><i class="fas fa-phone" style="color:var(--teal-dark);"></i> Sponsor Calls (4)</div>
     <div class="disclosure-note">
         <i class="fas fa-shield-halved"></i>
-        <span>Every call is a short, disclosed sponsor message played through the Nextel network. Earn ₦5,500 per completed call.</span>
+        <span>Every call is a short, disclosed sponsor message played through the Nextel network. Earn ₦2,700 per completed call.</span>
     </div>
     
     <div class="call-contact-row" id="row_80">
@@ -374,7 +374,7 @@ body {
     <div class="section-title" style="margin-top:1.6rem;"><i class="fas fa-comment-dots" style="color:var(--teal-dark);"></i> Message Tasks (4)</div>
     <div class="disclosure-note">
         <i class="fas fa-shield-halved"></i>
-        <span>Send a quick "Hi" to support agents and get a reply. Earn ₦5,500 per completed chat.</span>
+        <span>Send a quick "Hi" to support agents and get a reply. Earn ₦2,700 per completed chat.</span>
     </div>
     
     <div class="call-contact-row" id="row_84">
@@ -433,7 +433,7 @@ body {
     <div class="section-title" style="margin-top:1.6rem;"><i class="fas fa-address-book" style="color:var(--teal-dark);"></i> Save Contacts (2)</div>
     <div class="disclosure-note">
         <i class="fas fa-shield-halved"></i>
-        <span>Pick a number and save it to your contacts. Earn ₦5,500 per saved number.</span>
+        <span>Pick a number and save it to your contacts. Earn ₦2,700 per saved number.</span>
     </div>
     
     <div class="call-contact-row" id="row_88">
@@ -492,7 +492,7 @@ body {
     </div>
     <div class="call-claim-wrap" id="claimWrap">
         <button class="call-claim-btn" id="claimBtn" onclick="claimCall()">
-            <i class="fas fa-gift"></i> Claim ₦5,500
+            <i class="fas fa-gift"></i> Claim ₦2,700
         </button>
         <div class="call-claim-hint">Call completed — tap to claim your reward</div>
     </div>
@@ -515,7 +515,7 @@ body {
     </div>
     <div class="call-claim-wrap" id="msgClaimWrap">
         <button class="call-claim-btn" id="msgClaimBtn" onclick="claimMessage()">
-            <i class="fas fa-gift"></i> Claim ₦5,500
+            <i class="fas fa-gift"></i> Claim ₦2,700
         </button>
         <div class="call-claim-hint">Chat completed — tap to claim your reward</div>
     </div>
@@ -538,15 +538,15 @@ body {
     </div>
     <div class="call-claim-wrap" id="numClaimWrap">
         <button class="call-claim-btn" id="numClaimBtn" onclick="claimNumber()">
-            <i class="fas fa-gift"></i> Claim ₦5,500
+            <i class="fas fa-gift"></i> Claim ₦2,700
         </button>
         <div class="call-claim-hint">Save successful — tap to claim your reward</div>
     </div>
 </div>
 
 <script>
-const TASK_REWARD = 5500;
-const DAILY_EARNINGS_CAP = 55000;
+const TASK_REWARD = 2700;
+const DAILY_EARNINGS_CAP = 87000;
 const TOTAL_TASKS = 10;
 
 // ── Session & User Helpers ──
@@ -569,6 +569,7 @@ function saveUser(user) {
     }
 }
 
+// ── Balance Functions ──
 function getBalance() {
     const user = getCurrentUser();
     return user ? user.balance || 0 : 0;
@@ -581,6 +582,31 @@ function setBalance(amount) {
     saveUser(user);
 }
 
+// ── Today's Earnings (DAILY CAP) ──
+function getTodayEarnings() {
+    const user = getCurrentUser();
+    return user ? user.today_earnings || 0 : 0;
+}
+
+function setTodayEarnings(amount) {
+    const user = getCurrentUser();
+    if (!user) return;
+    user.today_earnings = amount;
+    saveUser(user);
+}
+
+function addTodayEarnings(amount) {
+    const user = getCurrentUser();
+    if (!user) return;
+    user.today_earnings = (user.today_earnings || 0) + amount;
+    saveUser(user);
+}
+
+function isCapReached() {
+    return getTodayEarnings() >= DAILY_EARNINGS_CAP;
+}
+
+// ── Tasks ──
 function getCompletedTasks() {
     const user = getCurrentUser();
     return user ? user.completed_tasks || [] : [];
@@ -605,6 +631,7 @@ function markTaskCompleted(taskId) {
     }
 }
 
+// ── Daily Reset ──
 function getLastResetDate() {
     const user = getCurrentUser();
     return user ? user.last_reset || '' : '';
@@ -625,8 +652,11 @@ function checkAndResetDaily() {
     const lastReset = user.last_reset || '';
     
     if (lastReset !== today) {
-        user.completed_tasks = [];
-        user.last_reset = today;
+        // ── RESET DAILY STUFF ──
+        user.completed_tasks = [];    // Reset tasks
+        user.today_earnings = 0;       // Reset daily earnings counter
+        user.stars = 0;               // Reset stars (optional)
+        user.last_reset = today;       // Update reset date
         saveUser(user);
         return true;
     }
@@ -636,17 +666,18 @@ function checkAndResetDaily() {
 // ── UI Update Functions ──
 function updateUI() {
     const balance = getBalance();
+    const todayEarnings = getTodayEarnings();
     const completed = getCompletedTasks();
     const doneCount = completed.length;
     
-    document.getElementById('dailyBal').textContent = '₦' + balance.toFixed(2);
+    document.getElementById('dailyBal').textContent = '₦' + todayEarnings.toFixed(2);
     document.getElementById('doneCount').textContent = doneCount;
     
-    const pct = Math.min((balance / DAILY_EARNINGS_CAP) * 100, 100);
+    const pct = Math.min((todayEarnings / DAILY_EARNINGS_CAP) * 100, 100);
     document.getElementById('capFill').style.width = pct + '%';
-    const remaining = Math.max(DAILY_EARNINGS_CAP - balance, 0);
+    const remaining = Math.max(DAILY_EARNINGS_CAP - todayEarnings, 0);
     document.getElementById('capText').innerHTML = 
-        '₦' + balance.toFixed(2) + ' / ₦' + DAILY_EARNINGS_CAP.toLocaleString() + 
+        '₦' + todayEarnings.toFixed(2) + ' / ₦' + DAILY_EARNINGS_CAP.toLocaleString() + 
         ' · <strong>₦' + remaining.toFixed(2) + ' remaining</strong>';
     
     const callTasks = [80, 81, 82, 83];
@@ -689,9 +720,8 @@ function showCapReachedPopup() {
         icon: 'warning',
         title: 'Daily Earnings Cap Reached!',
         html: `<div style="font-size:0.92rem;color:#6B9E8E;line-height:1.75;text-align:center;">
-                 You have reached the <strong style="color:#fb923c;">₦55,000</strong> daily earnings limit.<br><br>
-                 You must <strong style="color:#3BC4A3;">withdraw your earnings</strong> to reset your cap and continue earning.<br><br>
-                 <span style="color:#fb923c;">Withdrawal Limit: ₦55,000</span>
+                 You have reached the <strong style="color:#fb923c;">₦87,000</strong> daily earnings limit.<br><br>
+                 You must <strong style="color:#3BC4A3;">withdraw your earnings</strong> to reset your cap and continue earning.
                </div>`,
         background: '#fff', color: '#0B3D2E',
         confirmButtonColor: '#3BC4A3', confirmButtonText: 'Go to Withdraw',
@@ -722,86 +752,7 @@ function resetTaskStates() {
     selectedNumber = null;
 }
 
-// ── VOICE (Text-to-Speech) ─────────────────────────────────────
-function speakMessage(text, onStart, onDone) {
-    // Try speech synthesis first
-    if (window.speechSynthesis) {
-        try {
-            // Cancel any ongoing speech
-            window.speechSynthesis.cancel();
-            
-            const utter = new SpeechSynthesisUtterance(text);
-            
-            // Try to get a good voice
-            const voices = window.speechSynthesis.getVoices();
-            const preferredVoice = voices.find(v => 
-                /en-(US|GB|NG)/i.test(v.lang) && 
-                /Female|Google|Natural|Samantha|Victoria/i.test(v.name)
-            ) || voices.find(v => /en/i.test(v.lang)) || null;
-            
-            if (preferredVoice) utter.voice = preferredVoice;
-            
-            utter.rate = 0.9;
-            utter.pitch = 1.0;
-            utter.volume = 1;
-            
-            let started = false;
-            
-            utter.onstart = () => {
-                started = true;
-                if (onStart) onStart();
-            };
-            
-            utter.onend = () => {
-                if (onDone) onDone();
-            };
-            
-            utter.onerror = (e) => {
-                console.log('Speech error:', e);
-                // If speech fails, use the fallback
-                if (!started) {
-                    if (onStart) onStart();
-                    setTimeout(() => {
-                        if (onDone) onDone();
-                    }, 4000);
-                }
-            };
-            
-            window.speechSynthesis.speak(utter);
-            
-            // Safety fallback if onstart never fires
-            setTimeout(() => {
-                if (!started) {
-                    started = true;
-                    if (onStart) onStart();
-                }
-            }, 1500);
-            
-            return;
-        } catch (e) {
-            console.log('Speech exception:', e);
-        }
-    }
-    
-    // ── FALLBACK: Simulate the call without speech ──
-    if (onStart) onStart();
-    setTimeout(() => {
-        if (onDone) onDone();
-    }, 4000);
-}
-
-// Preload voices when the page loads
-function preloadVoices() {
-    if (window.speechSynthesis) {
-        // This triggers voice loading
-        window.speechSynthesis.getVoices();
-        window.speechSynthesis.onvoiceschanged = () => {
-            window.speechSynthesis.getVoices();
-        };
-    }
-}
-
-// ── CALL TASKS ─────────────────────────────────────────────────
+// ── CALL TASKS WITH AUDIO FILES ──────────────────────────────
 let activeCallTaskId = null;
 let callTimerInterval = null;
 let callSeconds = 0;
@@ -809,21 +760,28 @@ let callEnded = false;
 let claimTimeout = null;
 let isClaiming = false;
 let hasClaimedThisCall = false;
+let currentAudio = null;
 
 const SPONSOR_MESSAGES = [
     "Thanks for taking this call! This is a quick word from a Nextel Network partner — explore more earning opportunities inside the Nextel app today.",
     "Hi there — this short message is brought to you by a Nextel Network sponsor. Check the Rewards tab in your dashboard for today's bonuses.",
     "This call is sponsored by a Nextel Network partner. Keep completing daily calls to grow your Nextel earnings.",
-    "Welcome to Nextel! This sponsor message helps keep the platform free. Complete all 10 tasks today to earn ₦55,000!",
+    "Welcome to Nextel! This sponsor message helps keep the platform free. Complete all 10 tasks today to earn ₦27,000!",
 ];
+
+// Map task IDs to audio files (task1.mp3, task2.mp3, task3.mp3, task4.mp3)
+function getAudioFile(taskId) {
+    // taskId 80 -> task1, 81 -> task2, 82 -> task3, 83 -> task4
+    const audioNum = (taskId - 80) + 1;
+    return `assets/audio/task${audioNum}.mp3`;
+}
 
 function startCall(taskId, name, initial, network) {
     const btn = document.getElementById('btn_' + taskId);
     if (btn.disabled) return;
     if (isTaskCompleted(taskId)) return;
     
-    const balance = getBalance();
-    if (balance >= DAILY_EARNINGS_CAP) { showCapReachedPopup(); return; }
+    if (isCapReached()) { showCapReachedPopup(); return; }
 
     // Reset all call-related state
     resetTaskStates();
@@ -835,10 +793,11 @@ function startCall(taskId, name, initial, network) {
     hasClaimedThisCall = false;
     if (claimTimeout) { clearTimeout(claimTimeout); claimTimeout = null; }
     if (callTimerInterval) { clearInterval(callTimerInterval); callTimerInterval = null; }
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
 
     const claimBtn = document.getElementById('claimBtn');
     claimBtn.disabled = false;
-    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,700';
 
     document.getElementById('callAvatar').textContent = initial;
     document.getElementById('callName').textContent = name;
@@ -852,6 +811,7 @@ function startCall(taskId, name, initial, network) {
     document.getElementById('muteBtn').textContent = 'Mute';
     document.getElementById('callScreen').classList.add('open');
 
+    // ── Start Timer ──
     callTimerInterval = setInterval(() => {
         callSeconds++;
         const m = String(Math.floor(callSeconds / 60)).padStart(2, '0');
@@ -859,30 +819,53 @@ function startCall(taskId, name, initial, network) {
         document.getElementById('callTimer').textContent = `${m}:${s}`;
     }, 1000);
 
+    // ── After 1.5 seconds, play audio ──
     setTimeout(() => {
         if (callEnded) return;
         document.getElementById('callStatus').textContent = 'Connected';
-        const msg = SPONSOR_MESSAGES[taskId % SPONSOR_MESSAGES.length];
+        
+        // Show message text
+        const msg = SPONSOR_MESSAGES[(taskId - 80) % SPONSOR_MESSAGES.length];
         document.getElementById('callMessageText').textContent = msg;
         document.getElementById('callMessage').classList.add('show');
         
-        // Speak the message
-        speakMessage(
-            msg,
-            // onStart - speech started
-            () => {
-                if (callEnded) return;
-                document.getElementById('callStatus').textContent = 'Talking…';
-            },
-            // onDone - speech finished
-            () => {
-                if (callEnded) return;
-                document.getElementById('callStatus').textContent = 'Wrapping up…';
-                claimTimeout = setTimeout(() => { 
-                    if (!callEnded) finishCall(); 
-                }, 1000);
-            }
-        );
+        // ── PLAY AUDIO ──
+        const audioPath = getAudioFile(taskId);
+        currentAudio = new Audio(audioPath);
+        
+        // When audio starts playing
+        currentAudio.onplay = function() {
+            document.getElementById('callStatus').textContent = 'Talking…';
+        };
+        
+        // When audio finishes
+        currentAudio.onended = function() {
+            document.getElementById('callStatus').textContent = 'Wrapping up…';
+            claimTimeout = setTimeout(() => { 
+                if (!callEnded) finishCall(); 
+            }, 1000);
+        };
+        
+        // If audio fails to load
+        currentAudio.onerror = function(e) {
+            console.warn('Audio file not found:', audioPath);
+            document.getElementById('callStatus').textContent = 'Talking…';
+            // Fallback: complete after 5 seconds
+            claimTimeout = setTimeout(() => { 
+                if (!callEnded) finishCall(); 
+            }, 5000);
+        };
+        
+        // Play audio
+        currentAudio.play().catch(function(e) {
+            console.warn('Audio play failed:', e);
+            // Fallback: complete after 5 seconds
+            document.getElementById('callStatus').textContent = 'Talking…';
+            claimTimeout = setTimeout(() => { 
+                if (!callEnded) finishCall(); 
+            }, 5000);
+        });
+        
     }, 1500);
 }
 
@@ -902,12 +885,12 @@ function endCall() {
     callEnded = true;
     if (callTimerInterval) { clearInterval(callTimerInterval); callTimerInterval = null; }
     if (claimTimeout) { clearTimeout(claimTimeout); claimTimeout = null; }
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
     document.getElementById('callScreen').classList.remove('open');
     // Reset claim button
     const claimBtn = document.getElementById('claimBtn');
     claimBtn.disabled = false;
-    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,700';
     document.getElementById('claimWrap').classList.remove('show');
     document.getElementById('callControls').style.display = 'flex';
     activeCallTaskId = null; 
@@ -926,8 +909,7 @@ function claimCall() {
         return;
     }
     
-    const balance = getBalance();
-    if (balance >= DAILY_EARNINGS_CAP) { 
+    if (isCapReached()) { 
         showCapReachedPopup(); 
         document.getElementById('callScreen').classList.remove('open');
         activeCallTaskId = null;
@@ -943,7 +925,7 @@ function claimCall() {
     setTimeout(() => {
         if (isTaskCompleted(taskId)) {
             claimBtn.disabled = false;
-            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
+            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,700';
             isClaiming = false;
             document.getElementById('callScreen').classList.remove('open');
             activeCallTaskId = null;
@@ -952,8 +934,7 @@ function claimCall() {
             return;
         }
         
-        const currentBalance = getBalance();
-        if (currentBalance >= DAILY_EARNINGS_CAP) {
+        if (isCapReached()) {
             document.getElementById('callScreen').classList.remove('open');
             isClaiming = false;
             activeCallTaskId = null;
@@ -961,18 +942,20 @@ function claimCall() {
             return;
         }
         
+        // ── Add reward to BOTH balance AND today's earnings ──
+        const currentBalance = getBalance();
         const newBalance = currentBalance + TASK_REWARD;
         setBalance(newBalance);
+        addTodayEarnings(TASK_REWARD);
         markTaskCompleted(taskId);
         hasClaimedThisCall = true;
         
         updateUI();
-        showToast('+₦5,500 Earned!');
+        showToast('+₦2,700 Earned!');
         
         document.getElementById('callScreen').classList.remove('open');
-        // Reset claim button for next use
         claimBtn.disabled = false;
-        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
+        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,700';
         document.getElementById('claimWrap').classList.remove('show');
         document.getElementById('callControls').style.display = 'flex';
         activeCallTaskId = null;
@@ -980,7 +963,7 @@ function claimCall() {
         
         Swal.fire({
             icon: 'success', 
-            title: '₦5,500 Earned!',
+            title: '₦2,700 Earned!',
             html: `<div style="color:#6B9E8E;font-size:.88rem;line-height:1.6;">Sponsor call completed successfully!<br><span style="color:#3BC4A3;">Keep going — more tasks await!</span></div>`,
             background: '#fff', 
             color: '#0B3D2E',
@@ -1000,8 +983,7 @@ function startMessageTask(taskId, agentName) {
     if (btn && btn.disabled) return;
     if (isTaskCompleted(taskId)) return;
     
-    const balance = getBalance();
-    if (balance >= DAILY_EARNINGS_CAP) { showCapReachedPopup(); return; }
+    if (isCapReached()) { showCapReachedPopup(); return; }
 
     resetTaskStates();
     activeMsgTaskId = taskId;
@@ -1053,10 +1035,9 @@ function sendHiMessage() {
 
 function cancelMessageTask() {
     document.getElementById('msgScreen').classList.remove('open');
-    // Reset claim button
     const claimBtn = document.getElementById('msgClaimBtn');
     claimBtn.disabled = false;
-    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,700';
     document.getElementById('msgClaimWrap').classList.remove('show');
     activeMsgTaskId = null;
     msgClaimed = false;
@@ -1072,8 +1053,7 @@ function claimMessage() {
         return;
     }
     
-    const balance = getBalance();
-    if (balance >= DAILY_EARNINGS_CAP) { 
+    if (isCapReached()) { 
         showCapReachedPopup(); 
         document.getElementById('msgScreen').classList.remove('open');
         activeMsgTaskId = null;
@@ -1089,7 +1069,7 @@ function claimMessage() {
     setTimeout(() => {
         if (isTaskCompleted(taskId)) {
             claimBtn.disabled = false;
-            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
+            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,700';
             msgClaimed = false;
             document.getElementById('msgScreen').classList.remove('open');
             activeMsgTaskId = null;
@@ -1098,8 +1078,7 @@ function claimMessage() {
             return;
         }
         
-        const currentBalance = getBalance();
-        if (currentBalance >= DAILY_EARNINGS_CAP) {
+        if (isCapReached()) {
             document.getElementById('msgScreen').classList.remove('open');
             msgClaimed = false;
             activeMsgTaskId = null;
@@ -1107,22 +1086,23 @@ function claimMessage() {
             return;
         }
         
-        const newBalance = currentBalance + TASK_REWARD;
+        const newBalance = getBalance() + TASK_REWARD;
         setBalance(newBalance);
+        addTodayEarnings(TASK_REWARD);
         markTaskCompleted(taskId);
         updateUI();
-        showToast('+₦5,500 Earned!');
+        showToast('+₦2,700 Earned!');
         
         document.getElementById('msgScreen').classList.remove('open');
         claimBtn.disabled = false;
-        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
+        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,700';
         document.getElementById('msgClaimWrap').classList.remove('show');
         activeMsgTaskId = null;
         msgClaimed = false;
         
         Swal.fire({
             icon: 'success', 
-            title: '₦5,500 Earned!',
+            title: '₦2,700 Earned!',
             html: `<div style="color:#6B9E8E;font-size:.88rem;line-height:1.6;">Message task completed successfully!</div>`,
             background: '#fff', 
             color: '#0B3D2E', 
@@ -1149,8 +1129,7 @@ function startNumberTask(taskId, taskName) {
     if (btn && btn.disabled) return;
     if (isTaskCompleted(taskId)) return;
     
-    const balance = getBalance();
-    if (balance >= DAILY_EARNINGS_CAP) { showCapReachedPopup(); return; }
+    if (isCapReached()) { showCapReachedPopup(); return; }
 
     resetTaskStates();
     activeNumTaskId = taskId;
@@ -1215,7 +1194,7 @@ function cancelNumberTask() {
     document.getElementById('numScreen').classList.remove('open');
     const claimBtn = document.getElementById('numClaimBtn');
     claimBtn.disabled = false;
-    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,700';
     document.getElementById('numClaimWrap').classList.remove('show');
     activeNumTaskId = null;
     numClaimed = false;
@@ -1231,8 +1210,7 @@ function claimNumber() {
         return;
     }
     
-    const balance = getBalance();
-    if (balance >= DAILY_EARNINGS_CAP) { 
+    if (isCapReached()) { 
         showCapReachedPopup(); 
         document.getElementById('numScreen').classList.remove('open');
         activeNumTaskId = null;
@@ -1248,7 +1226,7 @@ function claimNumber() {
     setTimeout(() => {
         if (isTaskCompleted(taskId)) {
             claimBtn.disabled = false;
-            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
+            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,700';
             numClaimed = false;
             document.getElementById('numScreen').classList.remove('open');
             activeNumTaskId = null;
@@ -1257,8 +1235,7 @@ function claimNumber() {
             return;
         }
         
-        const currentBalance = getBalance();
-        if (currentBalance >= DAILY_EARNINGS_CAP) {
+        if (isCapReached()) {
             document.getElementById('numScreen').classList.remove('open');
             numClaimed = false;
             activeNumTaskId = null;
@@ -1266,22 +1243,23 @@ function claimNumber() {
             return;
         }
         
-        const newBalance = currentBalance + TASK_REWARD;
+        const newBalance = getBalance() + TASK_REWARD;
         setBalance(newBalance);
+        addTodayEarnings(TASK_REWARD);
         markTaskCompleted(taskId);
         updateUI();
-        showToast('+₦5,500 Earned!');
+        showToast('+₦2,700 Earned!');
         
         document.getElementById('numScreen').classList.remove('open');
         claimBtn.disabled = false;
-        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
+        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,700';
         document.getElementById('numClaimWrap').classList.remove('show');
         activeNumTaskId = null;
         numClaimed = false;
         
         Swal.fire({
             icon: 'success', 
-            title: '₦5,500 Earned!',
+            title: '₦2,700 Earned!',
             html: `<div style="color:#6B9E8E;font-size:.88rem;line-height:1.6;">Number saved successfully!</div>`,
             background: '#fff', 
             color: '#0B3D2E', 
@@ -1307,9 +1285,6 @@ function loadUserAvatar() {
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function() {
-    // Preload voices for speech synthesis
-    preloadVoices();
-    
     const user = getCurrentUser();
     if (!user) {
         Swal.fire({
