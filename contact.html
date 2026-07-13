@@ -372,52 +372,30 @@ body {
 
     <!-- Call Now CTA -->
     <div class="call-btn-wrap">
-        <a href="tel:07015830783" class="btn-call-now">
+        <a href="tel:09113042652" class="btn-call-now">
             <i class="fas fa-phone-alt"></i>
-            Call 07015830783
+            Call 09113042652
         </a>
     </div>
 
     <!-- Channel Cards -->
     <div class="channel-grid">
 
-        <a href="tel:07015830783" class="channel-card">
+        <a href="tel:09113042652" class="channel-card">
             <div class="channel-icon gold"><i class="fas fa-phone-alt"></i></div>
             <div class="channel-info">
                 <div class="channel-label">Phone</div>
-                <div class="channel-value">07015830783</div>
+                <div class="channel-value">09113042652</div>
                 <div class="channel-sub">Tap to call · 9 AM – 8 PM daily</div>
             </div>
             <i class="fas fa-chevron-right channel-arrow"></i>
         </a>
 
-        <a href="mailto:support@nextelconnect.live" class="channel-card">
-            <div class="channel-icon cyan"><i class="fas fa-envelope"></i></div>
-            <div class="channel-info">
-                <div class="channel-label">Send Us an Email</div>
-                <div class="channel-value">support@nextelconnect.live</div>
-                <div class="channel-sub">Tap to send a message · We reply within 24hrs</div>
-            </div>
-            <i class="fas fa-chevron-right channel-arrow"></i>
-        </a>
-
-        <a href="https://wa.me/2347015830783" target="_blank" class="channel-card">
-            <div class="channel-icon cyan"><i class="fab fa-whatsapp"></i></div>
-            <div class="channel-info">
-                <div class="channel-label">WhatsApp</div>
-                <div class="channel-value">07015830783</div>
-                <div class="channel-sub">Chat with us on WhatsApp</div>
-            </div>
-            <i class="fas fa-chevron-right channel-arrow"></i>
-        </a>
+       
 
     </div>
 
-    <!-- Social Row -->
-    <div class="social-row">
-        <a href="mailto:support@nextelconnect.live" class="social-btn"><i class="fas fa-envelope"></i> Email Us</a>
-        <a href="https://t.me/nextelsupport" target="_blank" class="social-btn"><i class="fab fa-telegram"></i> Telegram</a>
-    </div>
+    
 
 </div>
 
@@ -498,6 +476,19 @@ function logoutUser() {
             window.location.href = 'login.html';
         }
     });
+}
+
+// ── Load avatar from localStorage ──
+function loadUserAvatar() {
+    const user = getCurrentUser();
+    if (!user) return;
+    
+    if (user.avatar) {
+        document.getElementById('topbarAvatar').src = user.avatar;
+        document.getElementById('drawerAvatar').src = user.avatar;
+        return true;
+    }
+    return false;
 }
 
 // ── Init ──

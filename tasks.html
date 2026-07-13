@@ -1291,6 +1291,19 @@ function claimNumber() {
     }, 800);
 }
 
+// ── Load avatar from localStorage ──
+function loadUserAvatar() {
+    const user = getCurrentUser();
+    if (!user) return;
+    
+    if (user.avatar) {
+        document.getElementById('topbarAvatar').src = user.avatar;
+        document.getElementById('drawerAvatar').src = user.avatar;
+        return true;
+    }
+    return false;
+}
+
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function() {
     // Preload voices for speech synthesis

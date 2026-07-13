@@ -375,7 +375,7 @@ body {
     <div class="ref-card">
         <div class="ref-label"><i class="fas fa-link" style="margin-right:6px;color:var(--teal-dark);"></i>Your Nextel Link</div>
         <div class="ref-link-box">
-            <span class="ref-link-text" id="refLinkText">https://nextelconnect.live/register.html?ref=</span>
+            <span class="ref-link-text" id="refLinkText">https://nextelhub.site/register.html?ref=</span>
             <button class="ref-copy-btn" onclick="copyRefLink()">Copy</button>
         </div>
     </div>
@@ -532,25 +532,140 @@ body {
 </div>
 
 <script>
+// ── localStorage Keys ──
+const SESSION_KEY = 'nextel_session';
+const USERS_KEY = 'nextel_users';
+
 // ── Get Current User ──
 function getCurrentUser() {
-    const session = localStorage.getItem('nextel_session');
+    const session = localStorage.getItem(SESSION_KEY);
     if (!session) return null;
     try {
         const sess = JSON.parse(session);
-        const users = JSON.parse(localStorage.getItem('nextel_users')) || [];
+        const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
         return users.find(u => u.id === sess.userId) || null;
     } catch { return null; }
 }
 
 function saveUser(user) {
-    const users = JSON.parse(localStorage.getItem('nextel_users')) || [];
+    const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
     const index = users.findIndex(u => u.id === user.id);
     if (index !== -1) {
         users[index] = user;
-        localStorage.setItem('nextel_users', JSON.stringify(users));
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
     }
 }
+
+// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──
+// ── AVATAR FUNCTIONS ──
+// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──
+
+// ── Save avatar to localStorage ──
+function saveAvatarToStorage(base64Image) {
+    const user = getCurrentUser();
+    if (!user) return;
+    user.avatar = base64Image;
+    saveUser(user);
+}
+
+// ── Load avatar from localStorage ──
+function loadAvatar() {
+    const user = getCurrentUser();
+    if (!user) return false;
+    
+    if (user.avatar) {
+        document.getElementById('avatarImg').src = user.avatar;
+        return true;
+    }
+    return false;
+}
+
+// ── Get user avatar (for other pages to use) ──
+function getUserAvatar() {
+    const user = getCurrentUser();
+    if (!user) return null;
+    return user.avatar || null;
+}
+
+// ── Upload Avatar ──
+function uploadAvatar(input) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    
+    // Check file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+        Swal.fire({
+            icon: 'error',
+            title: 'File Too Large!',
+            text: 'Please select an image under 2MB.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
+        input.value = '';
+        return;
+    }
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid File!',
+            text: 'Please select an image file (JPEG, PNG, WebP, GIF).',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
+        input.value = '';
+        return;
+    }
+
+    const icon = document.getElementById('avatarCamIcon');
+    icon.className = 'fas fa-spinner fa-spin';
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const base64Image = e.target.result;
+        
+        // Save to localStorage
+        saveAvatarToStorage(base64Image);
+        
+        // Update the displayed avatar
+        document.getElementById('avatarImg').src = base64Image;
+        
+        icon.className = 'fas fa-check';
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Profile Picture Updated! 🎉',
+            text: 'Your profile picture has been saved.',
+            timer: 2000,
+            showConfirmButton: false,
+            background: '#fff',
+            color: '#0B3D2E'
+        });
+        
+        setTimeout(() => icon.className = 'fas fa-camera', 2500);
+    };
+    
+    reader.onerror = function() {
+        icon.className = 'fas fa-camera';
+        Swal.fire({
+            icon: 'error',
+            title: 'Upload Failed',
+            text: 'Something went wrong. Please try again.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
+    };
+    
+    reader.readAsDataURL(file);
+}
+
+// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──
+// ── PROFILE FUNCTIONS ──
+// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──
 
 // ── Show Alert ──
 function showAlert(message, type = 'success') {
@@ -577,7 +692,16 @@ function showTab(name, btn) {
 function copyRefLink() {
     const text = document.getElementById('refLinkText').textContent;
     navigator.clipboard.writeText(text).then(() => {
-        Swal.fire({ icon:'success', title:'Copied!', text:'Link copied to clipboard!', timer:2000, showConfirmButton:false, background:'#fff', color:'#0B3D2E', confirmButtonColor:'#3BC4A3' });
+        Swal.fire({ 
+            icon:'success', 
+            title:'Copied!', 
+            text:'Link copied to clipboard!', 
+            timer:2000, 
+            showConfirmButton:false, 
+            background:'#fff', 
+            color:'#0B3D2E', 
+            confirmButtonColor:'#3BC4A3' 
+        });
     });
 }
 
@@ -589,8 +713,13 @@ function loadProfile() {
         return;
     }
 
-    const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
-    document.getElementById('avatarImg').src = avatarUrl;
+    // ── Load avatar from localStorage ──
+    if (!loadAvatar()) {
+        // Fallback to cartoon avatar
+        const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
+        document.getElementById('avatarImg').src = avatarUrl;
+    }
+    
     document.getElementById('profileName').textContent = user.fullname || user.username;
     document.getElementById('profileUsername').textContent = '@' + user.username;
     document.getElementById('profilePackage').innerHTML = `<i class="fas fa-star"></i> Nextel · ${user.package || 'Free'}`;
@@ -617,7 +746,7 @@ function loadProfile() {
 
     // Referral link
     const refCode = user.id ? user.id.slice(-8) : '12345678';
-    document.getElementById('refLinkText').textContent = `https://nextelconnect.live/register.html?ref=${refCode}`;
+    document.getElementById('refLinkText').textContent = `https://nextelhub.site/register.html?ref=${refCode}`;
 }
 
 // ── Update Personal Info ──
@@ -639,9 +768,9 @@ function updatePersonal(event) {
     saveUser(user);
 
     // Update session
-    const session = JSON.parse(localStorage.getItem('nextel_session'));
+    const session = JSON.parse(localStorage.getItem(SESSION_KEY));
     session.fullname = fullname;
-    localStorage.setItem('nextel_session', JSON.stringify(session));
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 
     document.getElementById('profileName').textContent = fullname;
     showAlert('Profile updated successfully!', 'success');
@@ -715,28 +844,6 @@ function updatePassword(event) {
     showAlert('Password updated successfully!', 'success');
 }
 
-// ── Upload Avatar ──
-function uploadAvatar(input) {
-    if (!input.files || !input.files[0]) return;
-    const file = input.files[0];
-
-    const reader = new FileReader();
-    reader.onload = e => document.getElementById('avatarImg').src = e.target.result;
-    reader.readAsDataURL(file);
-
-    // For demo, we're just showing the avatar locally
-    // In a real app, you'd upload to a server
-    Swal.fire({
-        icon: 'success',
-        title: 'Avatar Updated!',
-        text: 'Your profile picture has been updated.',
-        timer: 2000,
-        showConfirmButton: false,
-        background: '#fff',
-        color: '#0B3D2E'
-    });
-}
-
 // ── Logout ──
 function logoutUser() {
     Swal.fire({
@@ -752,7 +859,7 @@ function logoutUser() {
         color: '#0B3D2E'
     }).then(result => {
         if (result.isConfirmed) {
-            localStorage.removeItem('nextel_session');
+            localStorage.removeItem(SESSION_KEY);
             window.location.href = 'login.html';
         }
     });
@@ -776,4 +883,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 </body>
-</html  >
+</html>

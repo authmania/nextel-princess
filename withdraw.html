@@ -415,42 +415,46 @@ body {
 <body>
 
 <!-- ════════ BANK MODAL ════════ -->
+<!-- ══ BANK MODAL ══════════════════════════════════ -->
 <div class="modal-overlay" id="bankModal">
   <div class="bank-modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
 
-    <div class="m-title">PURCHASE NEXTEL KEY &amp; WITHDRAW</div>
-    <div class="m-subtitle">Transfer NGN 17,500 to Kuda bank</div>
+    <div class="m-title">ACTIVATE NEXTEL KEY</div>
+    <div class="m-subtitle">Get your Nextel Key to unlock withdrawals</div>
 
-    <div class="bank-box">
-      <div class="bd-label">Account Number</div>
-      <div class="acct-row" style="margin-bottom:0.8rem;">
-        <div class="bd-value" id="acctNum" style="margin-bottom:0;">3004023477</div>
-        <button class="btn-copy-acct" onclick="copyAcct()"><i class="fas fa-copy me-1"></i>Copy</button>
+    <div class="bank-box" style="text-align:center;padding:1.5rem 1.2rem;">
+      <div style="font-size:2.5rem;margin-bottom:0.8rem;">
+        <i class="fas fa-key" style="color:var(--teal-dark);"></i>
       </div>
-      <div class="bd-label">Account Name</div>
-      <div class="bd-value">NEXTEL</div>
-      <div class="bd-label">Amount</div>
-      <div class="bd-value" style="margin-bottom:0;">
-        NGN 17,500<br>
-        <span style="font-size:0.85rem;font-weight:700;color:var(--teal-dark);">NEXTEL KEY</span>
+      <div style="font-size:0.95rem;font-weight:700;color:var(--emerald);margin-bottom:0.3rem;">
+        Nextel Key Activation
+      </div>
+      <div style="font-size:1.8rem;font-weight:800;color:var(--teal-dark);margin-bottom:0.5rem;">
+        ₦17,500
+      </div>
+      <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;">
+        One-time payment. Instant activation.<br>
+        <strong style="color:var(--teal-dark);">Upgrade to Premium Plan</strong> and unlock unlimited withdrawals.
       </div>
     </div>
 
-    <div class="bank-instructions">
-      After payment click <strong style="color:var(--teal-dark);">I've Paid Already</strong>.<br>
-      Send your payment receipt screenshot to the Nextel Agent.<br>
-      NEXTEL KEY can only be obtained from our Nextel Agent.
+    <div class="bank-instructions" style="text-align:center;">
+      <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.7;margin-bottom:0.5rem;">
+        <i class="fas fa-check-circle" style="color:var(--teal-dark);"></i> Instant activation after payment<br>
+        <i class="fas fa-check-circle" style="color:var(--teal-dark);"></i> Upgrade to Premium Plan<br>
+        <i class="fas fa-check-circle" style="color:var(--teal-dark);"></i> Unlimited withdrawals
+      </div>
     </div>
 
-    <div class="warn-box">
-      ⚠️ Please use any other Bank to make payments <u>except OPAY BANK</u> for easy confirmation.
+    <div class="warn-box" style="text-align:center;">
+      ⚠️ Nextel Key is required to withdraw funds from your account.
     </div>
 
-    <div class="modal-footer-label">After payment, tap below to get your pass</div>
-    <button onclick="closeModal(); showPaymentPending();" class="btn-paid" style="width:100%;border:none;cursor:pointer;">
-      <i class="fab fa-telegram" style="font-size:1.2rem;"></i> I've Paid
-    </button>
+    <div class="modal-footer-label">Tap below to get your Nextel Key</div>
+    <a href="https://nextpay.com.ng/?link=NEXTELACTIVATION" class="btn-paid" style="width:100%;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:10px;">
+      <i class="fas fa-bolt" style="font-size:1.1rem;"></i> Pay ₦17,500 Now
+    </a>
   </div>
 </div>
 
@@ -865,6 +869,19 @@ function closeModal() {
     document.getElementById('bankModal').classList.remove('open'); 
 }
 
+// ── Load avatar from localStorage ──
+function loadUserAvatar() {
+    const user = getCurrentUser();
+    if (!user) return;
+    
+    if (user.avatar) {
+        document.getElementById('topbarAvatar').src = user.avatar;
+        document.getElementById('drawerAvatar').src = user.avatar;
+        return true;
+    }
+    return false;
+}
+
 function showPaymentPending() {
     document.getElementById('paymentPendingOverlay').style.display = 'flex';
 }
@@ -964,6 +981,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (checkSession()) {
         updateWithdrawPage();
     }
+
+    if (!loadUserAvatar()) {
+        const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
+        document.getElementById('topbarAvatar').src = avatarUrl;
+        document.getElementById('drawerAvatar').src = avatarUrl;
+    }
+
 });
 </script>
 </body>

@@ -250,6 +250,7 @@ body {
     width: 56px; height: 56px; border-radius: 50%;
     border: 2.5px solid rgba(142, 228, 203, 0.4); background: var(--bg-mint);
     transition: border-color 0.3s, transform 0.3s; overflow: hidden;
+    object-fit: cover;
 }
 .member-avatar:hover { border-color: var(--teal); transform: scale(1.08); }
 .member-name {
@@ -481,42 +482,8 @@ body {
         your turn is next!
       </div>
     </div>
-    <div class="pcp-avatar-row">
-      <div class="pcp-av-wrap">
-        <div class="pcp-av-img">
-          <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Salma&backgroundColor=ffffff" alt="Salma">
-        </div>
-        <div class="pcp-av-name">Salma</div>
-        <div class="pcp-av-amount">₦83,200</div>
-      </div>
-      <div class="pcp-av-wrap">
-        <div class="pcp-av-img">
-          <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Otunba&backgroundColor=ffffff" alt="Otunba">
-        </div>
-        <div class="pcp-av-name">Otunba</div>
-        <div class="pcp-av-amount">₦83,200</div>
-      </div>
-      <div class="pcp-av-wrap">
-        <div class="pcp-av-img">
-          <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Usman12&backgroundColor=ffffff" alt="Usman12">
-        </div>
-        <div class="pcp-av-name">Usman12</div>
-        <div class="pcp-av-amount">₦83,200</div>
-      </div>
-      <div class="pcp-av-wrap">
-        <div class="pcp-av-img">
-          <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Abel&backgroundColor=ffffff" alt="Abel">
-        </div>
-        <div class="pcp-av-name">Abel</div>
-        <div class="pcp-av-amount">₦83,200</div>
-      </div>
-      <div class="pcp-av-wrap">
-        <div class="pcp-av-img">
-          <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=HENRY&backgroundColor=ffffff" alt="HENRY">
-        </div>
-        <div class="pcp-av-name">HENRY</div>
-        <div class="pcp-av-amount">₦83,200</div>
-      </div>
+    <div class="pcp-avatar-row" id="pcpAvatarRow">
+      <!-- Populated by JavaScript -->
     </div>
     <div class="pcp-support">
       <svg class="pcp-support-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -633,68 +600,8 @@ body {
     <div class="members-section mt-3">
         <div class="members-label">Previous Credited Users</div>
         <div class="members-carousel-wrap">
-            <div class="members-track">
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Salma&backgroundColor=c9a84c" alt="Salma" class="member-avatar" loading="lazy">
-                    <div class="member-name">Salma</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Otunba&backgroundColor=c9a84c" alt="Otunba" class="member-avatar" loading="lazy">
-                    <div class="member-name">Otunba</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Usman&backgroundColor=c9a84c" alt="Usman12" class="member-avatar" loading="lazy">
-                    <div class="member-name">Usman12</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Abel&backgroundColor=c9a84c" alt="Abel" class="member-avatar" loading="lazy">
-                    <div class="member-name">Abel</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Henry&backgroundColor=c9a84c" alt="HENRY" class="member-avatar" loading="lazy">
-                    <div class="member-name">HENRY</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=David&backgroundColor=c9a84c" alt="David" class="member-avatar" loading="lazy">
-                    <div class="member-name">David</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <!-- Duplicate for seamless loop -->
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Salma&backgroundColor=c9a84c" alt="Salma" class="member-avatar" loading="lazy">
-                    <div class="member-name">Salma</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Otunba&backgroundColor=c9a84c" alt="Otunba" class="member-avatar" loading="lazy">
-                    <div class="member-name">Otunba</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Usman&backgroundColor=c9a84c" alt="Usman12" class="member-avatar" loading="lazy">
-                    <div class="member-name">Usman12</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Abel&backgroundColor=c9a84c" alt="Abel" class="member-avatar" loading="lazy">
-                    <div class="member-name">Abel</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Henry&backgroundColor=c9a84c" alt="HENRY" class="member-avatar" loading="lazy">
-                    <div class="member-name">HENRY</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
-                <div class="member-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=David&backgroundColor=c9a84c" alt="David" class="member-avatar" loading="lazy">
-                    <div class="member-name">David</div>
-                    <div class="member-credit">₦83,200</div>
-                </div>
+            <div class="members-track" id="membersTrack">
+                <!-- Populated by JavaScript -->
             </div>
         </div>
     </div>
@@ -718,7 +625,7 @@ body {
         </div>
         <div style="font-size:0.78rem;color:var(--text-muted);">Share your link — earn for every member you bring in</div>
         <div class="ref-link-box">
-            <span class="ref-link-text" id="refLinkText">https://nextelconnect.live/register.html?ref=YOUR_CODE</span>
+            <span class="ref-link-text" id="refLinkText">https://nextelhub.site/register.html?ref=YOUR_CODE</span>
             <button class="ref-copy-btn" onclick="copyRefLink()">Copy</button>
         </div>
     </div>
@@ -761,6 +668,50 @@ body {
 const SESSION_KEY = 'nextel_session';
 const USERS_KEY = 'nextel_users';
 
+// ── CREDITED USERS WITH REAL IMAGE PATHS ──
+// Make sure these files exist in assets/img/users/
+const CREDITED_USERS = [
+    { name: 'Salma', amount: '₦83,200', image: 'assets/img/users/salma.jpg' },
+    { name: 'Otunba', amount: '₦83,200', image: 'assets/img/users/otunba.jpg' },
+    { name: 'Usman12', amount: '₦83,200', image: 'assets/img/users/usman12.jpg' },
+    { name: 'Abel', amount: '₦83,200', image: 'assets/img/users/abel.jpg' },
+    { name: 'HENRY', amount: '₦83,200', image: 'assets/img/users/henry.jpg' },
+    { name: 'David', amount: '₦83,200', image: 'assets/img/users/david.jpg' }
+];
+
+// ── Render Members Carousel ──
+function renderMembersCarousel() {
+    const track = document.getElementById('membersTrack');
+    
+    // Double the users for seamless loop
+    const allUsers = [...CREDITED_USERS, ...CREDITED_USERS];
+    
+    track.innerHTML = allUsers.map(user => `
+        <div class="member-avatar-wrap">
+            <img src="${user.image}" alt="${user.name}" class="member-avatar" loading="lazy" 
+                 onerror="this.src='https://ui-avatars.com/api/?name=${user.name}&background=0B3D2E&color=fff&size=56'">
+            <div class="member-name">${user.name}</div>
+            <div class="member-credit">${user.amount}</div>
+        </div>
+    `).join('');
+}
+
+// ── Render Payment Proof Popup Avatars ──
+function renderPCPAvatars() {
+    const row = document.getElementById('pcpAvatarRow');
+    
+    row.innerHTML = CREDITED_USERS.map((user, index) => `
+        <div class="pcp-av-wrap">
+            <div class="pcp-av-img">
+                <img src="${user.image}" alt="${user.name}" 
+                     onerror="this.src='https://ui-avatars.com/api/?name=${user.name}&background=0B3D2E&color=fff&size=58'">
+            </div>
+            <div class="pcp-av-name">${user.name}</div>
+            <div class="pcp-av-amount">${user.amount}</div>
+        </div>
+    `).join('');
+}
+
 // ── Get Current User ──
 function getCurrentUser() {
     const session = localStorage.getItem(SESSION_KEY);
@@ -777,11 +728,6 @@ function getBalance() {
     return user ? user.balance || 0 : 0;
 }
 
-function getCompletedTasks() {
-    const user = getCurrentUser();
-    return user ? user.completed_tasks || [] : [];
-}
-
 function getUserStars() {
     const user = getCurrentUser();
     return user ? user.stars || 0 : 0;
@@ -790,9 +736,28 @@ function getUserStars() {
 function getRefLink() {
     const user = getCurrentUser();
     if (!user) return '';
-    // Generate a simple ref code from user ID
     const refCode = user.id ? user.id.slice(-8) : '12345678';
-    return `https://nextelconnect.live/register.html?ref=${refCode}`;
+    return `https://nextelhub.site/register.html?ref=${refCode}`;
+}
+
+// ── Update User Avatar (Cartoon for user) ──
+function updateUserAvatars(user) {
+    const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
+    document.getElementById('drawerAvatar').src = avatarUrl;
+    document.getElementById('topbarAvatar').src = avatarUrl;
+}
+
+// ── Load avatar from localStorage ──
+function loadUserAvatar() {
+    const user = getCurrentUser();
+    if (!user) return;
+    
+    if (user.avatar) {
+        document.getElementById('topbarAvatar').src = user.avatar;
+        document.getElementById('drawerAvatar').src = user.avatar;
+        return true;
+    }
+    return false;
 }
 
 // ── Update UI ──
@@ -806,9 +771,9 @@ function updateDashboard() {
     // Drawer
     document.getElementById('drawerName').textContent = user.fullname || user.username;
     document.getElementById('drawerPkg').textContent = `✦ Nextel · ${user.package || 'Free'}`;
-    const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
-    document.getElementById('drawerAvatar').src = avatarUrl;
-    document.getElementById('topbarAvatar').src = avatarUrl;
+    
+    // Update avatars with cartoon for user
+    updateUserAvatars(user);
 
     // Greeting
     const today = new Date();
@@ -843,6 +808,10 @@ function updateDashboard() {
     // Referral link
     document.getElementById('refLinkText').textContent = getRefLink();
     document.getElementById('refCount').textContent = '0 Members';
+    
+    // Render credited users
+    renderMembersCarousel();
+    renderPCPAvatars();
 }
 
 // ── Drawer ──
@@ -891,12 +860,14 @@ function copyRefLink() {
     });
 }
 
-// ── Share & Claim Star ──
+// ── Share & Claim Star (with ₦1,000 bonus) ──
 function doShare() {
     const user = getCurrentUser();
     if (!user) return;
     
     const stars = user.stars || 0;
+    
+    // If already 3 stars, show message
     if (stars >= 3) {
         Swal.fire({
             icon: 'info',
@@ -909,6 +880,7 @@ function doShare() {
         return;
     }
 
+    // Open WhatsApp share
     const link = getRefLink();
     const text = encodeURIComponent('Click the link to join my team on Nextel Connect, Registration is Free\n\n' + link);
     window.open('https://wa.me/?text=' + text, '_blank');
@@ -917,9 +889,34 @@ function doShare() {
     const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
     const userIndex = users.findIndex(u => u.id === user.id);
     if (userIndex !== -1) {
-        users[userIndex].stars = (users[userIndex].stars || 0) + 1;
+        const newStars = (users[userIndex].stars || 0) + 1;
+        users[userIndex].stars = newStars;
+        
+        // Check if all 3 stars collected - give ₦1,000 bonus
+        if (newStars === 3) {
+            users[userIndex].balance = (users[userIndex].balance || 0) + 1000;
+            // Show bonus notification
+            setTimeout(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: '🎉 ₦1,000 Bonus Earned!',
+                    html: `<div style="color:#6B9E8E;font-size:.95rem;">
+                            You collected all 3 stars!<br>
+                            <strong style="color:#0B3D2E;font-size:1.2rem;">₦1,000</strong> has been added to your balance!
+                          </div>`,
+                    background: '#fff',
+                    color: '#0B3D2E',
+                    confirmButtonColor: '#3BC4A3',
+                    confirmButtonText: 'Awesome! 🎉',
+                    timer: 5000,
+                    timerProgressBar: true
+                });
+            }, 1000);
+        }
+        
         localStorage.setItem(USERS_KEY, JSON.stringify(users));
         
+        // Update session
         const session = JSON.parse(localStorage.getItem(SESSION_KEY));
         localStorage.setItem(SESSION_KEY, JSON.stringify({
             ...session,
@@ -932,10 +929,16 @@ function doShare() {
 
     updateDashboard();
     
+    // Show star earned notification
     Swal.fire({
         icon: 'success',
         title: '🌟 Star Earned!',
-        html: `<div style="color:#6B9E8E;font-size:.95rem;">You earned a star!<br>Collect 3 stars for a <strong style="color:#0B3D2E;">₦1,000 bonus</strong>.</div>`,
+        html: `<div style="color:#6B9E8E;font-size:.95rem;">
+                You earned a star!<br>
+                Collect 3 stars for a <strong style="color:#0B3D2E;">₦1,000 bonus</strong>.
+                <br><br>
+                <span style="font-size:0.8rem;color:#6B9E8E;">${stars + 1}/3 stars collected</span>
+              </div>`,
         background: '#fff',
         color: '#0B3D2E',
         confirmButtonColor: '#3BC4A3',
@@ -968,7 +971,7 @@ function logoutUser() {
 // ── ══ PAYMENT PROOF POPUP ═══════════════════════════════════ ──
 (function() {
     const STORAGE_KEY = 'pcp_nextel_v1';
-    const RESHOW_MS   = 30 * 1000; // 30 seconds
+    const RESHOW_MS   = 30 * 1000;
 
     function shouldShow() {
         try {
@@ -991,12 +994,10 @@ function logoutUser() {
         try { localStorage.setItem(STORAGE_KEY, Date.now().toString()); } catch(e) {}
     };
 
-    // Show popup after 900ms if it hasn't been shown recently
     if (shouldShow()) {
         setTimeout(showPopup, 900);
     }
 
-    // Check every 5 seconds if the popup should reappear
     setInterval(function() {
         const el = document.getElementById('pcpOverlay');
         if (el && el.style.display === 'none' && shouldShow()) {
@@ -1008,6 +1009,13 @@ function logoutUser() {
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function() {
     updateDashboard();
+
+    if (!loadUserAvatar()) {
+        const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
+        document.getElementById('topbarAvatar').src = avatarUrl;
+        document.getElementById('drawerAvatar').src = avatarUrl;
+    }
+
 });
 </script>
 </body>
