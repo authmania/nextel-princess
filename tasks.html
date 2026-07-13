@@ -290,19 +290,19 @@ body {
         <i class="fas fa-chart-line"></i>
         <div style="flex:1;">
             <div class="cap-title">Daily Earnings Cap</div>
-            <div class="cap-desc">You can earn up to ₦85,000 in daily earnings. Once you hit the limit, you must withdraw to continue earning.</div>
+            <div class="cap-desc">You can earn up to ₦55,000 in daily earnings. Once you hit the limit, you must withdraw to continue earning. Withdrawal limit is ₦55,000.</div>
             <div class="cap-progress">
                 <div class="cap-progress-bar">
                     <div class="cap-progress-fill" id="capFill" style="width:0%;"></div>
                 </div>
-                <div class="cap-progress-text" id="capText">₦0 / ₦85,000 · <strong>₦85,000 remaining</strong></div>
+                <div class="cap-progress-text" id="capText">₦0 / ₦55,000 · <strong>₦55,000 remaining</strong></div>
             </div>
         </div>
     </div>
 
     <div class="reset-strip">
         <i class="fas fa-rotate-right"></i>
-        <span>Tasks reset daily at <strong>midnight</strong>. Complete all 10 to earn ₦27,500!</span>
+        <span>Tasks reset daily at <strong>midnight</strong>. Complete all 10 to earn ₦55,000!</span>
     </div>
 
     <div class="category-progress">
@@ -315,7 +315,7 @@ body {
     <div class="section-title"><i class="fas fa-phone" style="color:var(--teal-dark);"></i> Sponsor Calls (4)</div>
     <div class="disclosure-note">
         <i class="fas fa-shield-halved"></i>
-        <span>Every call is a short, disclosed sponsor message played through the Nextel network. Earn ₦2,750 per completed call.</span>
+        <span>Every call is a short, disclosed sponsor message played through the Nextel network. Earn ₦5,500 per completed call.</span>
     </div>
     
     <div class="call-contact-row" id="row_80">
@@ -374,7 +374,7 @@ body {
     <div class="section-title" style="margin-top:1.6rem;"><i class="fas fa-comment-dots" style="color:var(--teal-dark);"></i> Message Tasks (4)</div>
     <div class="disclosure-note">
         <i class="fas fa-shield-halved"></i>
-        <span>Send a quick "Hi" to support agents and get a reply. Earn ₦2,750 per completed chat.</span>
+        <span>Send a quick "Hi" to support agents and get a reply. Earn ₦5,500 per completed chat.</span>
     </div>
     
     <div class="call-contact-row" id="row_84">
@@ -433,7 +433,7 @@ body {
     <div class="section-title" style="margin-top:1.6rem;"><i class="fas fa-address-book" style="color:var(--teal-dark);"></i> Save Contacts (2)</div>
     <div class="disclosure-note">
         <i class="fas fa-shield-halved"></i>
-        <span>Pick a number and save it to your contacts. Earn ₦2,750 per saved number.</span>
+        <span>Pick a number and save it to your contacts. Earn ₦5,500 per saved number.</span>
     </div>
     
     <div class="call-contact-row" id="row_88">
@@ -492,7 +492,7 @@ body {
     </div>
     <div class="call-claim-wrap" id="claimWrap">
         <button class="call-claim-btn" id="claimBtn" onclick="claimCall()">
-            <i class="fas fa-gift"></i> Claim ₦2,750
+            <i class="fas fa-gift"></i> Claim ₦5,500
         </button>
         <div class="call-claim-hint">Call completed — tap to claim your reward</div>
     </div>
@@ -515,7 +515,7 @@ body {
     </div>
     <div class="call-claim-wrap" id="msgClaimWrap">
         <button class="call-claim-btn" id="msgClaimBtn" onclick="claimMessage()">
-            <i class="fas fa-gift"></i> Claim ₦2,750
+            <i class="fas fa-gift"></i> Claim ₦5,500
         </button>
         <div class="call-claim-hint">Chat completed — tap to claim your reward</div>
     </div>
@@ -538,15 +538,15 @@ body {
     </div>
     <div class="call-claim-wrap" id="numClaimWrap">
         <button class="call-claim-btn" id="numClaimBtn" onclick="claimNumber()">
-            <i class="fas fa-gift"></i> Claim ₦2,750
+            <i class="fas fa-gift"></i> Claim ₦5,500
         </button>
         <div class="call-claim-hint">Save successful — tap to claim your reward</div>
     </div>
 </div>
 
 <script>
-const TASK_REWARD = 2750;
-const DAILY_EARNINGS_CAP = 85000;
+const TASK_REWARD = 5500;
+const DAILY_EARNINGS_CAP = 55000;
 const TOTAL_TASKS = 10;
 
 // ── Session & User Helpers ──
@@ -689,8 +689,9 @@ function showCapReachedPopup() {
         icon: 'warning',
         title: 'Daily Earnings Cap Reached!',
         html: `<div style="font-size:0.92rem;color:#6B9E8E;line-height:1.75;text-align:center;">
-                 You have reached the <strong style="color:#fb923c;">₦85,000</strong> daily earnings limit.<br><br>
-                 You must <strong style="color:#3BC4A3;">withdraw your earnings</strong> to reset your cap and continue earning.
+                 You have reached the <strong style="color:#fb923c;">₦55,000</strong> daily earnings limit.<br><br>
+                 You must <strong style="color:#3BC4A3;">withdraw your earnings</strong> to reset your cap and continue earning.<br><br>
+                 <span style="color:#fb923c;">Withdrawal Limit: ₦55,000</span>
                </div>`,
         background: '#fff', color: '#0B3D2E',
         confirmButtonColor: '#3BC4A3', confirmButtonText: 'Go to Withdraw',
@@ -813,7 +814,7 @@ const SPONSOR_MESSAGES = [
     "Thanks for taking this call! This is a quick word from a Nextel Network partner — explore more earning opportunities inside the Nextel app today.",
     "Hi there — this short message is brought to you by a Nextel Network sponsor. Check the Rewards tab in your dashboard for today's bonuses.",
     "This call is sponsored by a Nextel Network partner. Keep completing daily calls to grow your Nextel earnings.",
-    "Welcome to Nextel! This sponsor message helps keep the platform free. Complete all 10 tasks today to earn ₦27,500!",
+    "Welcome to Nextel! This sponsor message helps keep the platform free. Complete all 10 tasks today to earn ₦55,000!",
 ];
 
 function startCall(taskId, name, initial, network) {
@@ -837,7 +838,7 @@ function startCall(taskId, name, initial, network) {
 
     const claimBtn = document.getElementById('claimBtn');
     claimBtn.disabled = false;
-    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
 
     document.getElementById('callAvatar').textContent = initial;
     document.getElementById('callName').textContent = name;
@@ -906,7 +907,7 @@ function endCall() {
     // Reset claim button
     const claimBtn = document.getElementById('claimBtn');
     claimBtn.disabled = false;
-    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
     document.getElementById('claimWrap').classList.remove('show');
     document.getElementById('callControls').style.display = 'flex';
     activeCallTaskId = null; 
@@ -942,7 +943,7 @@ function claimCall() {
     setTimeout(() => {
         if (isTaskCompleted(taskId)) {
             claimBtn.disabled = false;
-            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
             isClaiming = false;
             document.getElementById('callScreen').classList.remove('open');
             activeCallTaskId = null;
@@ -966,12 +967,12 @@ function claimCall() {
         hasClaimedThisCall = true;
         
         updateUI();
-        showToast('+₦2,750 Earned!');
+        showToast('+₦5,500 Earned!');
         
         document.getElementById('callScreen').classList.remove('open');
         // Reset claim button for next use
         claimBtn.disabled = false;
-        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
         document.getElementById('claimWrap').classList.remove('show');
         document.getElementById('callControls').style.display = 'flex';
         activeCallTaskId = null;
@@ -979,7 +980,7 @@ function claimCall() {
         
         Swal.fire({
             icon: 'success', 
-            title: '₦2,750 Earned!',
+            title: '₦5,500 Earned!',
             html: `<div style="color:#6B9E8E;font-size:.88rem;line-height:1.6;">Sponsor call completed successfully!<br><span style="color:#3BC4A3;">Keep going — more tasks await!</span></div>`,
             background: '#fff', 
             color: '#0B3D2E',
@@ -1055,7 +1056,7 @@ function cancelMessageTask() {
     // Reset claim button
     const claimBtn = document.getElementById('msgClaimBtn');
     claimBtn.disabled = false;
-    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
     document.getElementById('msgClaimWrap').classList.remove('show');
     activeMsgTaskId = null;
     msgClaimed = false;
@@ -1088,7 +1089,7 @@ function claimMessage() {
     setTimeout(() => {
         if (isTaskCompleted(taskId)) {
             claimBtn.disabled = false;
-            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
             msgClaimed = false;
             document.getElementById('msgScreen').classList.remove('open');
             activeMsgTaskId = null;
@@ -1110,18 +1111,18 @@ function claimMessage() {
         setBalance(newBalance);
         markTaskCompleted(taskId);
         updateUI();
-        showToast('+₦2,750 Earned!');
+        showToast('+₦5,500 Earned!');
         
         document.getElementById('msgScreen').classList.remove('open');
         claimBtn.disabled = false;
-        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
         document.getElementById('msgClaimWrap').classList.remove('show');
         activeMsgTaskId = null;
         msgClaimed = false;
         
         Swal.fire({
             icon: 'success', 
-            title: '₦2,750 Earned!',
+            title: '₦5,500 Earned!',
             html: `<div style="color:#6B9E8E;font-size:.88rem;line-height:1.6;">Message task completed successfully!</div>`,
             background: '#fff', 
             color: '#0B3D2E', 
@@ -1214,7 +1215,7 @@ function cancelNumberTask() {
     document.getElementById('numScreen').classList.remove('open');
     const claimBtn = document.getElementById('numClaimBtn');
     claimBtn.disabled = false;
-    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+    claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
     document.getElementById('numClaimWrap').classList.remove('show');
     activeNumTaskId = null;
     numClaimed = false;
@@ -1247,7 +1248,7 @@ function claimNumber() {
     setTimeout(() => {
         if (isTaskCompleted(taskId)) {
             claimBtn.disabled = false;
-            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+            claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
             numClaimed = false;
             document.getElementById('numScreen').classList.remove('open');
             activeNumTaskId = null;
@@ -1269,18 +1270,18 @@ function claimNumber() {
         setBalance(newBalance);
         markTaskCompleted(taskId);
         updateUI();
-        showToast('+₦2,750 Earned!');
+        showToast('+₦5,500 Earned!');
         
         document.getElementById('numScreen').classList.remove('open');
         claimBtn.disabled = false;
-        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦2,750';
+        claimBtn.innerHTML = '<i class="fas fa-gift"></i> Claim ₦5,500';
         document.getElementById('numClaimWrap').classList.remove('show');
         activeNumTaskId = null;
         numClaimed = false;
         
         Swal.fire({
             icon: 'success', 
-            title: '₦2,750 Earned!',
+            title: '₦5,500 Earned!',
             html: `<div style="color:#6B9E8E;font-size:.88rem;line-height:1.6;">Number saved successfully!</div>`,
             background: '#fff', 
             color: '#0B3D2E', 
