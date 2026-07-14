@@ -71,21 +71,6 @@ body {
 /* ── Page ────────────────────────────────────────── */
 .page { padding: 1.2rem 1rem; max-width: 520px; margin: 0 auto; }
 
-/* ── Alert ───────────────────────────────────────── */
-.alert {
-  border-radius: 14px; padding: 1rem 1.1rem; font-size: 0.85rem; font-weight: 500;
-  margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 0.6rem;
-}
-.alert-success {
-  background: rgba(142, 228, 203, 0.12); border: 1px solid rgba(142, 228, 203, 0.25);
-  color: var(--emerald-light);
-}
-.alert-error {
-  background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15);
-  color: #dc2626;
-}
-.alert i { margin-top: 0.15rem; font-size: 0.9rem; }
-
 /* Profile Hero */
 .profile-hero {
   background: var(--gradient-card);
@@ -337,9 +322,6 @@ body {
 
 <div class="page">
 
-    <!-- Alert Container -->
-    <div id="alertContainer"></div>
-    
     <!-- Profile Hero -->
     <div class="profile-hero">
         <div class="profile-avatar-wrap">
@@ -481,7 +463,7 @@ body {
                     </div>
                 </div>
 
-                <button type="submit" class="btn-save">Save Bank Details</button>
+                <button type="submit" class="btn-save" id="saveBankBtn">Save Bank Details</button>
             </form>
         </div>
     </div>
@@ -556,9 +538,7 @@ function saveUser(user) {
     }
 }
 
-// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──
 // ── AVATAR FUNCTIONS ──
-// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──
 
 // ── Save avatar to localStorage ──
 function saveAvatarToStorage(base64Image) {
@@ -580,19 +560,11 @@ function loadAvatar() {
     return false;
 }
 
-// ── Get user avatar (for other pages to use) ──
-function getUserAvatar() {
-    const user = getCurrentUser();
-    if (!user) return null;
-    return user.avatar || null;
-}
-
 // ── Upload Avatar ──
 function uploadAvatar(input) {
     if (!input.files || !input.files[0]) return;
     const file = input.files[0];
     
-    // Check file size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
         Swal.fire({
             icon: 'error',
@@ -606,7 +578,6 @@ function uploadAvatar(input) {
         return;
     }
 
-    // Check file type
     if (!file.type.startsWith('image/')) {
         Swal.fire({
             icon: 'error',
@@ -626,13 +597,8 @@ function uploadAvatar(input) {
     const reader = new FileReader();
     reader.onload = function(e) {
         const base64Image = e.target.result;
-        
-        // Save to localStorage
         saveAvatarToStorage(base64Image);
-        
-        // Update the displayed avatar
         document.getElementById('avatarImg').src = base64Image;
-        
         icon.className = 'fas fa-check';
         
         Swal.fire({
@@ -644,7 +610,6 @@ function uploadAvatar(input) {
             background: '#fff',
             color: '#0B3D2E'
         });
-        
         setTimeout(() => icon.className = 'fas fa-camera', 2500);
     };
     
@@ -663,22 +628,7 @@ function uploadAvatar(input) {
     reader.readAsDataURL(file);
 }
 
-// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──
 // ── PROFILE FUNCTIONS ──
-// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──
-
-// ── Show Alert ──
-function showAlert(message, type = 'success') {
-    const container = document.getElementById('alertContainer');
-    const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
-    container.innerHTML = `
-        <div class="alert alert-${type}">
-            <i class="fas ${icon}"></i>
-            <span>${message}</span>
-        </div>
-    `;
-    setTimeout(() => { container.innerHTML = ''; }, 5000);
-}
 
 // ── Tab Switching ──
 function showTab(name, btn) {
@@ -693,14 +643,14 @@ function copyRefLink() {
     const text = document.getElementById('refLinkText').textContent;
     navigator.clipboard.writeText(text).then(() => {
         Swal.fire({ 
-            icon:'success', 
-            title:'Copied!', 
-            text:'Link copied to clipboard!', 
-            timer:2000, 
-            showConfirmButton:false, 
-            background:'#fff', 
-            color:'#0B3D2E', 
-            confirmButtonColor:'#3BC4A3' 
+            icon: 'success', 
+            title: 'Copied!', 
+            text: 'Link copied to clipboard!', 
+            timer: 2000, 
+            showConfirmButton: false,
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3' 
         });
     });
 }
@@ -713,9 +663,7 @@ function loadProfile() {
         return;
     }
 
-    // ── Load avatar from localStorage ──
     if (!loadAvatar()) {
-        // Fallback to cartoon avatar
         const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'default'}&backgroundColor=c9a84c`;
         document.getElementById('avatarImg').src = avatarUrl;
     }
@@ -727,24 +675,20 @@ function loadProfile() {
     const date = user.registered_at ? new Date(user.registered_at) : new Date();
     document.getElementById('profileSince').textContent = 'Member since ' + date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 
-    // Stats
     const balance = user.balance || 0;
     document.getElementById('statDaily').textContent = '₦' + balance.toFixed(2);
     document.getElementById('statBalance').textContent = '₦' + balance.toFixed(2);
     document.getElementById('statBonus').textContent = '₦0.00';
 
-    // Personal form
     document.getElementById('editFullname').value = user.fullname || '';
     document.getElementById('editPhone').value = user.phone || '';
     document.getElementById('editEmail').value = user.email || '';
     document.getElementById('editUsername').value = user.username || '';
 
-    // Bank details
     document.getElementById('bankSelect').value = user.bank_name || '';
     document.getElementById('editAcctNumber').value = user.account_number || '';
     document.getElementById('editAcctName').value = user.account_name || '';
 
-    // Referral link
     const refCode = user.id ? user.id.slice(-8) : '12345678';
     document.getElementById('refLinkText').textContent = `https://nextelhub.site/register.html?ref=${refCode}`;
 }
@@ -759,7 +703,14 @@ function updatePersonal(event) {
     const phone = document.getElementById('editPhone').value.trim();
 
     if (!fullname || !phone) {
-        showAlert('Please fill in all fields.', 'error');
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Fields',
+            text: 'Please fill in all fields.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
         return;
     }
 
@@ -767,32 +718,104 @@ function updatePersonal(event) {
     user.phone = phone;
     saveUser(user);
 
-    // Update session
     const session = JSON.parse(localStorage.getItem(SESSION_KEY));
     session.fullname = fullname;
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 
     document.getElementById('profileName').textContent = fullname;
-    showAlert('Profile updated successfully!', 'success');
+    
+    Swal.fire({
+        icon: 'success',
+        title: 'Profile Updated! ✅',
+        text: 'Your personal information has been saved.',
+        timer: 2000,
+        showConfirmButton: false,
+        background: '#fff',
+        color: '#0B3D2E'
+    });
 }
 
 // ── Update Bank Details ──
 function updateBank(event) {
     event.preventDefault();
+    
+    const btn = document.getElementById('saveBankBtn');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    
     const user = getCurrentUser();
-    if (!user) return;
+    if (!user) {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        Swal.fire({
+            icon: 'error',
+            title: 'Session Expired',
+            text: 'Please login again.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
+        return;
+    }
 
     const bank_name = document.getElementById('bankSelect').value;
     const account_number = document.getElementById('editAcctNumber').value.trim();
     const account_name = document.getElementById('editAcctName').value.trim();
 
-    if (!bank_name || !account_number || !account_name) {
-        showAlert('Please fill in all bank details.', 'error');
+    if (!bank_name) {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        Swal.fire({
+            icon: 'warning',
+            title: 'Select Bank',
+            text: 'Please select your bank.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
+        return;
+    }
+
+    if (!account_number) {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Account Number',
+            text: 'Please enter your account number.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
         return;
     }
 
     if (account_number.length < 10) {
-        showAlert('Please enter a valid 10-digit account number.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        Swal.fire({
+            icon: 'warning',
+            title: 'Invalid Account Number',
+            text: 'Please enter a valid 10-digit account number.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
+        return;
+    }
+
+    if (!account_name) {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Account Name',
+            text: 'Please enter your account name.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
         return;
     }
 
@@ -801,7 +824,26 @@ function updateBank(event) {
     user.account_name = account_name;
     saveUser(user);
 
-    showAlert('Bank details saved successfully!', 'success');
+    btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+    btn.style.background = '#22c55e';
+    btn.style.color = '#fff';
+    
+    Swal.fire({
+        icon: 'success',
+        title: 'Bank Details Saved! ✅',
+        text: `Your ${bank_name} account details have been saved successfully.`,
+        timer: 2500,
+        showConfirmButton: false,
+        background: '#fff',
+        color: '#0B3D2E'
+    });
+    
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        btn.style.background = '';
+        btn.style.color = '';
+    }, 2500);
 }
 
 // ── Update Password ──
@@ -815,22 +857,50 @@ function updatePassword(event) {
     const confirm = document.getElementById('confirmPassword').value;
 
     if (!current || !newPass || !confirm) {
-        showAlert('Please fill in all password fields.', 'error');
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Fields',
+            text: 'Please fill in all password fields.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
         return;
     }
 
     if (user.password !== current) {
-        showAlert('Current password is incorrect.', 'error');
+        Swal.fire({
+            icon: 'error',
+            title: 'Incorrect Password',
+            text: 'Your current password is incorrect.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
         return;
     }
 
     if (newPass.length < 6) {
-        showAlert('New password must be at least 6 characters.', 'error');
+        Swal.fire({
+            icon: 'warning',
+            title: 'Password Too Short',
+            text: 'New password must be at least 6 characters.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
         return;
     }
 
     if (newPass !== confirm) {
-        showAlert('New passwords do not match.', 'error');
+        Swal.fire({
+            icon: 'error',
+            title: 'Passwords Mismatch',
+            text: 'Your new passwords do not match.',
+            background: '#fff',
+            color: '#0B3D2E',
+            confirmButtonColor: '#3BC4A3'
+        });
         return;
     }
 
@@ -841,7 +911,15 @@ function updatePassword(event) {
     document.getElementById('newPassword').value = '';
     document.getElementById('confirmPassword').value = '';
 
-    showAlert('Password updated successfully!', 'success');
+    Swal.fire({
+        icon: 'success',
+        title: 'Password Updated! 🔒',
+        text: 'Your password has been changed successfully.',
+        timer: 2500,
+        showConfirmButton: false,
+        background: '#fff',
+        color: '#0B3D2E'
+    });
 }
 
 // ── Logout ──
