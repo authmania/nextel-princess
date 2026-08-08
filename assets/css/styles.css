@@ -1,0 +1,127 @@
+/* Nextel Connect — Design system tokens & custom utilities
+   (Converted from the React/Tailwind source to plain CSS + Tailwind CDN utilities) */
+
+:root {
+  --radius: 1rem;
+  --background: oklch(0.99 0.005 180);
+  --foreground: oklch(0.18 0.04 190);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.04 190);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.04 190);
+
+  --primary: oklch(0.32 0.05 190);
+  --primary-foreground: oklch(0.98 0.01 80);
+  --primary-glow: oklch(0.5 0.09 180);
+
+  --secondary: oklch(0.96 0.012 180);
+  --secondary-foreground: oklch(0.22 0.04 190);
+
+  --muted: oklch(0.965 0.008 180);
+  --muted-foreground: oklch(0.5 0.02 200);
+
+  --accent: oklch(0.95 0.02 180);
+  --accent-foreground: oklch(0.22 0.04 190);
+
+  --gold: oklch(0.82 0.11 80);
+  --gold-foreground: oklch(0.2 0.04 190);
+
+  --destructive: oklch(0.6 0.22 27);
+  --destructive-foreground: oklch(0.99 0 0);
+
+  --border: oklch(0.92 0.008 190);
+  --input: oklch(0.92 0.008 190);
+  --ring: oklch(0.32 0.05 190);
+
+  --gradient-hero: linear-gradient(135deg, oklch(0.22 0.04 190) 0%, oklch(0.32 0.05 190) 55%, oklch(0.42 0.08 180) 100%);
+  --gradient-gold: linear-gradient(135deg, oklch(0.86 0.1 85), oklch(0.74 0.12 70));
+  --gradient-surface: linear-gradient(180deg, oklch(0.99 0.005 180) 0%, oklch(0.96 0.012 180) 100%);
+  --gradient-emerald-soft: linear-gradient(135deg, oklch(0.97 0.02 180), oklch(0.92 0.04 180));
+
+  --shadow-soft: 0 4px 20px -4px oklch(0.32 0.05 190 / 0.08);
+  --shadow-elegant: 0 20px 50px -20px oklch(0.32 0.05 190 / 0.25);
+  --shadow-gold: 0 10px 40px -10px oklch(0.82 0.11 80 / 0.45);
+  --shadow-glow: 0 0 60px oklch(0.5 0.09 180 / 0.35);
+}
+
+* { border-color: var(--border); }
+html { scroll-behavior: smooth; }
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+}
+h1, h2, h3, h4 { letter-spacing: -0.02em; font-weight: 700; }
+
+/* Custom utilities (parity with the React design system) */
+.bg-gradient-hero { background: var(--gradient-hero); }
+.bg-gradient-gold { background: var(--gradient-gold); }
+.bg-gradient-surface { background: var(--gradient-surface); }
+.bg-gradient-emerald-soft { background: var(--gradient-emerald-soft); }
+.text-gradient-gold {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.shadow-soft { box-shadow: var(--shadow-soft); }
+.shadow-elegant { box-shadow: var(--shadow-elegant); }
+.shadow-gold { box-shadow: var(--shadow-gold); }
+.shadow-glow { box-shadow: var(--shadow-glow); }
+
+.glass {
+  background: color-mix(in oklab, white 8%, transparent);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid color-mix(in oklab, white 14%, transparent);
+}
+.glass-light {
+  background: color-mix(in oklab, white 70%, transparent);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in oklab, var(--primary) 8%, transparent);
+}
+
+/* Animations */
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+.animate-marquee { animation: marquee 30s linear infinite; }
+.animate-fade-in { animation: fadeIn 0.35s ease both; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 30px oklch(0.82 0.11 80 / 0.3); }
+  50% { box-shadow: 0 0 60px oklch(0.82 0.11 80 / 0.6); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll reveal (replaces React <Reveal /> component) */
+.reveal {
+  opacity: 0;
+  will-change: opacity, transform;
+  transition: opacity 700ms cubic-bezier(.22,.61,.36,1),
+              transform 700ms cubic-bezier(.22,.61,.36,1);
+}
+.reveal[data-anim="up"]    { transform: translate3d(0, 32px, 0); }
+.reveal[data-anim="down"]  { transform: translate3d(0, -32px, 0); }
+.reveal[data-anim="left"]  { transform: translate3d(40px, 0, 0); }
+.reveal[data-anim="right"] { transform: translate3d(-40px, 0, 0); }
+.reveal[data-anim="zoom"]  { transform: scale(0.92); }
+.reveal[data-anim="fade"]  { transform: none; }
+.reveal.is-shown { opacity: 1; transform: none; }
+
+/* Lucide icons default sizing (so `class="h-4 w-4"` still works with the <i> tag) */
+[data-lucide] { display: inline-block; }

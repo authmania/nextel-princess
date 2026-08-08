@@ -1,0 +1,600 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Nextel Key - Secure Activation Portal</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="light only" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:#F7F6F1;
+  font-family:'Poppins',sans-serif;
+  color:#0F3327;
+  min-height:100vh;
+  overflow-x:hidden;
+  padding:20px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
+
+:root{
+  --green:#106146;
+  --green-dark:#0F3327;
+  --bg:#F7F6F1;
+  --card:#FFFFFF;
+  --border:rgba(16,97,70,0.1);
+  --muted:#6E7673;
+  --muted2:#8D9591;
+  --danger:#E53935;
+}
+
+#payPage{
+  width:100%;
+  max-width:520px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* ── CENTRALIZED TOP ── */
+.top-section{
+  text-align:center;
+  width:100%;
+  margin-bottom:24px;
+}
+
+.security-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#EEF8F2;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:10px 20px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--green);
+  margin-bottom:20px;
+}
+.security-badge svg{width:16px;height:16px;fill:var(--green);}
+
+.key-icon{
+  display:flex;
+  justify-content:center;
+  margin-bottom:16px;
+  font-size:48px;
+  color:var(--green);
+}
+
+.pay-title{
+  font-size:clamp(1.4rem,5vw,1.8rem);
+  font-weight:800;
+  color:var(--green-dark);
+  line-height:1.2;
+  margin-bottom:6px;
+  letter-spacing:-0.02em;
+}
+.pay-sub{
+  font-size:16px;
+  color:var(--green);
+  font-weight:700;
+}
+
+/* ── CONTENT ── */
+.countdown-box{
+  background:#EEF8F2;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px 16px;
+  text-align:center;
+  margin-bottom:16px;
+  font-size:14px;
+  font-weight:600;
+  color:var(--green);
+  width:100%;
+}
+
+.detail-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px 18px;
+  margin-bottom:12px;
+  box-shadow:0 12px 30px rgba(15,51,39,0.05);
+  width:100%;
+}
+.detail-label{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:6px;
+  font-weight:500;
+  letter-spacing:0.3px;
+}
+.detail-value{
+  font-size:16px;
+  font-weight:700;
+  color:var(--green-dark);
+}
+.detail-value.gold{color:var(--green);font-size:20px;}
+
+.detail-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.copy-btn{
+  background:var(--green);
+  color:#fff;
+  border:none;
+  border-radius:999px;
+  padding:8px 18px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:'Poppins',sans-serif;
+  white-space:nowrap;
+  flex-shrink:0;
+  transition:0.2s;
+}
+.copy-btn:active{transform:scale(0.96);}
+.copy-btn.copied{background:#25a060;color:#fff;}
+
+.benefits-box{
+  background:#EEF8F2;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px 18px;
+  margin:16px 0;
+  width:100%;
+}
+.benefits-box h4{
+  font-size:14px;
+  color:var(--green-dark);
+  margin-bottom:10px;
+}
+.benefits-box ul{
+  list-style:none;
+  padding:0;
+}
+.benefits-box li{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+  color:var(--muted);
+  padding:4px 0;
+}
+.benefits-box li svg{
+  width:16px;
+  height:16px;
+  flex-shrink:0;
+  fill:var(--green);
+}
+
+.done-note{
+  margin:16px 0 20px;
+  padding:14px 16px;
+  background:#EEF8F2;
+  border:1px solid rgba(16,97,70,0.16);
+  border-radius:16px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.6;
+  text-align:center;
+  width:100%;
+}
+.done-note strong{color:var(--green);}
+
+.contact-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:20px;
+  width:100%;
+}
+.contact-btn{
+  height:52px;
+  border:none;
+  border-radius:16px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:'Poppins',sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:0.25s;
+}
+.contact-btn:hover{transform:translateY(-2px);}
+.contact-btn:active{transform:scale(0.97);}
+.contact-btn.whatsapp{background:#25D366;color:#fff;}
+.contact-btn.telegram{background:#229ED9;color:#fff;}
+.contact-btn svg{width:20px;height:20px;fill:#fff;}
+
+.pay-footer{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted2);
+  margin-top:auto;
+  padding-top:20px;
+  line-height:1.6;
+  width:100%;
+}
+.pay-footer a{color:var(--green);text-decoration:underline;}
+
+#confirmedScreen{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  z-index:99999;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:40px 24px;
+  text-align:center;
+}
+#confirmedScreen.show{display:flex;}
+.confirmed-icon{
+  width:90px;height:90px;
+  border-radius:50%;
+  background:linear-gradient(180deg,#106146,#0F3327);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:24px;
+  animation:popIn 0.4s ease;
+  box-shadow:0 16px 34px rgba(16,97,70,0.28);
+}
+@keyframes popIn{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+.confirmed-title{font-size:26px;font-weight:800;margin-bottom:10px;color:var(--green-dark);}
+.confirmed-sub{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:32px;max-width:340px;}
+.confirmed-btn{
+  width:100%;max-width:360px;height:56px;
+  background:linear-gradient(180deg,#106146,#0F3327);color:#fff;
+  border:none;border-radius:999px;
+  font-size:16px;font-weight:600;
+  cursor:pointer;font-family:'Poppins',sans-serif;
+  box-shadow:0 12px 26px rgba(16,97,70,0.24);
+  transition:0.25s;
+}
+.confirmed-btn:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<!-- ========================= MAIN PAYMENT PAGE ========================= -->
+<div id="payPage">
+
+  <!-- ── CENTRALIZED TOP SECTION ── -->
+  <div class="top-section">
+
+    <div class="security-badge">
+      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+      Secure Nextel Key Activation
+    </div>
+
+   
+
+    <h1 class="pay-title">Activate Your Nextel Key</h1>
+    <p class="pay-sub">&#8358;17,500</p>
+
+  </div>
+
+  <!-- ── COUNTDOWN ── -->
+  <div class="countdown-box">
+    Payment reservation expires in <span id="countdown">10:00</span>
+  </div>
+
+  <!-- ── ACTIVATION FEE ── -->
+  <div class="detail-card">
+    <div class="detail-label">Nextel Key Fee</div>
+    <div class="detail-value gold">&#8358;17,500</div>
+  </div>
+
+  <!-- ── BANK NAME ── -->
+  <div class="detail-card">
+    <div class="detail-label">Bank Name</div>
+    <div class="detail-value" id="bankNameVal">Loading...</div>
+  </div>
+
+  <!-- ── ACCOUNT NAME ── -->
+  <div class="detail-card">
+    <div class="detail-label">Account Name</div>
+    <div class="detail-value" id="accountNameVal">Loading...</div>
+  </div>
+
+  <!-- ── ACCOUNT NUMBER ── -->
+  <div class="detail-card">
+    <div class="detail-row">
+      <div>
+        <div class="detail-label">Account Number</div>
+        <div class="detail-value gold" id="accountNum">Loading...</div>
+      </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyAccount()">Copy</button>
+    </div>
+  </div>
+
+  <!-- ── BENEFITS ── -->
+  <div class="benefits-box">
+    <h4>What You Get With Your Nextel Key</h4>
+    <ul>
+      <li>
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        Unlimited withdrawals (no daily cap)
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        Premium Royal E-sim plan
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        Earn up to &#8358;108,000 daily
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        Instant activation after payment confirmation
+      </li>
+    </ul>
+  </div>
+
+  <!-- ── DONE NOTE ── -->
+  <div class="done-note">
+    <strong>After payment, send your proof of transfer</strong> to our support team below and your Nextel Key will be activated within <strong>5–15 minutes</strong>.
+  </div>
+
+  <!-- ── CONTACT BUTTONS ── -->
+  <div class="contact-row">
+    <button class="contact-btn whatsapp" onclick="contactWhatsApp()">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </button>
+    <button class="contact-btn telegram" onclick="contactTelegram()">
+      <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      Telegram
+    </button>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <p class="pay-footer">
+    Once your Nextel Key is activated, you can <strong>withdraw instantly</strong> from your dashboard.<br>
+    <a href="#">Terms of Service</a> &bull; <a href="#">Privacy Policy</a>
+  </p>
+
+</div>
+
+<!-- ========================= CONFIRMED SCREEN ========================= -->
+<div id="confirmedScreen">
+  <div class="confirmed-icon">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="#ffffff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+  </div>
+  <h2 class="confirmed-title">Nextel Key Activation Pending</h2>
+  <p class="confirmed-sub">Your payment proof has been sent. Our team will activate your Nextel Key within 5–15 minutes.</p>
+  <button class="confirmed-btn" onclick="goToDashboard()">Go to Dashboard</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyDrnmtx0LkfMKytzTKQZwXCg1JKZXiJmtU",
+  authDomain:        "glamour-28049.firebaseapp.com",
+  projectId:         "glamour-28049",
+  storageBucket:     "glamour-28049.firebasestorage.app",
+  messagingSenderId: "22177815395",
+  appId:             "1:22177815395:web:2ca7caa2b1626299675156"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app, "(default)");
+
+let paymentData = {
+  name: "",
+  email: "",
+  amount: 17500,
+  phone: ""
+};
+
+function getPaymentData() {
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get("name") || "";
+  const email = params.get("email") || "";
+  const amount = parseInt(params.get("amount")) || 17500;
+  
+  if (name && email && amount) {
+    paymentData.name = decodeURIComponent(name);
+    paymentData.email = decodeURIComponent(email);
+    paymentData.amount = amount;
+    return true;
+  }
+  
+  try {
+    const session = JSON.parse(sessionStorage.getItem("nxt_payment") || "{}");
+    if (session.name && session.email && session.amount) {
+      paymentData.name = session.name;
+      paymentData.email = session.email;
+      paymentData.amount = session.amount || 17500;
+      paymentData.phone = session.phone || "";
+      return true;
+    }
+  } catch(e) {}
+  
+  try {
+    const user = JSON.parse(localStorage.getItem("nextel_connect_user") || "{}");
+    if (user.firstName && user.email) {
+      paymentData.name = user.firstName + " " + (user.lastName || "");
+      paymentData.email = user.email;
+      paymentData.phone = user.phone || "";
+      return true;
+    }
+  } catch(e) {}
+  
+  return false;
+}
+
+async function loadFirestoreConfig() {
+  try {
+    const snap = await getDoc(doc(db, "account", "nextelprincess"));
+    if (snap.exists()) {
+      const d = snap.data();
+      
+      const bankNameEl = document.getElementById("bankNameVal");
+      const accountNameEl = document.getElementById("accountNameVal");
+      const accountNumEl = document.getElementById("accountNum");
+      
+      if (d.bankName) bankNameEl.textContent = d.bankName;
+      if (d.accountName) accountNameEl.textContent = d.accountName;
+      if (d.accountNumber) accountNumEl.textContent = d.accountNumber;
+      
+      window._waLink = d.whatsappLink || "";
+      window._tgLink = d.telegramLink || "";
+    }
+  } catch (e) {
+    console.warn("Could not load config", e);
+  }
+}
+
+async function updateHasPaid(email) {
+  if (!email) return false;
+  try {
+    await updateDoc(doc(db, "princessusers", email), {
+      hasPaid: true
+    });
+    console.log("✅ hasPaid updated to true for:", email);
+    return true;
+  } catch (err) {
+    console.error("Error updating hasPaid:", err);
+    return false;
+  }
+}
+
+function goToDashboard() {
+  if (paymentData.email) {
+    updateHasPaid(paymentData.email).then(() => {
+      window.location.href = "dashboard.html";
+    });
+  } else {
+    window.location.href = "dashboard.html";
+  }
+}
+window.goToDashboard = goToDashboard;
+
+function copyAccount() {
+  const num = document.getElementById("accountNum").textContent;
+  navigator.clipboard.writeText(num).then(() => {
+    const btn = document.getElementById("copyBtn");
+    btn.textContent = "Copied!";
+    btn.classList.add("copied");
+    setTimeout(() => { 
+      btn.textContent = "Copy"; 
+      btn.classList.remove("copied"); 
+    }, 2500);
+  }).catch(() => {
+    const ta = document.createElement("textarea");
+    ta.value = num;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    const btn = document.getElementById("copyBtn");
+    btn.textContent = "Copied!";
+    btn.classList.add("copied");
+    setTimeout(() => { 
+      btn.textContent = "Copy"; 
+      btn.classList.remove("copied"); 
+    }, 2500);
+  });
+}
+window.copyAccount = copyAccount;
+
+function contactWhatsApp() {
+  const name = paymentData.name || "User";
+  const amount = paymentData.amount || 17500;
+  const fmt = "₦" + Number(amount).toLocaleString("en-NG");
+  const msg = encodeURIComponent(
+    `Hello Nextel Support,\n\nI just made a payment of ${fmt} for my Nextel Key activation.\n\nName: ${name}\nEmail: ${paymentData.email || ''}\n\nPlease confirm my activation. Thank you.`
+  );
+  const base = window._waLink || "https://wa.me/2348000000000";
+  const url = base.includes("wa.me") ? base + "?text=" + msg : base;
+  window.open(url, "_blank");
+}
+window.contactWhatsApp = contactWhatsApp;
+
+function contactTelegram() {
+  const url = window._tgLink || "https://t.me/nextelconnect";
+  window.open(url, "_blank");
+}
+window.contactTelegram = contactTelegram;
+
+let countdownTimer;
+function startCountdown() {
+  let secs = 10 * 60;
+  clearInterval(countdownTimer);
+  countdownTimer = setInterval(() => {
+    secs--;
+    if (secs <= 0) { 
+      clearInterval(countdownTimer); 
+      document.getElementById("countdown").innerText = "00:00"; 
+      return; 
+    }
+    const m = Math.floor(secs/60).toString().padStart(2,"0");
+    const s = (secs%60).toString().padStart(2,"0");
+    document.getElementById("countdown").innerText = m+":"+s;
+  }, 1000);
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const hasData = getPaymentData();
+  
+  if (!hasData) {
+    document.getElementById("paySubTitle").textContent = "⚠️ No payment data found";
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 3000);
+    return;
+  }
+  
+  // ── Create dynamic virtual account via MevonPay ──
+  try {
+    const nameParts = (paymentData.name || "User").trim().split(" ");
+    const firstName = nameParts[0] || "User";
+    const lastName  = nameParts.slice(1).join(" ") || firstName;
+
+    const response = await fetch("/api/mevon-reserve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email: paymentData.email
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.status === true) {
+      document.getElementById("bankNameVal").textContent   = data.bank_name || "Paga";
+      document.getElementById("accountNameVal").textContent = data.account_name || paymentData.name;
+      document.getElementById("accountNum").textContent    = data.account_number || "—";
+    } else {
+      // Fallback to static config from Firestore
+      console.warn("MevonPay failed, falling back to static:", data);
+      await loadFirestoreConfig();
+    }
+  } catch (err) {
+    console.error("Reserve error, falling back:", err);
+    await loadFirestoreConfig();
+  }
+  
+  startCountdown();
+  
+  console.log("✅ Payment page loaded with:", paymentData);
+});
+</script>
+</body>
+</html>

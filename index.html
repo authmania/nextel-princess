@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en">
+
+<!-- Mirrored from nextelconnect.live/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 12 Jul 2026 10:57:32 GMT -->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nextel Connect — Premium Telecom &amp; Digital Services</title>
+  <meta name="description" content="Premium mobile connectivity, lightning-fast 5G data, and intelligent digital services. Safe, fast, secure and reliable." />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com/" />
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+
+  <!-- Tailwind (CDN) with theme mapped to CSS variables from styles.css -->
+  <script src="https://cdn.tailwindcss.com/"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'var(--background)',
+            foreground: 'var(--foreground)',
+            card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+            popover: { DEFAULT: 'var(--popover)', foreground: 'var(--popover-foreground)' },
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+            secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+            muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+            accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+            gold: { DEFAULT: 'var(--gold)', foreground: 'var(--gold-foreground)' },
+            destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+            border: 'var(--border)',
+            input: 'var(--input)',
+            ring: 'var(--ring)',
+          },
+          fontFamily: { sans: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+          borderRadius: {
+            sm: '8px', md: '12px', lg: '16px',
+            xl: '20px', '2xl': '24px', '3xl': '32px'
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<div id="top" class="min-h-screen bg-background text-foreground overflow-x-hidden">
+  <header data-navbar class="fixed top-0 inset-x-0 z-50 transition-all duration-500 bg-transparent border-b border-transparent">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8 h-16 lg:h-20 flex items-center justify-between">
+    <a href="index-2.html#top" class="flex items-center">
+      <img src="assets/img/nextel-logo.png" alt="Nextel Connect" class="h-9 lg:h-10 w-auto" width="200" height="56" />
+    </a>
+    <nav class="hidden lg:flex items-center gap-9 text-sm font-medium text-[var(--primary)]/75">
+      <a href="index-2.html#why" class="hover:text-[var(--primary)] transition">Why Nextel</a>
+      <a href="index-2.html#services" class="hover:text-[var(--primary)] transition">Services</a>
+      <a href="index-2.html#fintech" class="hover:text-[var(--primary)] transition">Fintech</a>
+      <a href="index-2.html#app" class="hover:text-[var(--primary)] transition">App</a>
+      <a href="index-2.html#stories" class="hover:text-[var(--primary)] transition">Stories</a>
+    </nav>
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href="index-2.html#contact" class="hidden lg:inline-flex text-sm font-semibold text-[var(--primary)]/80 hover:text-[var(--primary)]">Sign in</a>
+      <a href="register.html" class="inline-flex items-center gap-1.5 rounded-full bg-[var(--primary)] text-primary-foreground px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold shadow-soft hover:shadow-elegant hover:-translate-y-0.5 transition-all">
+        Register
+      </a>
+      <button data-menu-toggle class="lg:hidden p-2 -mr-2 text-[var(--primary)]" aria-label="Menu">
+        <i data-lucide="menu" class="h-6 w-6"></i>
+      </button>
+    </div>
+  </div>
+
+  <div data-mobile-menu class="hidden lg:hidden bg-white/95 backdrop-blur-xl border-t border-black/5 px-5 py-4 flex-col gap-3 text-[var(--primary)] font-medium animate-fade-in flex">
+    <a href="index-2.html#why" class="py-2 border-b border-black/5">Why Nextel</a>
+    <a href="index-2.html#services" class="py-2 border-b border-black/5">Services</a>
+    <a href="index-2.html#fintech" class="py-2 border-b border-black/5">Fintech</a>
+    <a href="index-2.html#app" class="py-2 border-b border-black/5">App</a>
+    <a href="index-2.html#stories" class="py-2 border-b border-black/5">Stories</a>
+    <a href="register.html" class="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[var(--primary)] text-primary-foreground px-5 py-3 text-sm font-semibold">
+      Register <i data-lucide="arrow-right" class="h-4 w-4"></i>
+    </a>
+  </div>
+</header>
+
+  <!-- HERO -->
+  <section class="relative pt-28 lg:pt-36 pb-20 lg:pb-28">
+    <div class="absolute inset-0 -z-10 bg-white"></div>
+    <div class="absolute inset-0 -z-10 opacity-70"
+      style="background-image: radial-gradient(45% 40% at 85% 12%, oklch(0.82 0.11 80 / 0.18), transparent 70%), radial-gradient(40% 50% at 5% 90%, oklch(0.5 0.09 180 / 0.12), transparent 70%);"></div>
+    <div class="absolute inset-0 -z-10 opacity-[0.05]"
+      style="background-image: linear-gradient(oklch(0.32 0.05 190) 1px, transparent 1px), linear-gradient(90deg, oklch(0.32 0.05 190) 1px, transparent 1px); background-size: 60px 60px; -webkit-mask-image: radial-gradient(circle at 50% 30%, black, transparent 70%); mask-image: radial-gradient(circle at 50% 30%, black, transparent 70%);"></div>
+
+    <div class="mx-auto max-w-7xl px-5 lg:px-8 grid lg:grid-cols-[1.05fr_1fr] gap-14 items-center">
+      <div>
+        <div class="reveal" data-anim="up">
+          <div class="inline-flex items-center gap-2 rounded-full border border-[var(--primary)]/10 bg-white/60 backdrop-blur px-3.5 py-1.5 text-xs font-semibold text-[var(--primary)] shadow-soft">
+            <i data-lucide="sparkles" class="h-3.5 w-3.5 text-[var(--gold)]"></i>
+            Now live · Premium 5G across Africa
+          </div>
+        </div>
+
+        <div class="reveal" data-anim="up" data-delay="80">
+          <h1 class="mt-6 text-[2.75rem] sm:text-6xl lg:text-[5rem] font-extrabold leading-[1.02] tracking-tight text-[var(--primary)]">
+            Your World,<br />
+            <span class="text-gradient-gold">Your Network.</span>
+          </h1>
+        </div>
+
+        <div class="reveal" data-anim="up" data-delay="180">
+          <p class="mt-6 text-base lg:text-xl text-foreground/70 max-w-xl leading-relaxed font-normal">
+            Premium mobile connectivity, lightning-fast data, and intelligent
+            digital services — engineered for people who refuse to settle.
+          </p>
+        </div>
+
+        <div class="reveal" data-anim="up" data-delay="260">
+          <div class="mt-9 flex flex-row flex-nowrap items-stretch gap-3 w-full sm:w-auto">
+            <a href="register.html" class="group flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-full bg-[var(--primary)] text-primary-foreground px-5 sm:px-6 py-3.5 text-sm font-bold shadow-elegant hover:-translate-y-0.5 hover:shadow-glow transition-all whitespace-nowrap">
+              Get Started
+              <i data-lucide="arrow-right" class="h-4 w-4 group-hover:translate-x-0.5 transition-transform"></i>
+            </a>
+            <a href="#services" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-full border-2 border-[var(--primary)]/15 bg-white/80 backdrop-blur text-[var(--primary)] px-5 sm:px-6 py-3.5 text-sm font-semibold hover:border-[var(--gold)] transition-all whitespace-nowrap">
+              Explore Services
+            </a>
+          </div>
+        </div>
+
+        <div class="reveal" data-anim="up" data-delay="360">
+          <div class="mt-10 flex flex-row flex-nowrap items-center justify-between sm:justify-start gap-3 sm:gap-7 text-[11px] sm:text-sm text-foreground/70 font-medium">
+            <div class="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap"><i data-lucide="check" class="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[var(--gold)] shrink-0"></i> No setup fees</div>
+            <div class="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap"><i data-lucide="check" class="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[var(--gold)] shrink-0"></i> 5G ready</div>
+            <div class="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap"><i data-lucide="check" class="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[var(--gold)] shrink-0"></i> 24/7 support</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero visual -->
+      <div class="reveal" data-anim="zoom" data-delay="150">
+        <div class="relative">
+          <div class="absolute -inset-6 bg-gradient-gold rounded-[3rem] blur-3xl opacity-20"></div>
+          <div class="relative mx-auto max-w-md aspect-[4/5] rounded-[2rem] overflow-hidden shadow-elegant ring-1 ring-[var(--primary)]/10">
+            <img src="assets/img/nextel-sim-hero.jpg" alt="Nextel Connect SIM" class="absolute inset-0 h-full w-full object-cover" />
+          </div>
+          <div class="hidden sm:flex absolute -left-4 lg:-left-10 top-12 bg-white rounded-2xl px-4 py-3 shadow-elegant border border-black/5 animate-float">
+            <div class="flex items-center gap-3">
+              <div class="h-10 w-10 rounded-xl bg-gradient-gold grid place-items-center shadow-gold">
+                <i data-lucide="signal" class="h-4 w-4 text-[var(--primary)]"></i>
+              </div>
+              <div>
+                <div class="text-[11px] text-muted-foreground font-medium">Network speed</div>
+                <div class="font-extrabold text-[var(--primary)] text-sm">5G · 1.2 Gbps</div>
+              </div>
+            </div>
+          </div>
+          <div class="hidden sm:flex absolute -right-2 lg:-right-6 bottom-10 bg-white rounded-2xl px-4 py-3 shadow-elegant border border-black/5 animate-float" style="animation-delay: 1.5s;">
+            <div class="flex items-center gap-3">
+              <div class="h-10 w-10 rounded-xl bg-[var(--primary)] grid place-items-center">
+                <i data-lucide="shield" class="h-4 w-4 text-[var(--gold)]"></i>
+              </div>
+              <div>
+                <div class="text-[11px] text-muted-foreground font-medium">Active users</div>
+                <div class="font-extrabold text-[var(--primary)] text-sm">2.4M+</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="relative mt-16 lg:mt-24">
+      <div class="mx-auto max-w-6xl px-5 lg:px-8">
+        <div class="reveal" data-anim="up">
+          <div class="bg-white rounded-3xl shadow-elegant border border-black/[0.04] grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-black/5 overflow-hidden">
+                          <div class="reveal p-6 lg:p-7 text-center" data-anim="up" data-delay="0">
+                <div class="text-2xl lg:text-4xl font-extrabold text-[var(--primary)] tracking-tight">
+                  <span data-countup="2.4" data-decimals="1" data-suffix="M+">0M+</span>
+                </div>
+                <div class="mt-1.5 text-[11px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">Active subscribers</div>
+              </div>
+                          <div class="reveal p-6 lg:p-7 text-center" data-anim="up" data-delay="100">
+                <div class="text-2xl lg:text-4xl font-extrabold text-[var(--primary)] tracking-tight">
+                  <span data-countup="99.99" data-decimals="2" data-suffix="%">0%</span>
+                </div>
+                <div class="mt-1.5 text-[11px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">Network uptime</div>
+              </div>
+                          <div class="reveal p-6 lg:p-7 text-center" data-anim="up" data-delay="200">
+                <div class="text-2xl lg:text-4xl font-extrabold text-[var(--primary)] tracking-tight">
+                  <span data-countup="180" data-decimals="0" data-suffix="+">0+</span>
+                </div>
+                <div class="mt-1.5 text-[11px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">Cities covered</div>
+              </div>
+                          <div class="reveal p-6 lg:p-7 text-center" data-anim="up" data-delay="300">
+                <div class="text-2xl lg:text-4xl font-extrabold text-[var(--primary)] tracking-tight">
+                  <span data-countup="4.9" data-decimals="1" data-suffix="/5">0/5</span>
+                </div>
+                <div class="mt-1.5 text-[11px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">Customer rating</div>
+              </div>
+                      </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INCOME OPPORTUNITY -->
+  <section id="income" class="relative py-20 lg:py-28 overflow-hidden">
+    <div class="absolute inset-0 -z-10 bg-gradient-surface"></div>
+    <div class="absolute inset-0 -z-10 opacity-60"
+      style="background-image: radial-gradient(50% 40% at 12% 20%, oklch(0.82 0.11 80 / 0.18), transparent 70%), radial-gradient(45% 50% at 90% 80%, oklch(0.5 0.09 180 / 0.15), transparent 70%);"></div>
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="max-w-2xl mb-10 lg:mb-14">
+        <div class="reveal" data-anim="up"><p class="text-xs uppercase tracking-[0.25em] text-[var(--gold)] font-bold">Earn While You Connect</p></div>
+        <div class="reveal" data-anim="up" data-delay="80">
+          <h2 class="mt-3 text-3xl lg:text-5xl font-extrabold leading-tight text-[var(--primary)]">
+            Turn Every Call Into <span class="text-gradient-gold">Income.</span>
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-[0.95fr_1.05fr] gap-8 lg:gap-12 items-center">
+        <div class="reveal" data-anim="right">
+          <div class="relative">
+            <div class="absolute -inset-6 bg-gradient-gold rounded-[3rem] blur-3xl opacity-25"></div>
+            <div class="relative rounded-[2rem] overflow-hidden shadow-elegant ring-1 ring-[var(--primary)]/10 bg-white">
+              <img src="assets/img/nextel-income-flyer.jpg" alt="Telecom companies make money per second — Nextel Connect" class="w-full h-auto block" loading="lazy" />
+            </div>
+            <div class="hidden sm:flex absolute -bottom-5 -right-4 bg-white rounded-2xl px-4 py-3 shadow-elegant border border-black/5 animate-float">
+              <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-xl bg-gradient-gold grid place-items-center shadow-gold">
+                  <i data-lucide="phone-call" class="h-4 w-4 text-[var(--primary)]"></i>
+                </div>
+                <div>
+                  <div class="text-[11px] text-muted-foreground font-medium">Every call earns</div>
+                  <div class="font-extrabold text-[var(--primary)] text-sm">₦5K–₦10K / day</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal" data-anim="left" data-delay="120">
+          <div class="relative rounded-[2rem] glass-light p-7 lg:p-10 shadow-elegant">
+            <p class="text-base lg:text-[17px] text-foreground/75 leading-relaxed">
+              For years, millions of people have faithfully paid for telecom services,
+              generating enormous revenue for network providers every single day —
+              yet receiving little or no direct financial benefit in return.
+            </p>
+            <p class="mt-5 text-base lg:text-[17px] text-foreground/75 leading-relaxed">
+              Ever wondered if you can make money every second you make a call or
+              surf the internet?
+            </p>
+            <p class="mt-5 text-base lg:text-[17px] text-foreground/85 leading-relaxed font-medium">
+              Nextel Connect introduces a new way to participate in the telecom
+              ecosystem. By linking your current phone number to Nextel Connect,
+              users gain access to a platform designed to create additional earning
+              opportunities while continuing to use their existing mobile services.
+            </p>
+
+            <div class="mt-7 grid sm:grid-cols-3 gap-3">
+                              <div class="flex items-center gap-2.5 rounded-2xl bg-white/80 border border-[var(--primary)]/10 px-4 py-3 shadow-soft">
+                  <div class="h-7 w-7 rounded-full bg-gradient-gold grid place-items-center shrink-0">
+                    <i data-lucide="check" class="h-3.5 w-3.5 text-[var(--primary)]"></i>
+                  </div>
+                  <span class="text-sm font-semibold text-[var(--primary)]">No new phone</span>
+                </div>
+                              <div class="flex items-center gap-2.5 rounded-2xl bg-white/80 border border-[var(--primary)]/10 px-4 py-3 shadow-soft">
+                  <div class="h-7 w-7 rounded-full bg-gradient-gold grid place-items-center shrink-0">
+                    <i data-lucide="check" class="h-3.5 w-3.5 text-[var(--primary)]"></i>
+                  </div>
+                  <span class="text-sm font-semibold text-[var(--primary)]">No new SIM card</span>
+                </div>
+                              <div class="flex items-center gap-2.5 rounded-2xl bg-white/80 border border-[var(--primary)]/10 px-4 py-3 shadow-soft">
+                  <div class="h-7 w-7 rounded-full bg-gradient-gold grid place-items-center shrink-0">
+                    <i data-lucide="check" class="h-3.5 w-3.5 text-[var(--primary)]"></i>
+                  </div>
+                  <span class="text-sm font-semibold text-[var(--primary)]">No technical setup</span>
+                </div>
+                          </div>
+
+            <p class="mt-7 text-base lg:text-[17px] text-foreground/75 leading-relaxed">
+              Simply register your number and access the Nextel ecosystem through a
+              smooth and modern platform experience.
+            </p>
+
+            <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+              <div class="inline-flex items-center gap-2 rounded-full bg-[var(--primary)] text-primary-foreground px-5 py-2.5 text-xs font-extrabold tracking-[0.18em] uppercase shadow-elegant">
+                <i data-lucide="sparkles" class="h-3.5 w-3.5 text-[var(--gold)]"></i>
+                On Nextel, every call matters
+              </div>
+              <a href="register.html" class="group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-gold text-[var(--gold-foreground)] px-6 py-3 text-sm font-bold shadow-gold hover:scale-[1.02] transition-all">
+                Register your number
+                <i data-lucide="arrow-right" class="h-4 w-4 group-hover:translate-x-0.5 transition-transform"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section id="why" class="py-24 lg:py-32 bg-gradient-surface">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="max-w-2xl">
+        <div class="reveal" data-anim="up"><p class="text-xs uppercase tracking-[0.25em] text-[var(--gold)] font-bold">Why Nextel</p></div>
+        <div class="reveal" data-anim="up" data-delay="80">
+          <h2 class="mt-3 text-3xl lg:text-5xl font-extrabold leading-tight text-[var(--primary)]">
+            Built on four promises <span class="text-gradient-gold">we never break.</span>
+          </h2>
+        </div>
+        <div class="reveal" data-anim="up" data-delay="160">
+          <p class="mt-4 text-foreground/65 text-lg">
+            Every call, every byte, every transaction — engineered with intention.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                  <div class="reveal" data-anim="up" data-delay="0">
+            <div class="group relative h-full rounded-3xl bg-white border border-black/5 p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1.5 transition-all duration-500">
+              <div class="h-12 w-12 rounded-2xl bg-gradient-emerald-soft grid place-items-center mb-5 group-hover:bg-gradient-gold transition-all duration-500">
+                <i data-lucide="shield" class="h-5 w-5 text-[var(--primary)]"></i>
+              </div>
+              <h3 class="text-lg font-bold text-[var(--primary)]">Safe</h3>
+              <p class="mt-2 text-sm text-foreground/65 leading-relaxed">End-to-end encryption on every call and transaction.</p>
+              <div class="mt-6 text-xs font-bold text-[var(--gold)]">01</div>
+            </div>
+          </div>
+                  <div class="reveal" data-anim="up" data-delay="90">
+            <div class="group relative h-full rounded-3xl bg-white border border-black/5 p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1.5 transition-all duration-500">
+              <div class="h-12 w-12 rounded-2xl bg-gradient-emerald-soft grid place-items-center mb-5 group-hover:bg-gradient-gold transition-all duration-500">
+                <i data-lucide="zap" class="h-5 w-5 text-[var(--primary)]"></i>
+              </div>
+              <h3 class="text-lg font-bold text-[var(--primary)]">Fast</h3>
+              <p class="mt-2 text-sm text-foreground/65 leading-relaxed">Sub-second response on our intelligent 5G core.</p>
+              <div class="mt-6 text-xs font-bold text-[var(--gold)]">02</div>
+            </div>
+          </div>
+                  <div class="reveal" data-anim="up" data-delay="180">
+            <div class="group relative h-full rounded-3xl bg-white border border-black/5 p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1.5 transition-all duration-500">
+              <div class="h-12 w-12 rounded-2xl bg-gradient-emerald-soft grid place-items-center mb-5 group-hover:bg-gradient-gold transition-all duration-500">
+                <i data-lucide="check" class="h-5 w-5 text-[var(--primary)]"></i>
+              </div>
+              <h3 class="text-lg font-bold text-[var(--primary)]">Secure</h3>
+              <p class="mt-2 text-sm text-foreground/65 leading-relaxed">Multi-layer fraud protection and verified identity.</p>
+              <div class="mt-6 text-xs font-bold text-[var(--gold)]">03</div>
+            </div>
+          </div>
+                  <div class="reveal" data-anim="up" data-delay="270">
+            <div class="group relative h-full rounded-3xl bg-white border border-black/5 p-7 shadow-soft hover:shadow-elegant hover:-translate-y-1.5 transition-all duration-500">
+              <div class="h-12 w-12 rounded-2xl bg-gradient-emerald-soft grid place-items-center mb-5 group-hover:bg-gradient-gold transition-all duration-500">
+                <i data-lucide="signal" class="h-5 w-5 text-[var(--primary)]"></i>
+              </div>
+              <h3 class="text-lg font-bold text-[var(--primary)]">Reliable</h3>
+              <p class="mt-2 text-sm text-foreground/65 leading-relaxed">99.99% uptime backed by redundant infrastructure.</p>
+              <div class="mt-6 text-xs font-bold text-[var(--gold)]">04</div>
+            </div>
+          </div>
+              </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="py-24 lg:py-32">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
+        <div class="max-w-xl">
+          <div class="reveal" data-anim="up"><p class="text-xs uppercase tracking-[0.25em] text-[var(--gold)] font-bold">Services</p></div>
+          <div class="reveal" data-anim="up" data-delay="80">
+            <h2 class="mt-3 text-3xl lg:text-5xl font-extrabold leading-tight text-[var(--primary)]">
+              One ecosystem. Every connection you need.
+            </h2>
+          </div>
+        </div>
+        <div class="reveal" data-anim="left" data-delay="120">
+          <a href="#cta" class="inline-flex items-center gap-1 text-sm font-bold text-[var(--primary)] hover:text-[var(--gold)] transition">
+            View all services <i data-lucide="chevron-right" class="h-4 w-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-5">
+        <div class="reveal lg:col-span-7" data-anim="right">
+          <div class="relative h-full rounded-3xl overflow-hidden bg-gradient-hero text-white p-8 lg:p-10 min-h-[420px] shadow-elegant">
+            <img src="assets/img/nextel-brand.jpg" alt="" class="absolute right-0 bottom-0 w-2/3 h-full object-cover opacity-30 mix-blend-luminosity" />
+            <div class="absolute inset-0 bg-gradient-to-r from-[var(--primary)] via-[var(--primary)]/85 to-transparent"></div>
+            <div class="relative z-10 max-w-sm">
+              <div class="inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-xs font-semibold">
+                <i data-lucide="smartphone" class="h-3.5 w-3.5"></i> Mobile Connectivity
+              </div>
+              <h3 class="mt-6 text-2xl lg:text-4xl font-extrabold leading-tight">
+                Crystal-clear voice &amp; messaging on a network that follows you.
+              </h3>
+              <p class="mt-4 text-white/75 text-base leading-relaxed">
+                Smart roaming across 180+ cities, with intelligent call routing built in.
+              </p>
+              <a href="#cta" class="mt-8 inline-flex items-center gap-1.5 rounded-full bg-gradient-gold text-[var(--gold-foreground)] px-5 py-3 text-sm font-bold shadow-gold hover:scale-[1.02] transition">
+                Get a SIM <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 grid sm:grid-cols-2 lg:grid-cols-1 gap-5">
+                      <div class="reveal" data-anim="left" data-delay="0">
+              <div class="group rounded-3xl bg-white border border-black/5 p-6 shadow-soft hover:shadow-elegant hover:-translate-y-1 transition-all duration-500">
+                <div class="h-11 w-11 rounded-2xl bg-gradient-gold grid place-items-center mb-4 shadow-gold group-hover:rotate-6 transition-transform duration-500">
+                  <i data-lucide="wifi" class="h-5 w-5 text-[var(--primary)]"></i>
+                </div>
+                <h4 class="text-base font-bold text-[var(--primary)]">Data Services</h4>
+                <p class="mt-1.5 text-sm text-foreground/65 leading-relaxed">Blazing-fast 5G data plans, tailored to how you live.</p>
+              </div>
+            </div>
+                      <div class="reveal" data-anim="left" data-delay="100">
+              <div class="group rounded-3xl bg-white border border-black/5 p-6 shadow-soft hover:shadow-elegant hover:-translate-y-1 transition-all duration-500">
+                <div class="h-11 w-11 rounded-2xl bg-gradient-gold grid place-items-center mb-4 shadow-gold group-hover:rotate-6 transition-transform duration-500">
+                  <i data-lucide="credit-card" class="h-5 w-5 text-[var(--primary)]"></i>
+                </div>
+                <h4 class="text-base font-bold text-[var(--primary)]">Fintech & Cards</h4>
+                <p class="mt-1.5 text-sm text-foreground/65 leading-relaxed">Branded debit cards and seamless wallet integration.</p>
+              </div>
+            </div>
+                      <div class="reveal" data-anim="left" data-delay="200">
+              <div class="group rounded-3xl bg-white border border-black/5 p-6 shadow-soft hover:shadow-elegant hover:-translate-y-1 transition-all duration-500">
+                <div class="h-11 w-11 rounded-2xl bg-gradient-gold grid place-items-center mb-4 shadow-gold group-hover:rotate-6 transition-transform duration-500">
+                  <i data-lucide="cloud" class="h-5 w-5 text-[var(--primary)]"></i>
+                </div>
+                <h4 class="text-base font-bold text-[var(--primary)]">Digital Solutions</h4>
+                <p class="mt-1.5 text-sm text-foreground/65 leading-relaxed">Cloud, identity, and APIs for modern businesses.</p>
+              </div>
+            </div>
+                  </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINTECH -->
+  <section id="fintech" class="py-24 lg:py-32 bg-gradient-surface">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8 grid lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal order-2 lg:order-1" data-anim="right">
+        <div class="relative">
+          <div class="relative rounded-3xl overflow-hidden shadow-elegant bg-gradient-hero p-6 lg:p-10">
+            <img src="assets/img/nextel-cards.jpg" alt="Nextel branded debit cards" class="w-full h-auto object-contain" />
+          </div>
+          <div class="absolute -bottom-6 -right-2 lg:-right-8 bg-white rounded-2xl px-5 py-4 shadow-elegant border border-black/5 max-w-[220px]">
+            <div class="text-xs text-muted-foreground font-medium">Activation</div>
+            <div class="text-xl font-extrabold text-[var(--primary)]">Under 60 seconds</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-1 lg:order-2">
+        <div class="reveal" data-anim="left"><p class="text-xs uppercase tracking-[0.25em] text-[var(--gold)] font-bold">Banking-grade Fintech</p></div>
+        <div class="reveal" data-anim="left" data-delay="80">
+          <h2 class="mt-3 text-3xl lg:text-5xl font-extrabold leading-tight text-[var(--primary)]">
+            Pay, save and earn — on the same network that powers your calls.
+          </h2>
+        </div>
+        <div class="reveal" data-anim="left" data-delay="160">
+          <p class="mt-5 text-foreground/70 text-lg leading-relaxed">
+            Nextel debit cards and a unified wallet let you move money as easily as you make a call. Built to international standards, run on infrastructure you can trust.
+          </p>
+        </div>
+        <ul class="mt-8 space-y-3.5">
+                      <li class="reveal flex items-start gap-3" data-anim="left" data-delay="220">
+              <div class="h-6 w-6 mt-0.5 shrink-0 rounded-full bg-gradient-gold grid place-items-center shadow-gold">
+                <i data-lucide="check" class="h-3.5 w-3.5 text-[var(--primary)]"></i>
+              </div>
+              <span class="text-foreground/85 font-medium">Issued in minutes, accepted globally</span>
+            </li>
+                      <li class="reveal flex items-start gap-3" data-anim="left" data-delay="300">
+              <div class="h-6 w-6 mt-0.5 shrink-0 rounded-full bg-gradient-gold grid place-items-center shadow-gold">
+                <i data-lucide="check" class="h-3.5 w-3.5 text-[var(--primary)]"></i>
+              </div>
+              <span class="text-foreground/85 font-medium">Real-time spending insights & alerts</span>
+            </li>
+                      <li class="reveal flex items-start gap-3" data-anim="left" data-delay="380">
+              <div class="h-6 w-6 mt-0.5 shrink-0 rounded-full bg-gradient-gold grid place-items-center shadow-gold">
+                <i data-lucide="check" class="h-3.5 w-3.5 text-[var(--primary)]"></i>
+              </div>
+              <span class="text-foreground/85 font-medium">Steady commission for verified distributors</span>
+            </li>
+                  </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP -->
+  <section id="app" class="relative py-24 lg:py-32 overflow-hidden">
+    <div class="absolute inset-0 -z-10 bg-gradient-hero"></div>
+    <div class="absolute inset-0 -z-10 opacity-60"
+      style="background-image: radial-gradient(45% 60% at 20% 30%, oklch(0.82 0.11 80 / 0.3), transparent), radial-gradient(40% 60% at 90% 80%, oklch(0.5 0.09 180 / 0.4), transparent);"></div>
+    <div class="mx-auto max-w-7xl px-5 lg:px-8 grid lg:grid-cols-2 gap-14 items-center text-white">
+      <div>
+        <div class="reveal" data-anim="up"><p class="text-xs uppercase tracking-[0.25em] text-[var(--gold)] font-bold">Mobile App</p></div>
+        <div class="reveal" data-anim="up" data-delay="80">
+          <h2 class="mt-3 text-3xl lg:text-5xl font-extrabold leading-tight">
+            Your entire network. <span class="text-gradient-gold">In your pocket.</span>
+          </h2>
+        </div>
+        <div class="reveal" data-anim="up" data-delay="160">
+          <p class="mt-5 text-white/75 text-lg max-w-lg leading-relaxed">
+            Manage your line, top up, send money and unlock new services from one beautifully simple app.
+          </p>
+        </div>
+
+        <div class="reveal" data-anim="up" data-delay="240">
+          <div class="mt-8 grid sm:grid-cols-2 gap-3 max-w-md">
+            <a href="#" class="flex items-center gap-3 rounded-2xl bg-white text-[var(--primary)] px-5 py-3.5 hover:-translate-y-0.5 hover:shadow-elegant transition-all shadow-soft">
+              <i data-lucide="apple" class="h-7 w-7"></i>
+              <div class="text-left leading-tight">
+                <div class="text-[10px] uppercase tracking-wider opacity-70">Download on the</div>
+                <div class="font-bold text-base">App Store</div>
+              </div>
+            </a>
+            <a href="#" class="flex items-center gap-3 rounded-2xl bg-white text-[var(--primary)] px-5 py-3.5 hover:-translate-y-0.5 hover:shadow-elegant transition-all shadow-soft">
+              <i data-lucide="play" class="h-7 w-7"></i>
+              <div class="text-left leading-tight">
+                <div class="text-[10px] uppercase tracking-wider opacity-70">Get it on</div>
+                <div class="font-bold text-base">Google Play</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="reveal" data-anim="up" data-delay="320">
+          <div class="mt-10 flex items-center gap-4 text-sm text-white/75 font-medium">
+            <div class="flex">
+                              <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                              <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                              <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                              <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                              <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                          </div>
+            <span>4.9 across <span data-countup="28000" data-decimals="0" data-suffix="+">0+</span> reviews</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" data-anim="zoom" data-delay="120">
+        <div class="relative mx-auto max-w-sm">
+          <div class="absolute inset-0 bg-gradient-gold blur-3xl opacity-30 rounded-full"></div>
+          <div class="relative rounded-[2.5rem] overflow-hidden shadow-elegant ring-1 ring-white/15 aspect-[4/5]">
+            <img src="assets/img/nextel-app.jpg" alt="Nextel mobile app" class="absolute inset-0 h-full w-full object-cover" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="stories" class="py-24 lg:py-32">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="max-w-2xl mb-14">
+        <div class="reveal" data-anim="up"><p class="text-xs uppercase tracking-[0.25em] text-[var(--gold)] font-bold">Stories</p></div>
+        <div class="reveal" data-anim="up" data-delay="80">
+          <h2 class="mt-3 text-3xl lg:text-5xl font-extrabold leading-tight text-[var(--primary)]">
+            Trusted by millions. Loved by the few who matter most.
+          </h2>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+                  <div class="reveal" data-anim="up" data-delay="0">
+            <figure class="h-full rounded-3xl bg-white border border-black/5 p-7 shadow-soft hover:shadow-elegant transition-all duration-500">
+              <div class="flex gap-1 mb-4">
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                              </div>
+              <blockquote class="text-foreground/85 leading-relaxed">&ldquo;Nextel turned a side hustle into a serious income stream. The platform is fast, payouts are punctual, and the brand opens doors.&rdquo;</blockquote>
+              <figcaption class="mt-6 flex items-center gap-3">
+                <div class="h-11 w-11 rounded-full bg-gradient-emerald-soft grid place-items-center text-[var(--primary)] font-extrabold">SJ</div>
+                <div>
+                  <div class="font-bold text-sm text-[var(--primary)]">Samuel J. Fashina</div>
+                  <div class="text-xs text-muted-foreground">NTU Distributor</div>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+                  <div class="reveal" data-anim="up" data-delay="120">
+            <figure class="h-full rounded-3xl bg-white border border-black/5 p-7 shadow-soft hover:shadow-elegant transition-all duration-500">
+              <div class="flex gap-1 mb-4">
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                              </div>
+              <blockquote class="text-foreground/85 leading-relaxed">&ldquo;Switched my entire team to Nextel SIMs. Calls are clearer, data is faster, and the dashboards actually make sense.&rdquo;</blockquote>
+              <figcaption class="mt-6 flex items-center gap-3">
+                <div class="h-11 w-11 rounded-full bg-gradient-emerald-soft grid place-items-center text-[var(--primary)] font-extrabold">AE</div>
+                <div>
+                  <div class="font-bold text-sm text-[var(--primary)]">Amaka Eze</div>
+                  <div class="text-xs text-muted-foreground">Small business owner</div>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+                  <div class="reveal" data-anim="up" data-delay="240">
+            <figure class="h-full rounded-3xl bg-white border border-black/5 p-7 shadow-soft hover:shadow-elegant transition-all duration-500">
+              <div class="flex gap-1 mb-4">
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                                  <i data-lucide="star" class="h-4 w-4 fill-[var(--gold)] text-[var(--gold)]"></i>
+                              </div>
+              <blockquote class="text-foreground/85 leading-relaxed">&ldquo;I run my whole tech stack on Nextel data. Latency is consistently low and the app is beautifully built.&rdquo;</blockquote>
+              <figcaption class="mt-6 flex items-center gap-3">
+                <div class="h-11 w-11 rounded-full bg-gradient-emerald-soft grid place-items-center text-[var(--primary)] font-extrabold">DO</div>
+                <div>
+                  <div class="font-bold text-sm text-[var(--primary)]">David Okoro</div>
+                  <div class="text-xs text-muted-foreground">Software engineer</div>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+              </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section class="py-14 border-y border-black/5 bg-secondary/50">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <p class="text-center text-xs uppercase tracking-[0.25em] text-muted-foreground font-bold mb-8">
+        Powering teams at
+      </p>
+      <div class="overflow-hidden" style="-webkit-mask-image:linear-gradient(90deg,transparent,black 15%,black 85%,transparent); mask-image:linear-gradient(90deg,transparent,black 15%,black 85%,transparent);">
+        <div class="flex gap-14 animate-marquee whitespace-nowrap items-center" data-marquee-track>
+          <div class="flex gap-14 items-center shrink-0">
+                          <span class="text-xl lg:text-2xl font-extrabold text-[var(--primary)]/35 tracking-tight">MasterCard</span>
+                          <span class="text-xl lg:text-2xl font-extrabold text-[var(--primary)]/35 tracking-tight">Visa</span>
+                          <span class="text-xl lg:text-2xl font-extrabold text-[var(--primary)]/35 tracking-tight">Microsoft</span>
+                          <span class="text-xl lg:text-2xl font-extrabold text-[var(--primary)]/35 tracking-tight">Cloudflare</span>
+                          <span class="text-xl lg:text-2xl font-extrabold text-[var(--primary)]/35 tracking-tight">AWS</span>
+                          <span class="text-xl lg:text-2xl font-extrabold text-[var(--primary)]/35 tracking-tight">Stripe</span>
+                          <span class="text-xl lg:text-2xl font-extrabold text-[var(--primary)]/35 tracking-tight">Paystack</span>
+                          <span class="text-xl lg:text-2xl font-extrabold text-[var(--primary)]/35 tracking-tight">Flutterwave</span>
+                      </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="py-24 lg:py-32">
+    <div class="mx-auto max-w-6xl px-5 lg:px-8">
+      <div class="reveal" data-anim="zoom">
+        <div class="relative overflow-hidden rounded-[2.5rem] bg-gradient-hero p-10 lg:p-16 shadow-elegant">
+          <div class="absolute inset-0 opacity-60"
+            style="background-image: radial-gradient(50% 60% at 90% 10%, oklch(0.82 0.11 80 / 0.5), transparent), radial-gradient(40% 60% at 0% 100%, oklch(0.5 0.09 180 / 0.5), transparent);"></div>
+          <div class="relative grid lg:grid-cols-[1.4fr_1fr] gap-10 items-center text-white">
+            <div>
+              <h2 class="text-3xl lg:text-5xl font-extrabold leading-tight">
+                Need a <span class="text-gradient-gold">steady income stream?</span>
+              </h2>
+              <p class="mt-4 text-white/80 text-lg max-w-lg leading-relaxed">
+                Become a Nextel Distributor today and earn while you connect your community.
+              </p>
+              <div class="mt-8 flex flex-wrap gap-3">
+                <a href="#" class="inline-flex items-center gap-2 rounded-full bg-gradient-gold text-[var(--gold-foreground)] px-6 py-3.5 text-sm font-bold shadow-gold hover:scale-[1.02] transition">
+                  Become a distributor <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                </a>
+                <a href="#" class="inline-flex items-center gap-2 rounded-full glass text-white px-6 py-3.5 text-sm font-semibold hover:bg-white/15 transition">
+                  Talk to sales
+                </a>
+              </div>
+            </div>
+            <div class="hidden lg:flex justify-end">
+              <div class="relative h-56 w-56 rounded-3xl overflow-hidden ring-1 ring-white/20 shadow-elegant">
+                <img src="assets/img/nextel-logo-3d.jpg" alt="" class="h-full w-full object-cover" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="bg-[var(--primary)] text-primary-foreground pt-20 pb-10">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="grid lg:grid-cols-5 gap-10 pb-14 border-b border-white/10">
+      <div class="lg:col-span-2">
+        <div class="bg-white inline-flex rounded-2xl p-3">
+          <img src="assets/img/nextel-logo.png" alt="Nextel Connect" class="h-9 w-auto" width="180" height="48" loading="lazy" />
+        </div>
+        <p class="mt-5 text-white/70 max-w-sm leading-relaxed">
+          Premium telecom and digital services. Your world, your network.
+        </p>
+        <div class="mt-6 flex gap-3">
+                      <a href="#" class="h-10 w-10 rounded-full glass grid place-items-center text-sm font-bold hover:bg-white/15 transition">X</a>
+                      <a href="#" class="h-10 w-10 rounded-full glass grid place-items-center text-sm font-bold hover:bg-white/15 transition">in</a>
+                      <a href="#" class="h-10 w-10 rounded-full glass grid place-items-center text-sm font-bold hover:bg-white/15 transition">IG</a>
+                      <a href="#" class="h-10 w-10 rounded-full glass grid place-items-center text-sm font-bold hover:bg-white/15 transition">TT</a>
+                  </div>
+      </div>
+              <div>
+          <div class="text-sm font-bold mb-4">Product</div>
+          <ul class="space-y-2.5 text-sm text-white/70">
+                          <li><a href="#" class="hover:text-white transition">Mobile SIM</a></li>
+                          <li><a href="#" class="hover:text-white transition">Data Plans</a></li>
+                          <li><a href="#" class="hover:text-white transition">Cards</a></li>
+                          <li><a href="#" class="hover:text-white transition">Business</a></li>
+                      </ul>
+        </div>
+              <div>
+          <div class="text-sm font-bold mb-4">Company</div>
+          <ul class="space-y-2.5 text-sm text-white/70">
+                          <li><a href="#" class="hover:text-white transition">About</a></li>
+                          <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                          <li><a href="#" class="hover:text-white transition">Press</a></li>
+                          <li><a href="#" class="hover:text-white transition">Partners</a></li>
+                      </ul>
+        </div>
+              <div>
+          <div class="text-sm font-bold mb-4">Support</div>
+          <ul class="space-y-2.5 text-sm text-white/70">
+                          <li><a href="#" class="hover:text-white transition">Help center</a></li>
+                          <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                          <li><a href="#" class="hover:text-white transition">Status</a></li>
+                          <li><a href="#" class="hover:text-white transition">Coverage map</a></li>
+                      </ul>
+        </div>
+          </div>
+    <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60">
+      <div>© <span data-year>2026</span> Nextel Connect. All rights reserved.</div>
+      <div class="flex gap-6">
+        <a href="#" class="hover:text-white">Privacy</a>
+        <a href="#" class="hover:text-white">Terms</a>
+        <a href="#" class="hover:text-white">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</div>
+
+<!-- Lucide icons + site scripts -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+
+<!-- Mirrored from nextelconnect.live/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 12 Jul 2026 10:57:44 GMT -->
+</html>
