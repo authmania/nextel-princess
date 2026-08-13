@@ -18,14 +18,14 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const { firstName, lastName, email } = req.body || {};
+    const { firstName, lastName, email, phone, bvn } = req.body || {};
 
     if (!firstName) {
         return res.status(400).json({ error: "Missing required fields" });
     }
 
-    const secret = process.env.MEVON_SECRET_KEY;
-    if (!secret) {
+    const authToken = process.env.MEVON_SECRET_KEY;
+    if (!authToken) {
         return res.status(500).json({ error: "Payment provider not configured" });
     }
 
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
         const response = await fetch("https://mevonpay.com.ng/V1/createtempva", {
             method: "POST",
             headers: {
-                "Authorization": secret,
+                "Authorization": authToken,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
         const data = await response.json();
 
         if (!response.ok || data.status !== true) {
-            console.error("MevonPay reserve error:", data);
+            console.error("Rubies reserve error:", data);
             return res.status(502).json({ error: data?.message || "Failed to create payment account" });
         }
 
@@ -53,8 +53,10 @@ export default async function handler(req, res) {
         if (email) {
             try {
                 await db.collection("princessusers").doc(email).set({
-                    mevonReference: data.reference || "",
-                    mevonAccountNumber: data.account_number || ""
+                    rubiesReference: data.reference || "",
+                    rubiesAccountNumber: data.account_number || "",
+                    rubiesBankName: data.bank_name || "Rubies",
+                    paymentProvider: "rubies"
                 }, { merge: true });
             } catch (err) {
                 console.error("Firestore reserve save error:", err);
@@ -63,7 +65,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json(data);
     } catch (err) {
-        console.error("MevonPay reserve fetch error:", err);
+        console.error("Rubies reserve fetch error:", err);
         return res.status(500).json({ error: "Payment provider unavailable" });
     }
 }

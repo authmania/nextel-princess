@@ -559,37 +559,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
   
-  // ── Create dynamic virtual account via MevonPay ──
-  try {
-    const nameParts = (paymentData.name || "User").trim().split(" ");
-    const firstName = nameParts[0] || "User";
-    const lastName  = nameParts.slice(1).join(" ") || firstName;
-
-    const response = await fetch("/api/mevon-reserve", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        email: paymentData.email
-      })
-    });
-
-    const data = await response.json();
-
-    if (response.ok && data.status === true) {
-      document.getElementById("bankNameVal").textContent   = data.bank_name || "Paga";
-      document.getElementById("accountNameVal").textContent = data.account_name || paymentData.name;
-      document.getElementById("accountNum").textContent    = data.account_number || "—";
-    } else {
-      // Fallback to static config from Firestore
-      console.warn("MevonPay failed, falling back to static:", data);
-      await loadFirestoreConfig();
-    }
-  } catch (err) {
-    console.error("Reserve error, falling back:", err);
-    await loadFirestoreConfig();
-  }
+  // Load bank details from Firestore config
+  await loadFirestoreConfig();
   
   startCountdown();
   
